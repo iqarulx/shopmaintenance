@@ -1,0 +1,126 @@
+{
+  "project_info": {
+    "project_number": "256767822565",
+    "project_id": "shop-maintenance",
+    "storage_bucket": "shop-maintenance.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256767822565:android:d2cbcf41352786ef85e20c",
+        "android_client_info": {
+          "package_name": "com.srisoftwarez.shopmaintenance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256767822565-rs45ihfu08sfe14i1vcs83dnriit53h9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYI9V3XK8i4O8LdM8RN8zmNuv9UcPwlRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256767822565-1fvj6hdveehcqvpj0qmf0mk7sl92n1iv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256767822565-23aum8bli8rin1769lk7tapohj1meapc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.srisoftwarez.shopmaintenance"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256767822565:android:2192791c143c706085e20c",
+        "android_client_info": {
+          "package_name": "com.srisoftwarez.shopmaintenance_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256767822565-rs45ihfu08sfe14i1vcs83dnriit53h9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYI9V3XK8i4O8LdM8RN8zmNuv9UcPwlRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256767822565-1fvj6hdveehcqvpj0qmf0mk7sl92n1iv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256767822565-23aum8bli8rin1769lk7tapohj1meapc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.srisoftwarez.shopmaintenance"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256767822565:android:328d2c08eaad941f85e20c",
+        "android_client_info": {
+          "package_name": "com.srisoftwarez.shopmaintenance_debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256767822565-4gg0r1s7liaua9uf5jo2uqv7bomcm1cf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.srisoftwarez.shopmaintenance_debug",
+            "certificate_hash": "0bba845824adca6f7dd79c2d19d827b3c6637773"
+          }
+        },
+        {
+          "client_id": "256767822565-rs45ihfu08sfe14i1vcs83dnriit53h9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYI9V3XK8i4O8LdM8RN8zmNuv9UcPwlRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256767822565-1fvj6hdveehcqvpj0qmf0mk7sl92n1iv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "256767822565-23aum8bli8rin1769lk7tapohj1meapc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.srisoftwarez.shopmaintenance"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

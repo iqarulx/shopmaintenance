@@ -1,0 +1,82 @@
+name: shopmaintenance
+description: A new Flutter project.
+
+publish_to: 'none'
+
+version: 1.0.3
+
+environment:
+  sdk: '>=3.0.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  firebase_core: ^2.14.0
+  iconsax: ^0.0.8
+  pinput: ^2.2.31
+  cloud_firestore: ^4.8.2
+  firebase_auth: ^4.6.3
+  shared_preferences: ^2.2.0
+  http: ^1.1.0
+  firebase_messaging: ^14.6.4
+  syncfusion_flutter_pdfviewer: ^22.1.37
+  # printing: ^5.11.0
+  flutter_local_notifications: ^15.0.1
+  intl: ^0.18.1
+  excel: ^2.1.0
+  device_info_plus: ^9.0.2
+  permission_handler: ^10.4.3
+  path_provider: ^2.0.15
+  open_file_plus: ^3.4.1
+  firebase_app_check: ^0.1.5+1
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.2
+  multi_dropdown: ^2.1.4
+  flutter_colorpicker: ^1.1.0
+  local_auth: ^2.2.0
+  fluttertoast: ^8.2.6
+  lottie: ^3.1.2
+  animate_do: ^3.3.4
+  animated_custom_dropdown: ^3.1.1
+  fluid_dialog: ^2.0.0
+  animations: ^2.0.11
+  share_plus: ^9.0.0
+  syncfusion_flutter_charts: ^22.2.12
+  adaptive_theme: ^3.6.0
+  package_info: ^2.0.2
+  printing: ^5.13.1
+  url_launcher: ^6.3.0
+  google_sign_in: ^6.2.1
+  tutorial_coach_mark: ^1.2.11
+  shimmer: ^3.0.0
+  webview_flutter: ^4.8.0
+  go_router: ^14.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/applogo-2.jpg"
+
+flutter_native_splash:
+  android: true
+  ios: true
+  color: "#FFFFFF"
+  image: assets/flash.png
+  branding: assets/brand.png
+  branding_mode: bottom
+  android_12:
+    color: "#FFFFFF"
+    image: assets/flash.png
+    branding: assets/brand.png
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/

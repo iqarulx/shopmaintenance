@@ -1,0 +1,95 @@
+{
+    "update_settings": 1,
+    "settings_list": {
+        "layout": {
+            "desktop_layout_type": "List",
+            "tab_layout_type": "List",
+            "mobile_layout": "List",
+            "desktop_box_count": "6"
+        },
+        "list_color": {
+            "list_topbar_background_color": "#c3c3c3",
+            "list_topbar_text_color": "#c3c3c3",
+            "list_category_background_color": "#800000",
+            "list_category_text_color": "#ffff80",
+            "list_rupees_background_color": "#800000",
+            "list_rupees_text_color": "#ffff80",
+            "list_table_head_color": "#400040",
+            "list_table_text_color": "#f1f1f1",
+            "list_table_strike_color": "#000000",
+            "list_table_border_color": "#000000",
+            "list_table_category_background_color": "#800000",
+            "list_table_category_text_color": "#ffff80",
+            "list_product_row1_color": "#ffff80",
+            "list_product_row2_color": "#ffff80",
+            "list_product_text_color": "#400000"
+        },
+        "grid_color": {
+            "grid_topbar_background_color": "#ff8040",
+            "grid_topbar_text_color": "#6c3600",
+            "grid_category_background_color": "#ffff80",
+            "grid_category_text_color": "#800040",
+            "grid_rupees_background_color": "#800000",
+            "grid_rupees_textColor": "#ffff80",
+            "grid_table_category_background_color": "#ffff80",
+            "grid_table_text_color": "#804040",
+            "grid_product_row1_color": "#ffff80",
+            "grid_product_row2_color": "#ffff80",
+            "grid_product_text_color": "#000000",
+            "grid_rate_background_color": "#ffff80",
+            "grid_rate_text_color": "#000000",
+            "grid_product_code_background_color": "#ffff80",
+            "grid_product_code_text_color": "#000000",
+            "grid_card_background_color": "#8d8d8d",
+            "grid_card_text_color": "#000000"
+        },
+        "box_color": {
+            "box_topbar_background_color": "#804040",
+            "box_topbar_text_color": "#ffff80",
+            "box_category_background_color": "#ffff80",
+            "box_category_text_color": "#804040",
+            "box_rupees_background_color": "#800000",
+            "box_rupees_text_color": "#ffff80",
+            "box_bottom_category_background_color": "#ffff80",
+            "box_bottom_category_text_color": "#800000",
+            "box_product_background_color": "#ffff80",
+            "box_product_text_color": "#800000",
+            "box_box_color": "#000000"
+        },
+        "product_display": {
+            "price_list_display_home_page": "2",
+            "download_pricelist_pdf": "1",
+            "product_code": "1",
+            "discount_row": "2",
+            "category_filter": "2",
+            "search_filter": "2",
+            "pdf_font_size": "9"
+        },
+        "website_status": {
+            "disable_site": "Disable Site No"
+        },
+        "new_arrivals": {
+            "new_arrivals_background_color": "#c92020",
+            "new_arrivals_text_color": "#000000",
+            "new_arrivals_strike_color": "#000000",
+            "new_arrivals_button_background_color": "#000000",
+            "new_arrivals_button_text_color": "#000000"
+        },
+        "message": {
+            "footer_content_message": "Demo",
+            "thankyou_message": "Thanks for your order."
+        },
+        "pricelist_page_features": {
+            "show_promotion_code": "2",
+            "otp_verification": "2"
+        },
+        "price_format": {
+            "product_price_display_format": "1"
+        },
+        "printout_format": {
+            "printout_format": "2"
+        },
+        "terms_conditions": ""
+    },
+    "state_name_list": ""
+}
