@@ -14,19 +14,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import '/provider/file_download_provider.dart';
+import '/main.dart';
+import '/provider/file_download_provider.dart' as helper;
 import '/service/auth_service/auth_service.dart';
 import '/service/http_service/enquiry_service.dart';
 import '/service/local_storage_service/local_db_config.dart';
+import '/service/routes/enquiry_route.dart';
 import '/view/custom_ui_element/future_error.dart';
 import '/view/custom_ui_element/show_custom_snackbar.dart';
-import '../../main.dart';
-import '../../model/enquiry_model.dart';
-import '../../service/routes/enquiry_route.dart';
-import '../custom_ui_element/download_fileopen_alert.dart';
-import '../custom_ui_element/enquiry_filter.dart';
-import '../custom_ui_element/future_loading.dart';
-import '../custom_ui_element/public_variable.dart';
+import '/view/custom_ui_element/enquiry_filter.dart';
+import '/view/custom_ui_element/future_loading.dart';
+import '/view/custom_ui_element/public_variable.dart';
+import '/model/enquiry_model.dart';
 import 'enquiry_details_view.dart';
 
 EnquiryRoutes enquiryRoutes = EnquiryRoutes();
@@ -613,7 +612,9 @@ class _EnquiryListingState extends State<EnquiryListing>
       model.filterPromotionCodeID = filterPromotionCodeID ?? "";
       model.filterStatus = statusID ?? "";
 
-      await EnquiryService().getEnquiryAPI(enquiryInput: model).then((result) {
+      await EnquiryService()
+          .getEnquiryAPI(enquiryInput: model)
+          .then((result) async {
         if (result["head"]["code"] == 200 || result["head"]["code"] == 400) {
           if (result["head"]["code"] == 200) {
             for (var element in result["body"]["orders"]) {
@@ -731,19 +732,7 @@ class _EnquiryListingState extends State<EnquiryListing>
                   .value = dataList[i].totalAmount ?? "";
             }
             Uint8List data = Uint8List.fromList(excel.save()!);
-            DownloadFileOffline(
-                    fileData: data, fileName: "Enquiry", fileext: 'xlsx')
-                .startDownload()
-                .then((value) {
-              // Navigator.pop(context);
-              LoadingOverlay.hide();
-              if (value != null && value.isNotEmpty) {
-                downloadFileSnackBarCustom(context,
-                    isSuccess: true,
-                    msg: "Successfully Excel Download",
-                    path: value);
-              }
-            });
+            await helper.saveAndLaunchFile(data, 'Enquiry.xlsx');
           } else {
             throw result["head"]["msg"].toString();
           }

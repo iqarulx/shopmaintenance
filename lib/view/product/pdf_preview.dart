@@ -8,14 +8,12 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '/model/product_model.dart';
-import '/provider/file_download_provider.dart';
 import '/service/http_service/product_service.dart';
-import '/service/notification_service/local_notification.dart';
-import '/view/custom_ui_element/download_fileopen_alert.dart';
 import '/view/custom_ui_element/future_error.dart';
 import '/view/custom_ui_element/future_loading.dart';
 import '/view/custom_ui_element/show_custom_snackbar.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import '/provider/file_download_provider.dart' as helper;
 import 'package:http/http.dart' as http;
 
 class PdfPreview extends StatefulWidget {
@@ -78,21 +76,7 @@ class _PdfPreviewState extends State<PdfPreview> {
       var response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         Uint8List data = Uint8List.fromList(response.bodyBytes);
-        DownloadFileOffline(fileData: data, fileName: "Product", fileext: 'pdf')
-            .startDownload()
-            .then((value) {
-          // Navigator.pop(context);
-          LoadingOverlay.hide();
-          if (value != null && value.isNotEmpty) {
-            downloadFileSnackBarCustom(context,
-                isSuccess: true,
-                msg: "Successfully Pdf Downloaded",
-                path: value);
-            NotificationService().showNotification(
-                body: 'File Downloaded',
-                title: 'Product Pdf file has been downloaded.');
-          }
-        });
+        await helper.saveAndLaunchFile(data, 'Product.pdf');
       } else {
         throw 'Failed to download PDF';
       }

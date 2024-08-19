@@ -9,10 +9,9 @@ import 'dart:typed_data';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import '/model/product_model.dart';
-import '/provider/file_download_provider.dart';
+import '/provider/file_download_provider.dart' as helper;
 import '/service/http_service/product_service.dart';
 import '/service/notification_service/local_notification.dart';
-import '/view/custom_ui_element/download_fileopen_alert.dart';
 import '/view/custom_ui_element/future_error.dart';
 import '/view/custom_ui_element/future_loading.dart';
 import '/view/custom_ui_element/show_custom_snackbar.dart';
@@ -93,18 +92,8 @@ class _ExcelPreviewState extends State<ExcelPreview> {
       }
 
       Uint8List data = Uint8List.fromList(excel.save()!);
-      DownloadFileOffline(fileData: data, fileName: "Product", fileext: 'xlsx')
-          .startDownload()
-          .then((value) {
-        // Navigator.pop(context);
-        LoadingOverlay.hide();
-        if (value != null && value.isNotEmpty) {
-          downloadFileSnackBarCustom(context,
-              isSuccess: true,
-              msg: "Successfully Excel Downloaded",
-              path: value);
-        }
-      });
+      await helper.saveAndLaunchFile(data, 'Product.xlsx');
+
       NotificationService().showNotification(
           body: 'File Downloaded',
           title: 'Product Excel file has been downloaded.');

@@ -4,52 +4,46 @@
   found in the LICENSE file.
 */
 
-import 'dart:developer';
 import 'dart:io';
-import 'dart:typed_data';
+import 'package:open_file/open_file.dart' as open_file;
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart'
+    as path_provider_interface;
 
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import '/provider/permisstion_provider.dart';
-
-class DownloadFileOffline {
-  final Uint8List fileData;
-  final String fileName;
-  final String fileext;
-  DownloadFileOffline({
-    required this.fileData,
-    required this.fileName,
-    required this.fileext,
-  });
-  Future<String?> startDownload() async {
-    String? result;
-    try {
-      bool? permissionResult = await PermissionHandler().storagePermission();
-      if (permissionResult != null) {
-        Directory? dir;
-        if (Platform.isAndroid) {
-          dir = Directory('/storage/emulated/0/Download');
-        } else if (Platform.isIOS) {
-          dir = await getApplicationDocumentsDirectory();
-        }
-
-        if (dir != null) {
-          String time = DateFormat('dd-MM-yyyy-hh-mm-a')
-              .format(DateTime.now())
-              .toString();
-          String filename = "${dir.absolute.path}/$fileName - $time.$fileext";
-          log(filename.toString());
-          var file = await File(filename).writeAsBytes(fileData);
-          if (await file.exists()) {
-            result = file.path;
-          } else {
-            result = null;
-          }
-        }
+Future saveAndLaunchFile(List<int> bytes, String fileName) async {
+  String? path;
+  if (Platform.isAndroid ||
+      Platform.isIOS ||
+      Platform.isLinux ||
+      Platform.isWindows) {
+    if (Platform.isAndroid) {
+      final Directory? directory =
+          await path_provider.getExternalStorageDirectory();
+      if (directory != null) {
+        path = directory.path;
       }
-    } catch (e) {
-      rethrow;
+    } else {
+      final Directory directory =
+          await path_provider.getApplicationSupportDirectory();
+      path = directory.path;
     }
-    return result;
+  } else {
+    path = await path_provider_interface.PathProviderPlatform.instance
+        .getApplicationSupportPath();
+  }
+
+  final String fileLocation =
+      Platform.isWindows ? '$path\\$fileName' : '$path/$fileName';
+  final File file = File(fileLocation);
+  await file.writeAsBytes(bytes, flush: true);
+
+  if (Platform.isAndroid || Platform.isIOS) {
+    await open_file.OpenFile.open(fileLocation);
+  } else if (Platform.isWindows) {
+    await Process.run('start', <String>[fileLocation], runInShell: true);
+  } else if (Platform.isMacOS) {
+    await Process.run('open', <String>[fileLocation], runInShell: true);
+  } else if (Platform.isLinux) {
+    await Process.run('xdg-open', <String>[fileLocation], runInShell: true);
   }
 }
