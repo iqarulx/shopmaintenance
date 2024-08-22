@@ -4,15 +4,12 @@
   found in the LICENSE file.
 */
 
-// import 'package:shopmaintenance_debug/service/local_storage_service/local_db_config.dart';
+import '/service/local_storage_service/local_db_config.dart';
+
 class HttpConfig {
   Future<String?> getdomain() async {
-    // var domain = await LocalDBConfig().getdomain();
-    // String result = "https://$domain/API";
-
-    String result =
-        "http://sridemoapps.in/sridemoapps.in/arul2024/ammancrackers.com/API";
-
+    var domain = await LocalDBConfig().getdomain();
+    String result = "https://$domain/API";
     return result;
   }
 }

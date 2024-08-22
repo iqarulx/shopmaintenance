@@ -8,6 +8,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/service/http_service/enquiry_pdf_service.dart';
 import '/service/http_service/enquiry_service.dart';
 import '/view/custom_ui_element/delivery_alert_dialog.dart';
@@ -50,23 +51,27 @@ class _EnquiryDetailsState extends State<EnquiryDetails> {
               format: format,
               type: type)
           .then((result) {
-        if (result != null && result["head"]["code"] == 200) {
-          LoadingOverlay.hide();
-          // Navigator.pop(context);
-          if (isPrint) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PDFPrintView(
-                  url: result["head"]["printout_file"].toString(),
+        LoadingOverlay.hide();
+        if (result.isNotEmpty) {
+          if (result != null && result["head"]["code"] == 200) {
+            // Navigator.pop(context);
+            if (isPrint) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PDFPrintView(
+                    url: result["head"]["printout_file"].toString(),
+                  ),
                 ),
-              ),
-            );
+              );
+            } else {
+              return result["head"]["printout_file"].toString();
+            }
           } else {
-            return result["head"]["printout_file"].toString();
+            throw result["head"]["msg"];
           }
         } else {
-          throw result["head"]["msg"];
+          errorSnackbar(context);
         }
       });
     } on SocketException catch (e) {

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:iconsax/iconsax.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/company_model.dart';
 import '/provider/fingerprint_provider.dart';
 import '/service/http_service/company_service.dart';
@@ -100,39 +101,42 @@ class _CompanyFormState extends State<CompanyForm> {
 
       var resultData =
           await CompanyService().editCompany(companyId: widget.companyId);
-
-      if (resultData != null && resultData["head"]["code"] == 200) {
-        for (var element in resultData["head"]["msg"]) {
-          CompanyEditingModel model = CompanyEditingModel();
-          model.name = element["name"].toString();
-          model.logo = element["logo"].toString();
-          model.address = element["address"].toString();
-          model.whatsappNumber = element["whatsapp_number"].toString();
-          model.callUsNumber = element["call_us_number"].toString();
-          model.contactNumber1 = element["contact_number1"].toString();
-          model.contactNumber2 = element["contact_number2"].toString();
-          model.contactNumber3 = element["contact_number3"].toString();
-          model.mobileNumber = element["mobile_number"].toString();
-          model.email = element["email"].toString();
-          model.acName = element["ac_name"].toString();
-          model.acNumber = element["ac_number"].toString();
-          model.acType = element["ac_type"].toString();
-          model.bankName = element["bank_name"].toString();
-          model.ifscCode = element["ifsc_code"].toString();
-          model.runningText = element["running_text"].toString();
-          model.runningTextBackColor =
-              element["running_text_back_color"].toString();
-          model.runningTextDuration =
-              element["running_text_duration"].toString();
-          model.orderPrefix = element["order_prefix"].toString();
-          model.runningTextColor = element["running_text_color"].toString();
-          companyDataList.add(model);
+      if (resultData.isNotEmpty) {
+        if (resultData != null && resultData["head"]["code"] == 200) {
+          for (var element in resultData["head"]["msg"]) {
+            CompanyEditingModel model = CompanyEditingModel();
+            model.name = element["name"].toString();
+            model.logo = element["logo"].toString();
+            model.address = element["address"].toString();
+            model.whatsappNumber = element["whatsapp_number"].toString();
+            model.callUsNumber = element["call_us_number"].toString();
+            model.contactNumber1 = element["contact_number1"].toString();
+            model.contactNumber2 = element["contact_number2"].toString();
+            model.contactNumber3 = element["contact_number3"].toString();
+            model.mobileNumber = element["mobile_number"].toString();
+            model.email = element["email"].toString();
+            model.acName = element["ac_name"].toString();
+            model.acNumber = element["ac_number"].toString();
+            model.acType = element["ac_type"].toString();
+            model.bankName = element["bank_name"].toString();
+            model.ifscCode = element["ifsc_code"].toString();
+            model.runningText = element["running_text"].toString();
+            model.runningTextBackColor =
+                element["running_text_back_color"].toString();
+            model.runningTextDuration =
+                element["running_text_duration"].toString();
+            model.orderPrefix = element["order_prefix"].toString();
+            model.runningTextColor = element["running_text_color"].toString();
+            companyDataList.add(model);
+          }
+          return true;
+        } else if (resultData["head"]["code"] == 400) {
+          showCustomSnackBar(context,
+              content: resultData["head"]["msg"].toString(), isSuccess: false);
+          throw resultData["head"]["msg"].toString();
         }
-        return true;
-      } else if (resultData["head"]["code"] == 400) {
-        showCustomSnackBar(context,
-            content: resultData["head"]["msg"].toString(), isSuccess: false);
-        throw resultData["head"]["msg"].toString();
+      } else {
+        errorSnackbar(context);
       }
     } on SocketException catch (e) {
       print(e);
@@ -198,17 +202,21 @@ class _CompanyFormState extends State<CompanyForm> {
 
             CompanyService().updateCompany(formData: formData).then((value) {
               LoadingOverlay.hide();
-              if (value['head']['code'] == 200) {
-                Navigator.pop(context);
-                showCustomSnackBar(context,
-                    content: "Updated Successfully", isSuccess: true);
+              if (value.isNotEmpty) {
+                if (value['head']['code'] == 200) {
+                  Navigator.pop(context);
+                  showCustomSnackBar(context,
+                      content: "Updated Successfully", isSuccess: true);
 
-                NotificationService().showNotification(
-                    title: "Company Updated",
-                    body: "Company has updated successfully.");
+                  NotificationService().showNotification(
+                      title: "Company Updated",
+                      body: "Company has updated successfully.");
+                } else {
+                  showCustomSnackBar(context,
+                      content: value['head']['msg'], isSuccess: false);
+                }
               } else {
-                showCustomSnackBar(context,
-                    content: value['head']['msg'], isSuccess: false);
+                errorSnackbar(context);
               }
             });
           } else {

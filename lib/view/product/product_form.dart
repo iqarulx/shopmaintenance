@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/product_model.dart';
 import '/provider/fingerprint_provider.dart';
 import '/service/http_service/product_service.dart';
@@ -51,37 +52,42 @@ class _ProductFormState extends State<ProductForm> {
 
       var resultData =
           await ProductService().editProduct(productId: widget.productId ?? '');
-      if (resultData != null && resultData["head"]["code"] == 200) {
-        for (var element in resultData["head"]["msg"]["product_data"]) {
-          ProductEditModel model = ProductEditModel();
-          model.categoryId = element["category_id"].toString();
-          model.productName = element["name"].toString();
-          model.productCode = element["product_code"].toString();
-          model.productContent = element["product_content"].toString();
-          model.price = element["price"].toString();
-          model.productVideo = element["product_video"].toString();
-          setState(() {
-            productDataList.add(model);
-          });
-        }
 
-        List<dynamic> categoryDataList =
-            resultData["head"]["msg"]["category_data"];
-        for (var element in categoryDataList) {
-          CategoryListingForProductModel model =
-              CategoryListingForProductModel();
-          model.categoryId = element["category_id"].toString();
-          model.categoryName = element["category_name"].toString();
-          setState(() {
-            categoryList.add(model);
-          });
-        }
+      if (resultData.isNotEmpty) {
+        if (resultData != null && resultData["head"]["code"] == 200) {
+          for (var element in resultData["head"]["msg"]["product_data"]) {
+            ProductEditModel model = ProductEditModel();
+            model.categoryId = element["category_id"].toString();
+            model.productName = element["name"].toString();
+            model.productCode = element["product_code"].toString();
+            model.productContent = element["product_content"].toString();
+            model.price = element["price"].toString();
+            model.productVideo = element["product_video"].toString();
+            setState(() {
+              productDataList.add(model);
+            });
+          }
 
-        return true;
-      } else if (resultData != null && resultData["head"]["code"] == 400) {
-        showCustomSnackBar(context,
-            content: resultData["head"]["msg"].toString(), isSuccess: false);
-        throw resultData["head"]["msg"].toString();
+          List<dynamic> categoryDataList =
+              resultData["head"]["msg"]["category_data"];
+          for (var element in categoryDataList) {
+            CategoryListingForProductModel model =
+                CategoryListingForProductModel();
+            model.categoryId = element["category_id"].toString();
+            model.categoryName = element["category_name"].toString();
+            setState(() {
+              categoryList.add(model);
+            });
+          }
+
+          return true;
+        } else if (resultData != null && resultData["head"]["code"] == 400) {
+          showCustomSnackBar(context,
+              content: resultData["head"]["msg"].toString(), isSuccess: false);
+          throw resultData["head"]["msg"].toString();
+        }
+      } else {
+        errorSnackbar(context);
       }
 
       return true;
@@ -117,25 +123,26 @@ class _ProductFormState extends State<ProductForm> {
             // futureLoading(context),
             LoadingOverlay.show(context);
 
-            ProductService().updateProduct(formData: formData).then((value) => {
-                  LoadingOverlay.hide(),
-                  if (value['head']['code'] == 200)
-                    {
-                      showCustomSnackBar(context,
-                          content: value['head']['msg'], isSuccess: true),
-                      Future.delayed(const Duration(seconds: 2), () {
-                        Navigator.pop(context, true);
-                      }),
-                      NotificationService().showNotification(
-                          title: "Product Updated",
-                          body: "Product has updated successfully.")
-                    }
-                  else
-                    {
-                      showCustomSnackBar(context,
-                          content: value['head']['msg'], isSuccess: false)
-                    }
-                });
+            ProductService().updateProduct(formData: formData).then((value) {
+              LoadingOverlay.hide();
+              if (value.isNotEmpty) {
+                if (value['head']['code'] == 200) {
+                  showCustomSnackBar(context,
+                      content: value['head']['msg'], isSuccess: true);
+                  Future.delayed(const Duration(seconds: 2), () {
+                    Navigator.pop(context, true);
+                  });
+                  NotificationService().showNotification(
+                      title: "Product Updated",
+                      body: "Product has updated successfully.");
+                } else {
+                  showCustomSnackBar(context,
+                      content: value['head']['msg'], isSuccess: false);
+                }
+              } else {
+                errorSnackbar(context);
+              }
+            });
           } else {
             showCustomSnackBar(context,
                 content: "Auth Failed. Please try again!", isSuccess: false);

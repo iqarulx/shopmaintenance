@@ -5,7 +5,6 @@
 */
 
 import 'dart:convert';
-import 'dart:developer';
 import 'http_config.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,9 +20,11 @@ class WebsitestatusService extends HttpConfig {
       var url = await getDomain();
       var message =
           await http.post(url, body: jsonEncode({"get_website_status": 1}));
-      var response = json.decode(message.body);
-      log(response.toString());
-      return response;
+      if (message.statusCode == 200) {
+        var response = json.decode(message.body);
+        return response;
+      }
+      return [];
     } catch (e) {
       rethrow;
     }
@@ -33,9 +34,11 @@ class WebsitestatusService extends HttpConfig {
     try {
       var url = await getDomain();
       var message = await http.post(url, body: jsonEncode(formData));
-      var response = json.decode(message.body);
-      log(response.toString());
-      return response;
+      if (message.statusCode == 200) {
+        var response = json.decode(message.body);
+        return response;
+      }
+      return [];
     } catch (e) {
       rethrow;
     }

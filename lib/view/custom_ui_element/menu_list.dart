@@ -10,6 +10,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info/package_info.dart';
 import '/service/local_storage_service/local_db_config.dart';
+import '/view/auth/login.dart';
 import '/view/auth/screen_auth.dart';
 import '/view/category/category.dart';
 import '/view/company/company.dart';
@@ -18,7 +19,6 @@ import '/view/custom_ui_element/confrimation_alert_dialog.dart';
 import '/view/custom_ui_element/show_custom_snackbar.dart';
 import '/view/discount/discount.dart';
 import '/view/enquiry/enquiry_listing_view.dart';
-import '/view/auth/phone_login_view.dart';
 import '/view/product/product.dart';
 import '/view/sales_report/sales_report.dart';
 import '/view/settings/settings.dart';
@@ -36,89 +36,6 @@ class MenuList extends StatefulWidget {
 }
 
 class _MenuListState extends State<MenuList> {
-  String domain = '';
-  String phoneNumber = '';
-  String expiryDate = '';
-  String? currentVersion;
-
-  @override
-  void initState() {
-    getUserDetails();
-
-    super.initState();
-  }
-
-  getUserDetails() async {
-    final dbDomain = await LocalDBConfig().getdomain();
-    final dbPhoneNum = await LocalDBConfig().getPhone();
-    final dbExpiryDate = await LocalDBConfig().getExpiry();
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    setState(() {
-      domain = dbDomain ?? '';
-      phoneNumber = dbPhoneNum ?? '';
-      expiryDate = dbExpiryDate ?? '';
-      currentVersion = packageInfo.version;
-    });
-  }
-
-  String changeDate(String timestamp) {
-    RegExp regex = RegExp(r"seconds=(\d+)");
-    Match? match = regex.firstMatch(timestamp);
-    if (match != null) {
-      int seconds = int.parse(match.group(1)!);
-      DateTime date = DateTime.fromMillisecondsSinceEpoch(seconds * 1000);
-      DateFormat formatter = DateFormat('dd-MM-yyyy');
-      String formattedDate = formatter.format(date);
-
-      return formattedDate;
-    } else {
-      return "";
-    }
-  }
-
-  watchDemo() async {
-    await LocalDBConfig().resetDemoCategory().then((onValue) async {
-      await LocalDBConfig().resetDemoCompany().then((onValue) async {
-        await LocalDBConfig().resetDemoDiscount().then((onValue) async {
-          await LocalDBConfig().resetDemoEnquiry().then((onValue) async {
-            await LocalDBConfig().resetDemoProduct().then((onValue) async {
-              await LocalDBConfig()
-                  .resetDemoProductSales()
-                  .then((onValue) async {
-                await LocalDBConfig()
-                    .resetDemoScreenAuth()
-                    .then((onValue) async {
-                  await LocalDBConfig()
-                      .resetDemoSettings()
-                      .then((onValue) async {
-                    showCustomSnackBar(context,
-                        content: "You can now watch demo in all screens",
-                        isSuccess: true);
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  }
-
-  openStatusEdit() async {
-    await showModalBottomSheet(
-        backgroundColor: Colors.white,
-        useSafeArea: true,
-        shape: RoundedRectangleBorder(
-          side: BorderSide.none,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        isScrollControlled: true,
-        context: context,
-        builder: (builder) {
-          return const WebsiteStatus();
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -193,8 +110,8 @@ class _MenuListState extends State<MenuList> {
                             width: 5,
                           ),
                           Text(
-                            domain.length > 20
-                                ? '${domain.substring(0, 20)}...'
+                            domain.length > 25
+                                ? '${domain.substring(0, 25)}...'
                                 : domain,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -413,7 +330,7 @@ class _MenuListState extends State<MenuList> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const PhoneLogin(),
+                                builder: (context) => const Login(),
                               ),
                             );
                           });
@@ -461,4 +378,86 @@ class _MenuListState extends State<MenuList> {
       ),
     );
   }
+
+  @override
+  void initState() {
+    getUserDetails();
+    super.initState();
+  }
+
+  getUserDetails() async {
+    final dbDomain = await LocalDBConfig().getdomain();
+    final dbPhoneNum = await LocalDBConfig().getPhone();
+    final dbExpiryDate = await LocalDBConfig().getExpiry();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      domain = dbDomain ?? '';
+      phoneNumber = dbPhoneNum ?? '';
+      expiryDate = dbExpiryDate ?? '';
+      currentVersion = packageInfo.version;
+    });
+  }
+
+  String changeDate(String timestamp) {
+    RegExp regex = RegExp(r"seconds=(\d+)");
+    Match? match = regex.firstMatch(timestamp);
+    if (match != null) {
+      int seconds = int.parse(match.group(1)!);
+      DateTime date = DateTime.fromMillisecondsSinceEpoch(seconds * 1000);
+      DateFormat formatter = DateFormat('dd-MM-yyyy');
+      String formattedDate = formatter.format(date);
+
+      return formattedDate;
+    } else {
+      return "";
+    }
+  }
+
+  watchDemo() async {
+    await LocalDBConfig().resetDemoCategory().then((onValue) async {
+      await LocalDBConfig().resetDemoCompany().then((onValue) async {
+        await LocalDBConfig().resetDemoDiscount().then((onValue) async {
+          await LocalDBConfig().resetDemoEnquiry().then((onValue) async {
+            await LocalDBConfig().resetDemoProduct().then((onValue) async {
+              await LocalDBConfig()
+                  .resetDemoProductSales()
+                  .then((onValue) async {
+                await LocalDBConfig()
+                    .resetDemoScreenAuth()
+                    .then((onValue) async {
+                  await LocalDBConfig()
+                      .resetDemoSettings()
+                      .then((onValue) async {
+                    showCustomSnackBar(context,
+                        content: "You can now watch demo in all screens",
+                        isSuccess: true);
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  }
+
+  openStatusEdit() async {
+    await showModalBottomSheet(
+        backgroundColor: Colors.white,
+        useSafeArea: true,
+        shape: RoundedRectangleBorder(
+          side: BorderSide.none,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        isScrollControlled: true,
+        context: context,
+        builder: (builder) {
+          return const WebsiteStatus();
+        });
+  }
+
+  String domain = '';
+  String phoneNumber = '';
+  String expiryDate = '';
+  String? currentVersion;
 }

@@ -10,6 +10,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/service/firebase_service/customer_service.dart';
 import '/service/firebase_service/get_fcm.dart';
 import '/service/firebase_service/otp_serivce.dart';
@@ -76,28 +77,29 @@ class _LoginState extends State<Login> {
             DateTime dateTime = timestamp.toDate();
             if (DateTime.now().isBefore(dateTime)) {
               await getDeviceInfo().then((value) async {
-                if (dataResult.docs.first["device"]["device_id"] == null &&
-                    dataResult.docs.first["device"]["brand_name"] == null &&
-                    dataResult.docs.first["device"]["model_no"] == null) {
-                  setState(() {
-                    domain = dataResult.docs.first["domain"].toString();
-                  });
-                  await OTPService()
-                      .updateDeviceInfo(
-                          deviceID: value["deviceid"],
-                          modelName: value["modelName"],
-                          brandName: value["brandName"],
-                          docID: docID!)
-                      .then((value) async {
-                    await LocalDBConfig()
-                        .setDomain(domain: dataResult.docs.first["domain"])
-                        .then((domain) async {
-                      await InitAuthService()
-                          .checkLogin(
-                              password: password.text,
-                              phoneno: phoneNumber.text,
-                              fcmID: await getFCM() ?? "")
-                          .then((memberID) async {
+                // if (dataResult.docs.first["device"]["device_id"] == null &&
+                //     dataResult.docs.first["device"]["brand_name"] == null &&
+                //     dataResult.docs.first["device"]["model_no"] == null) {
+                setState(() {
+                  domain = dataResult.docs.first["domain"].toString();
+                });
+                await OTPService()
+                    .updateDeviceInfo(
+                        deviceID: value["deviceid"],
+                        modelName: value["modelName"],
+                        brandName: value["brandName"],
+                        docID: docID!)
+                    .then((value) async {
+                  await LocalDBConfig()
+                      .setDomain(domain: dataResult.docs.first["domain"])
+                      .then((domain) async {
+                    await InitAuthService()
+                        .checkLogin(
+                            password: password.text,
+                            phoneno: phoneNumber.text,
+                            fcmID: await getFCM() ?? "")
+                        .then((memberID) async {
+                      if (memberID.isNotEmpty) {
                         if (memberID["head"]["code"] != null &&
                             memberID["head"]["code"] == 200) {
                           await LocalDBConfig()
@@ -125,60 +127,65 @@ class _LoginState extends State<Login> {
                         } else {
                           throw memberID["head"]["msg"];
                         }
-                      });
-                    });
-                  });
-                } else if (value["deviceid"] ==
-                        dataResult.docs.first["device"]["device_id"] &&
-                    value["brandName"] ==
-                        dataResult.docs.first["device"]["brand_name"] &&
-                    value["modelName"] ==
-                        dataResult.docs.first["device"]["model_no"]) {
-                  setState(() {
-                    domain = dataResult.docs.first["domain"];
-                  });
-
-                  await LocalDBConfig()
-                      .setDomain(domain: dataResult.docs.first["domain"])
-                      .then((domain) async {
-                    await InitAuthService()
-                        .checkLogin(
-                            password: password.text,
-                            phoneno: phoneNumber.text,
-                            fcmID: await getFCM() ?? "")
-                        .then((memberID) async {
-                      if (memberID["head"]["code"] != null &&
-                          memberID["head"]["code"] == 200) {
-                        await LocalDBConfig()
-                            .newUserLogin(
-                                phoneNumber: phoneNumber.text,
-                                domain: dataResult.docs.first["domain"],
-                                memberID:
-                                    memberID["head"]["user_id"].toString(),
-                                expiryDate: dataResult.docs.first["expiry_date"]
-                                    .toString())
-                            .then((localDBResult) {
-                          LoadingOverlay.hide();
-                          showCustomSnackBar(context,
-                              content: "Login Successfully", isSuccess: true);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Dashboard(),
-                            ),
-                          );
-                        });
                       } else {
-                        throw memberID["head"]["msg"];
+                        errorSnackbar(context);
                       }
                     });
                   });
-                } else {
-                  LoadingOverlay.hide();
-                  showCustomSnackBar(context,
-                      content: "You are already logged with another device",
-                      isSuccess: false);
-                }
+                });
+                // }
+
+                // else if (value["deviceid"] ==
+                //         dataResult.docs.first["device"]["device_id"] &&
+                //     value["brandName"] ==
+                //         dataResult.docs.first["device"]["brand_name"] &&
+                //     value["modelName"] ==
+                //         dataResult.docs.first["device"]["model_no"]) {
+                //   setState(() {
+                //     domain = dataResult.docs.first["domain"];
+                //   });
+
+                //   await LocalDBConfig()
+                //       .setDomain(domain: dataResult.docs.first["domain"])
+                //       .then((domain) async {
+                //     await InitAuthService()
+                //         .checkLogin(
+                //             password: password.text,
+                //             phoneno: phoneNumber.text,
+                //             fcmID: await getFCM() ?? "")
+                //         .then((memberID) async {
+                //       if (memberID["head"]["code"] != null &&
+                //           memberID["head"]["code"] == 200) {
+                //         await LocalDBConfig()
+                //             .newUserLogin(
+                //                 phoneNumber: phoneNumber.text,
+                //                 domain: dataResult.docs.first["domain"],
+                //                 memberID:
+                //                     memberID["head"]["user_id"].toString(),
+                //                 expiryDate: dataResult.docs.first["expiry_date"]
+                //                     .toString())
+                //             .then((localDBResult) {
+                //           LoadingOverlay.hide();
+                //           showCustomSnackBar(context,
+                //               content: "Login Successfully", isSuccess: true);
+                //           Navigator.pushReplacement(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder: (context) => const Dashboard(),
+                //             ),
+                //           );
+                //         });
+                //       } else {
+                //         throw memberID["head"]["msg"];
+                //       }
+                //     });
+                //   });
+                // } else {
+                //   LoadingOverlay.hide();
+                //   showCustomSnackBar(context,
+                //       content: "You are already logged with another device",
+                //       isSuccess: false);
+                // }
               });
             } else {
               LoadingOverlay.hide();

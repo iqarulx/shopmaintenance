@@ -60,7 +60,32 @@ futureDisplayError({required String content}) {
   );
 }
 
-futureNoDataError() {}
+futureNoDataError() {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Lottie.asset('assets/not-found.json',
+            height: 150, width: 150, frameRate: const FrameRate(100)),
+        const Text(
+          "Not Found",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        const Text(
+          "Sorry! No data available to show",
+          style: TextStyle(color: Colors.black, fontSize: 14),
+        ),
+      ],
+    ),
+  );
+}
 
 futureNetworkError() {
   return Center(

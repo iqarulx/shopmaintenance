@@ -186,29 +186,32 @@ class _EnquiryFilterState extends State<EnquiryFilter> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                splashRadius: 20,
-                constraints: const BoxConstraints(
-                  maxWidth: 40,
-                  maxHeight: 40,
-                  minWidth: 40,
-                  minHeight: 40,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  shape: BoxShape.circle,
                 ),
-                padding: const EdgeInsets.all(0),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.close),
+                child: IconButton(
+                  splashRadius: 20,
+                  constraints: const BoxConstraints(
+                    maxWidth: 40,
+                    maxHeight: 40,
+                    minWidth: 40,
+                    minHeight: 40,
+                  ),
+                  padding: const EdgeInsets.all(0),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.close),
+                ),
               ),
-            ),
-          ),
+            )
+          ],
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           title: Text(

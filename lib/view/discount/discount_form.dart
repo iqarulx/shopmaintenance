@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/discount_model.dart';
 import '/provider/fingerprint_provider.dart';
 import '/service/http_service/discount_service.dart';
@@ -47,36 +48,39 @@ class _DiscountFormState extends State<DiscountForm> {
 
       var resultData = await DiscountService()
           .editDiscount(discountId: widget.discountId ?? '');
-      if (resultData != null && resultData["head"]["code"] == 200) {
-        for (var element in resultData["head"]["msg"]["discount_data"]) {
-          DiscountEditingModel model = DiscountEditingModel();
-          model.discount = element["discount"].toString();
-          model.categoryIds = element["category_ids"];
+      if (resultData.isNotEmpty) {
+        if (resultData != null && resultData["head"]["code"] == 200) {
+          for (var element in resultData["head"]["msg"]["discount_data"]) {
+            DiscountEditingModel model = DiscountEditingModel();
+            model.discount = element["discount"].toString();
+            model.categoryIds = element["category_ids"];
 
-          setState(() {
-            discountDataList.add(model);
-          });
+            setState(() {
+              discountDataList.add(model);
+            });
+          }
+
+          List<dynamic> categoryDataList =
+              resultData["head"]["msg"]["category_list"];
+          for (var element in categoryDataList) {
+            CategoryListingForDiscountModel model =
+                CategoryListingForDiscountModel();
+            model.categoryId = element["category_id"].toString();
+            model.categoryName = element["category_name"].toString();
+
+            setState(() {
+              categoryList.add(model);
+            });
+          }
+          return true;
+        } else if (resultData != null && resultData["head"]["code"] == 400) {
+          showCustomSnackBar(context,
+              content: resultData["head"]["msg"].toString(), isSuccess: false);
+          throw resultData["head"]["msg"].toString();
         }
-
-        List<dynamic> categoryDataList =
-            resultData["head"]["msg"]["category_list"];
-        for (var element in categoryDataList) {
-          CategoryListingForDiscountModel model =
-              CategoryListingForDiscountModel();
-          model.categoryId = element["category_id"].toString();
-          model.categoryName = element["category_name"].toString();
-
-          setState(() {
-            categoryList.add(model);
-          });
-        }
-        return true;
-      } else if (resultData != null && resultData["head"]["code"] == 400) {
-        showCustomSnackBar(context,
-            content: resultData["head"]["msg"].toString(), isSuccess: false);
-        throw resultData["head"]["msg"].toString();
+      } else {
+        errorSnackbar(context);
       }
-
       return true;
     } on SocketException catch (e) {
       print(e);
@@ -123,18 +127,22 @@ class _DiscountFormState extends State<DiscountForm> {
           LoadingOverlay.show(context);
           DiscountService().updateDiscount(formData: formData).then((value) {
             LoadingOverlay.hide();
-            if (value['head']['code'] == 200) {
-              showCustomSnackBar(context,
-                  content: value['head']['msg'], isSuccess: true);
-              Future.delayed(const Duration(seconds: 2), () {
-                Navigator.pop(context, true);
-              });
-              NotificationService().showNotification(
-                  title: "Discount Updated",
-                  body: "Discount has updated successfully.");
+            if (value.isNotEmpty) {
+              if (value['head']['code'] == 200) {
+                showCustomSnackBar(context,
+                    content: value['head']['msg'], isSuccess: true);
+                Future.delayed(const Duration(seconds: 2), () {
+                  Navigator.pop(context, true);
+                });
+                NotificationService().showNotification(
+                    title: "Discount Updated",
+                    body: "Discount has updated successfully.");
+              } else {
+                showCustomSnackBar(context,
+                    content: value['head']['msg'], isSuccess: false);
+              }
             } else {
-              showCustomSnackBar(context,
-                  content: value['head']['msg'], isSuccess: false);
+              errorSnackbar(context);
             }
           });
         } else {
@@ -243,7 +251,9 @@ class _DiscountFormState extends State<DiscountForm> {
                 ),
               ),
               Text(
-                categoryList[index].categoryName!,
+                categoryList[index].categoryName!.length > 20
+                    ? '${categoryList[index].categoryName!.substring(0, 20)}...'
+                    : categoryList[index].categoryName!,
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,

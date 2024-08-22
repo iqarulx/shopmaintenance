@@ -84,11 +84,13 @@ class _EnquiryListingState extends State<EnquiryListing>
 
       await EnquiryService().getEnquiryAPI(enquiryInput: model).then((result) {
         if (result["head"]["code"] == 200) {
+          print(result["body"]["orders"].length);
           for (var element in result["body"]["orders"]) {
             EnquiryListingModel dataModel = EnquiryListingModel();
             dataModel.orderID = element["order_id"].toString();
             dataModel.ordertype = element["order_type"].toString();
             dataModel.orderNumber = element["order_number"].toString();
+
             dataModel.orderDate = element["order_date"].toString();
             dataModel.customerName = element["customer_name"].toString();
             dataModel.customerMobileNumber =
@@ -132,9 +134,9 @@ class _EnquiryListingState extends State<EnquiryListing>
               productModel.amount = productElement["amount"].toString();
               dataModel.productList!.add(productModel);
             }
+
             setState(() {
               if (tabController!.index == 0) {
-                enquiryList.add(dataModel);
               } else if (tabController!.index == 1) {
                 frontEnquiryList.add(dataModel);
               } else if (tabController!.index == 2) {
@@ -293,7 +295,7 @@ class _EnquiryListingState extends State<EnquiryListing>
       });
       EnquiryInputModel model = EnquiryInputModel();
       model.equiryAdminUserID = await LocalDBConfig().getUserID();
-      model.pageNumber = 1;
+      model.pageNumber = pageno;
       model.pageLimit = 10;
       model.searchText = "";
       model.fromDate = fromDate.text;
@@ -438,8 +440,8 @@ class _EnquiryListingState extends State<EnquiryListing>
   }
 
   Future<dynamic> onSelectNotification(payload) async {
-    // Map<String, dynamic> action = jsonDecode(payload);
-    // _handleMessage(action);
+    Map<String, dynamic> action = jsonDecode(payload);
+    _handleMessage(action);
   }
 
   Future<void> setupInteractedMessage() async {
@@ -449,15 +451,14 @@ class _EnquiryListingState extends State<EnquiryListing>
 
   void _handleMessage(Map<String, dynamic> data) {
     log("its Worked");
-    // setState(() {
-    //   enquiryHandler = getEnquiry();
-    // });
-    // if (data['redirect'] == "notification") {
-    //   setState(() {
-    //     log("its 11");
-    //     appDrawerChanger.chanageIndex(11);
-    //   });
-    // }
+    setState(() {
+      enquiryHandler = getEnquiry();
+    });
+    if (data['redirect'] == "notification") {
+      setState(() {
+        log("its 11");
+      });
+    }
   }
 
   notificationListen() {
@@ -732,6 +733,7 @@ class _EnquiryListingState extends State<EnquiryListing>
                   .value = dataList[i].totalAmount ?? "";
             }
             Uint8List data = Uint8List.fromList(excel.save()!);
+            LoadingOverlay.hide();
             await helper.saveAndLaunchFile(data, 'Enquiry.xlsx');
           } else {
             throw result["head"]["msg"].toString();
@@ -779,17 +781,17 @@ class _EnquiryListingState extends State<EnquiryListing>
               style: TextStyle(color: Colors.white),
             ),
           ),
-          IconButton(
-            onPressed: () {
-              setState(() {
-                searchView = searchView ? false : true;
-                if (searchView == true) {
-                  search.clear();
-                }
-              });
-            },
-            icon: const Icon(Iconsax.search_normal_1),
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     setState(() {
+          //       searchView = searchView ? false : true;
+          //       if (searchView == true) {
+          //         search.clear();
+          //       }
+          //     });
+          //   },
+          //   icon: const Icon(Iconsax.search_normal_1),
+          // ),
           // IconButton(
           //   onPressed: () {},
           //   icon: const Icon(Iconsax.printer),
@@ -822,6 +824,7 @@ class _EnquiryListingState extends State<EnquiryListing>
                     '57564270546d4658646d4933633031534e334279645764455931683055543039';
               }
               dataComplete = false;
+              pageno = 1;
             });
             enquiryHandler = getEnquiry();
           },
@@ -927,20 +930,14 @@ class _EnquiryListingState extends State<EnquiryListing>
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                          onChanged: (value) {
+                            searchEnquiry();
+                          },
                         ),
                         const SizedBox(height: 10),
                       ],
                     ),
                   ),
-                  // Text(
-                  //   "Total (${tabController!.index == 0 ? enquiryList.length : tabController!.index == 1 ? frontEnquiryList.length : backEnquiryList.length})",
-                  //   style: const TextStyle(
-                  //     color: Colors.black,
-                  //     fontSize: 16,
-                  //     fontWeight: FontWeight.w500,
-                  //   ),
-                  // ),
-                  const SizedBox(height: 15),
                   ListView.builder(
                     shrinkWrap: true,
                     primary: false,
@@ -969,7 +966,6 @@ class _EnquiryListingState extends State<EnquiryListing>
                                 if (value != null &&
                                     value["head"]["code"] == 200) {
                                   LoadingOverlay.hide();
-                                  // Navigator.pop(context);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -987,7 +983,6 @@ class _EnquiryListingState extends State<EnquiryListing>
                                 }
                               });
                             } else {
-                              // Navigator.pop(context);
                               LoadingOverlay.hide();
                               Navigator.push(
                                 context,
@@ -1162,10 +1157,29 @@ class _EnquiryListingState extends State<EnquiryListing>
                       );
                     },
                   ),
-                  // loading
-                  //     ? const Center(child: CircularProgressIndicator())
-                  //     : const SizedBox(),
-                  const SizedBox(height: 30),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    IconButton(
+                        icon: const Icon(Iconsax.arrow_square_left),
+                        onPressed: () {
+                          if (pageno != 1) {
+                            pageno = pageno - 1;
+                            enquiryHandler = getEnquiry();
+                          }
+                        }),
+                    Text('Page $pageno'),
+                    IconButton(
+                        icon: const Icon(Iconsax.arrow_right4),
+                        onPressed: () {
+                          (frontEnquiryList.isNotEmpty ||
+                                  enquiryList.isNotEmpty ||
+                                  backEnquiryList.isNotEmpty)
+                              ? setState(() {
+                                  pageno = pageno + 1;
+                                  enquiryHandler = getEnquiry();
+                                })
+                              : null;
+                        }),
+                  ])
                 ],
               ),
             );

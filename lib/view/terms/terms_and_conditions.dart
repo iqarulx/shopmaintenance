@@ -16,14 +16,24 @@ class TermsAndConditions extends StatefulWidget {
 
 class _TermsAndConditionsState extends State<TermsAndConditions> {
   late WebViewController controller;
+  bool isLoading = true; // State to track the loading status
 
   @override
   void initState() {
+    super.initState();
     controller = WebViewController()
       ..loadRequest(
         Uri.parse('http://www.srisoftwarez.com/termscondition.php'),
+      )
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: (String url) {
+            setState(() {
+              isLoading = false; // Page has finished loading
+            });
+          },
+        ),
       );
-    super.initState();
   }
 
   @override
@@ -37,8 +47,16 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: WebViewWidget(
-        controller: controller,
+      body: Stack(
+        children: [
+          WebViewWidget(
+            controller: controller,
+          ),
+          if (isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
       ),
     );
   }

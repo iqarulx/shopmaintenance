@@ -6,10 +6,10 @@
 
 import 'dart:io';
 import 'dart:ui';
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/discount_model.dart';
 import '/provider/fingerprint_provider.dart';
 import '/service/auth_service/auth_service.dart';
@@ -53,7 +53,6 @@ class _DiscountScreenState extends State<DiscountScreen> {
   }
 
   GlobalKey refreshGuide = GlobalKey();
-  GlobalKey searchGuide = GlobalKey();
   GlobalKey showFrontEndGuide = GlobalKey();
   GlobalKey editGuide = GlobalKey();
 
@@ -64,28 +63,33 @@ class _DiscountScreenState extends State<DiscountScreen> {
       });
 
       return await DiscountService().getDiscountList().then((resultData) async {
-        if (resultData != null && resultData["head"]["code"] == 200) {
-          List<dynamic> productDataList =
-              resultData["head"]["msg"]["discount_data"];
+        if (resultData.isNotEmpty) {
+          if (resultData != null && resultData["head"]["code"] == 200) {
+            List<dynamic> productDataList =
+                resultData["head"]["msg"]["discount_data"];
 
-          for (var element in productDataList) {
-            DiscountListingModel model = DiscountListingModel();
-            model.discountId = element["discount_id"].toString();
-            model.discount = element["discount"].toString();
-            model.showFrontend = element["show_frontend"].toString();
-            model.creator = element["creator_name"].toString();
+            for (var element in productDataList) {
+              DiscountListingModel model = DiscountListingModel();
+              model.discountId = element["discount_id"].toString();
+              model.discount = element["discount"].toString();
+              model.showFrontend = element["show_frontend"].toString();
+              model.creator = element["creator_name"].toString();
+              setState(() {
+                discountList.add(model);
+              });
+            }
+
             setState(() {
-              discountList.add(model);
+              tmpDiscountList.addAll(discountList);
             });
+          } else if (resultData["head"]["code"] == 400) {
+            showCustomSnackBar(context,
+                content: resultData["head"]["msg"].toString(),
+                isSuccess: false);
+            throw resultData["head"]["msg"].toString();
           }
-
-          setState(() {
-            tmpDiscountList.addAll(discountList);
-          });
-        } else if (resultData["head"]["code"] == 400) {
-          showCustomSnackBar(context,
-              content: resultData["head"]["msg"].toString(), isSuccess: false);
-          throw resultData["head"]["msg"].toString();
+        } else {
+          errorSnackbar(context);
         }
       });
     } on SocketException catch (e) {
@@ -132,10 +136,7 @@ class _DiscountScreenState extends State<DiscountScreen> {
     return ListView(
       padding: const EdgeInsets.all(10),
       children: [
-        if (showSearch) filterOptions(context),
-        const SizedBox(
-          height: 10,
-        ),
+        searchOption(),
         ListView.builder(
           primary: false,
           shrinkWrap: true,
@@ -299,73 +300,72 @@ class _DiscountScreenState extends State<DiscountScreen> {
     );
   }
 
-  FadeInDown filterOptions(BuildContext context) {
-    return FadeInDown(
-      child: Column(
-        children: [
-          TextFormField(
-            controller: search,
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.search,
-            // onEditingComplete: () {
-            //   setState(() {
-            //     FocusManager.instance.primaryFocus!.unfocus();
-            //   });
-            // },
-            // onTapOutside: (event) {
-            //   setState(() {
-            //     FocusManager.instance.primaryFocus!.unfocus();
-            //   });
-            // },
-            onChanged: (value) {
-              setState(() {});
-              searchFn();
-            },
-            decoration: InputDecoration(
-              hintText: "Search by name",
-              filled: true,
-              fillColor: Colors.white,
-              prefixIcon: const Icon(Iconsax.search_normal_1),
-              suffixIcon: search.text.isNotEmpty
-                  ? TextButton(
-                      onPressed: () {
-                        setState(() {
-                          search.clear();
-                        });
-                      },
-                      child: const Text(
-                        "Clear",
-                        style: TextStyle(
-                          color: Color(0xff2F4550),
-                        ),
+  Column searchOption() {
+    return Column(
+      children: [
+        TextFormField(
+          controller: search,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.search,
+          // onEditingComplete: () {
+          //   setState(() {
+          //     FocusManager.instance.primaryFocus!.unfocus();
+          //   });
+          // },
+          // onTapOutside: (event) {
+          //   setState(() {
+          //     FocusManager.instance.primaryFocus!.unfocus();
+          //   });
+          // },
+          onChanged: (value) {
+            setState(() {});
+            searchFn();
+          },
+          decoration: InputDecoration(
+            hintText: "Search by name",
+            filled: true,
+            fillColor: Colors.white,
+            prefixIcon: const Icon(Iconsax.search_normal_1),
+            suffixIcon: search.text.isNotEmpty
+                ? TextButton(
+                    onPressed: () {
+                      setState(() {
+                        search.clear();
+                        discountHandler = discountListView();
+                      });
+                    },
+                    child: const Text(
+                      "Clear",
+                      style: TextStyle(
+                        color: Color(0xff2F4550),
                       ),
-                    )
-                  : null,
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.grey.shade300,
-                ),
-                borderRadius: BorderRadius.circular(10),
+                    ),
+                  )
+                : null,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
               ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.grey.shade300,
-                ),
-                borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Color(0xff2F4550),
-                ),
-                borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Color(0xff2F4550),
               ),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+      ],
     );
   }
 
@@ -387,15 +387,6 @@ class _DiscountScreenState extends State<DiscountScreen> {
               });
             },
             icon: const Icon(Iconsax.refresh)),
-        IconButton(
-          key: searchGuide,
-          onPressed: () {
-            setState(() {
-              showSearch = !showSearch;
-            });
-          },
-          icon: const Icon(Iconsax.search_normal_1),
-        ),
         IconButton(
           key: editGuide,
           onPressed: () {
@@ -468,18 +459,22 @@ class _DiscountScreenState extends State<DiscountScreen> {
       DiscountService().updateFrontEnd(formData: formData).then((value) {
         LoadingOverlay.hide();
 
-        if (value['head']['code'] == 200) {
-          showCustomSnackBar(context,
-              content: value['head']['msg'], isSuccess: true);
-          Future.delayed(const Duration(seconds: 2), () {
-            discountHandler = discountListView();
-          });
-          NotificationService().showNotification(
-              title: "Frontend Updated",
-              body: "Frontend has updated successfully.");
+        if (value.isNotEmpty) {
+          if (value['head']['code'] == 200) {
+            showCustomSnackBar(context,
+                content: value['head']['msg'], isSuccess: true);
+            Future.delayed(const Duration(seconds: 2), () {
+              discountHandler = discountListView();
+            });
+            NotificationService().showNotification(
+                title: "Frontend Updated",
+                body: "Frontend has updated successfully.");
+          } else {
+            showCustomSnackBar(context,
+                content: value['head']['msg'], isSuccess: false);
+          }
         } else {
-          showCustomSnackBar(context,
-              content: value['head']['msg'], isSuccess: false);
+          errorSnackbar(context);
         }
       });
     } catch (e) {
@@ -504,15 +499,19 @@ class _DiscountScreenState extends State<DiscountScreen> {
           LoadingOverlay.show(context);
           DiscountService().deleteDiscount(formData: formData).then((value) {
             LoadingOverlay.hide();
-            if (value['head']['code'] == 200) {
-              showCustomSnackBar(context,
-                  content: value['head']['msg'], isSuccess: true);
-              Future.delayed(const Duration(seconds: 2), () {
-                discountHandler = discountListView();
-              });
+            if (value.isNotEmpty) {
+              if (value['head']['code'] == 200) {
+                showCustomSnackBar(context,
+                    content: value['head']['msg'], isSuccess: true);
+                Future.delayed(const Duration(seconds: 2), () {
+                  discountHandler = discountListView();
+                });
+              } else {
+                showCustomSnackBar(context,
+                    content: value['head']['msg'], isSuccess: false);
+              }
             } else {
-              showCustomSnackBar(context,
-                  content: value['head']['msg'], isSuccess: false);
+              errorSnackbar(context);
             }
           });
         } else {
@@ -602,39 +601,6 @@ class _DiscountScreenState extends State<DiscountScreen> {
                   Center(
                     child: Text(
                       "Click to refresh the page",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-    targets.add(
-      TargetFocus(
-        identify: "searchGuide",
-        keyTarget: searchGuide,
-        alignSkip: Alignment.topLeft,
-        enableOverlayTab: true,
-        contents: [
-          TargetContent(
-            align: ContentAlign.bottom,
-            builder: (context, controller) {
-              return const Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Center(
-                    child: Text(
-                      "Click to search discount",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,

@@ -13,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/service/local_storage_service/local_db_config.dart';
 import '/view/custom_ui_element/future_loading.dart';
 import '/view/custom_ui_element/show_custom_snackbar.dart';
@@ -115,27 +116,32 @@ class _OTPPageState extends State<OTPPage> {
                       .getMemberID(
                           phoneno: widget.phoneno, fcmID: await getFCM() ?? "")
                       .then((memberID) async {
-                    if (memberID["head"]["code"] != null &&
-                        memberID["head"]["code"] == 200) {
-                      await LocalDBConfig()
-                          .newUserLogin(
-                              phoneNumber: widget.phoneno,
-                              domain: widget.domain,
-                              memberID: memberID["head"]["user_id"].toString(),
-                              expiryDate: widget.expiryDate)
-                          .then((localDBResult) {
-                        // Navigator.pop(context);
-                        LoadingOverlay.hide();
-                        // Navigator.pop(context);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Dashboard(),
-                          ),
-                        );
-                      });
+                    if (memberID.isNotEmpty) {
+                      if (memberID["head"]["code"] != null &&
+                          memberID["head"]["code"] == 200) {
+                        await LocalDBConfig()
+                            .newUserLogin(
+                                phoneNumber: widget.phoneno,
+                                domain: widget.domain,
+                                memberID:
+                                    memberID["head"]["user_id"].toString(),
+                                expiryDate: widget.expiryDate)
+                            .then((localDBResult) {
+                          // Navigator.pop(context);
+                          LoadingOverlay.hide();
+                          // Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Dashboard(),
+                            ),
+                          );
+                        });
+                      } else {
+                        throw memberID["head"]["msg"];
+                      }
                     } else {
-                      throw memberID["head"]["msg"];
+                      errorSnackbar(context);
                     }
                   });
                 });

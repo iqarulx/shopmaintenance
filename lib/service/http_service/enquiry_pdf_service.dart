@@ -5,7 +5,6 @@
 */
 
 import 'dart:convert';
-import 'dart:developer';
 import '/service/http_service/http_config.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,9 +27,11 @@ class EnquiryPDFService extends HttpConfig {
       };
       var url = await getDomain();
       var message = await http.post(url, body: jsonEncode(data));
-      var response = json.decode(message.body);
-      log(response.toString());
-      return response;
+      if (message.statusCode == 200) {
+        var response = json.decode(message.body);
+        return response;
+      }
+      return [];
     } catch (e) {
       rethrow;
     }

@@ -6,10 +6,10 @@
 
 import 'dart:io';
 import 'dart:ui';
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/product_model.dart';
 import '/provider/fingerprint_provider.dart';
 import '/service/auth_service/auth_service.dart';
@@ -41,10 +41,10 @@ class _ProductScreenState extends State<ProductScreen> {
   List<CategoryListingForProductModel> categoryList = [];
   TextEditingController search = TextEditingController();
   Future? productHandler;
-  String? selectedCategory;
+  String? selectedCategory, selectedCategoryId;
   bool showFilter = false;
   String pageLimit = '10';
-  int? pageNumber;
+  int? pageNumber, totalRecords;
   String selectedPageNumber = '1';
   late TutorialCoachMark tutorialCoachMark;
 
@@ -61,273 +61,13 @@ class _ProductScreenState extends State<ProductScreen> {
     super.initState();
   }
 
-  showTutorial() {
-    tutorialCoachMark.show(context: context);
-  }
-
-  createTutorial() async {
-    tutorialCoachMark = TutorialCoachMark(
-      targets: _createTargets(),
-      colorShadow: Colors.white38,
-      textSkip: "SKIP",
-      textStyleSkip: const TextStyle(
-        color: Colors.white,
-        backgroundColor: Colors.red,
-        fontWeight: FontWeight.bold,
-      ),
-      skipWidget: Container(
-        height: 40,
-        width: 100,
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.circular(4.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: const Center(
-          child: Text(
-            "SKIP",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.0,
-            ),
-          ),
-        ),
-      ),
-      paddingFocus: 10,
-      opacityShadow: 0.5,
-      imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-      onFinish: () {
-        LocalDBConfig().setDemoProduct();
-      },
-      onSkip: () {
-        LocalDBConfig().setDemoProduct();
-        return true;
-      },
-    );
-  }
-
-  List<TargetFocus> _createTargets() {
-    List<TargetFocus> targets = [];
-    targets.add(
-      TargetFocus(
-        identify: "filterGuide",
-        keyTarget: filterGuide,
-        alignSkip: Alignment.topLeft,
-        enableOverlayTab: true,
-        contents: [
-          TargetContent(
-            align: ContentAlign.bottom,
-            builder: (context, controller) {
-              return const Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Center(
-                    child: Text(
-                      "Click to use filters",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-
-    targets.add(
-      TargetFocus(
-        identify: "addProductGuide",
-        keyTarget: addProductGuide,
-        alignSkip: Alignment.topLeft,
-        contents: [
-          TargetContent(
-            align: ContentAlign.bottom,
-            builder: (context, controller) {
-              return const Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Center(
-                    child: Text(
-                      "Click to add new product",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-
-    targets.add(
-      TargetFocus(
-        identify: "downloadProductGuide",
-        keyTarget: downloadProductGuide,
-        alignSkip: Alignment.topLeft,
-        contents: [
-          TargetContent(
-            align: ContentAlign.bottom,
-            builder: (context, controller) {
-              return const Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Center(
-                    child: Text(
-                      "Click to download product as excel/pdf",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-
-    targets.add(
-      TargetFocus(
-        identify: "refreshGuide",
-        keyTarget: refreshGuide,
-        alignSkip: Alignment.bottomLeft,
-        contents: [
-          TargetContent(
-            align: ContentAlign.top,
-            builder: (context, controller) {
-              return const Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Center(
-                    child: Text(
-                      "Click to refresh page",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-
-    targets.add(
-      TargetFocus(
-        identify: "netRateGuide",
-        keyTarget: netRateGuide,
-        alignSkip: Alignment.bottomLeft,
-        contents: [
-          TargetContent(
-            align: ContentAlign.bottom,
-            builder: (context, controller) {
-              return const Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Center(
-                    child: Text(
-                      "Click to change net rate",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-
-    targets.add(
-      TargetFocus(
-        identify: "showFrontEndGuide",
-        keyTarget: showFrontEndGuide,
-        alignSkip: Alignment.bottomLeft,
-        contents: [
-          TargetContent(
-            align: ContentAlign.bottom,
-            builder: (context, controller) {
-              return const Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Center(
-                    child: Text(
-                      "Click to show product in frontend",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
-      ),
-    );
-
-    return targets;
-  }
-
-  searchFn() {
+  void searchFn() {
     String searchText = search.text.toLowerCase();
 
     if (searchText.isNotEmpty) {
       var dataList = tmpProductList.where((element) {
         String productName = element.productName?.toLowerCase() ?? '';
-        return productName.contains(searchText) ||
-            productName.startsWith(searchText);
+        return productName.contains(searchText);
       }).toList();
 
       setState(() {
@@ -362,49 +102,56 @@ class _ProductScreenState extends State<ProductScreen> {
       return await ProductService()
           .getProductList(formData: formData)
           .then((resultData) async {
-        if (resultData != null && resultData["head"]["code"] == 200) {
-          int dataLength = resultData["head"]["msg"]["data_length"];
-          int limit = (dataLength / int.parse(pageLimit)).ceil();
-          setState(() {
-            pageNumber = limit;
-          });
+        if (resultData.isNotEmpty) {
+          if (resultData != null && resultData["head"]["code"] == 200) {
+            int dataLength = resultData["head"]["msg"]["data_length"];
+            int limit = (dataLength / int.parse(pageLimit)).ceil();
 
-          List<dynamic> productDataList =
-              resultData["head"]["msg"]["product_data"];
+            List<dynamic> productDataList =
+                resultData["head"]["msg"]["product_data"];
 
-          for (var element in productDataList) {
-            ProductListingModel model = ProductListingModel();
-            model.productId = element["product_id"].toString();
-            model.productCode = element["product_code"].toString();
-            model.categoryName = element["category_name"].toString();
-            model.productName = element["name"].toString();
-            model.actualPrice = element["actual_price"].toString();
-            model.salesPrice = element["sales_price"].toString();
-            model.showFrontend = element["show_frontend"].toString();
-            model.creator = element["creator_name"].toString();
+            for (var element in productDataList) {
+              ProductListingModel model = ProductListingModel();
+              model.productId = element["product_id"].toString();
+              model.productCode = element["product_code"].toString();
+              model.categoryName = element["category_name"].toString();
+              model.productName = element["name"].toString();
+              model.actualPrice = element["actual_price"].toString();
+              model.salesPrice = element["sales_price"].toString();
+              model.showFrontend = element["show_frontend"].toString();
+              model.creator = element["creator_name"].toString();
+              setState(() {
+                productList.add(model);
+              });
+            }
+
             setState(() {
-              productList.add(model);
+              pageNumber = limit;
+              totalRecords = productList.length;
             });
-          }
 
-          List<dynamic> categoryDataList =
-              resultData["head"]["msg"]["category_data"];
-          for (var element in categoryDataList) {
-            CategoryListingForProductModel model =
-                CategoryListingForProductModel();
-            model.categoryId = element["category_id"].toString();
-            model.categoryName = element["category_name"].toString();
+            List<dynamic> categoryDataList =
+                resultData["head"]["msg"]["category_data"];
+            for (var element in categoryDataList) {
+              CategoryListingForProductModel model =
+                  CategoryListingForProductModel();
+              model.categoryId = element["category_id"].toString();
+              model.categoryName = element["category_name"].toString();
+              setState(() {
+                categoryList.add(model);
+              });
+            }
             setState(() {
-              categoryList.add(model);
+              tmpProductList.addAll(productList);
             });
+          } else if (resultData["head"]["code"] == 400) {
+            showCustomSnackBar(context,
+                content: resultData["head"]["msg"].toString(),
+                isSuccess: false);
+            throw resultData["head"]["msg"].toString();
           }
-          setState(() {
-            tmpProductList.addAll(productList);
-          });
-        } else if (resultData["head"]["code"] == 400) {
-          showCustomSnackBar(context,
-              content: resultData["head"]["msg"].toString(), isSuccess: false);
-          throw resultData["head"]["msg"].toString();
+        } else {
+          errorSnackbar(context);
         }
       });
     } on SocketException catch (e) {
@@ -437,7 +184,7 @@ class _ProductScreenState extends State<ProductScreen> {
         }).then((value) {
       if (value != null) {
         if (value) {
-          productHandler = productListView();
+          productHandler = productListView(categoryId: selectedCategoryId);
           setState(() {});
         }
       }
@@ -465,7 +212,7 @@ class _ProductScreenState extends State<ProductScreen> {
         }).then((value) {
       if (value != null) {
         if (value) {
-          productHandler = productListView();
+          productHandler = productListView(categoryId: selectedCategoryId);
           setState(() {});
         }
       }
@@ -488,7 +235,7 @@ class _ProductScreenState extends State<ProductScreen> {
       if (value != null) {
         if (value) {
           setState(() {
-            productHandler = productListView();
+            productHandler = productListView(categoryId: selectedCategoryId);
           });
         }
       }
@@ -507,18 +254,22 @@ class _ProductScreenState extends State<ProductScreen> {
       LoadingOverlay.show(context);
       ProductService().updateFrontEnd(formData: formData).then((value) {
         LoadingOverlay.hide();
-        if (value['head']['code'] == 200) {
-          showCustomSnackBar(context,
-              content: "Updated Successfully", isSuccess: true);
-          Future.delayed(const Duration(seconds: 2), () {
-            productHandler = productListView();
-          });
-          NotificationService().showNotification(
-              title: "Frontend Updated",
-              body: "Frontend has updated successfully.");
+        if (value.isNotEmpty) {
+          if (value['head']['code'] == 200) {
+            showCustomSnackBar(context,
+                content: "Updated Successfully", isSuccess: true);
+            Future.delayed(const Duration(seconds: 2), () {
+              productHandler = productListView(categoryId: selectedCategoryId);
+            });
+            NotificationService().showNotification(
+                title: "Frontend Updated",
+                body: "Frontend has updated successfully.");
+          } else {
+            showCustomSnackBar(context,
+                content: value['head']['msg'], isSuccess: false);
+          }
         } else {
-          showCustomSnackBar(context,
-              content: value['head']['msg'], isSuccess: false);
+          errorSnackbar(context);
         }
       });
     } catch (e) {
@@ -540,41 +291,53 @@ class _ProductScreenState extends State<ProductScreen> {
           LoadingOverlay.show(context);
           ProductService().deleteProduct(formData: formData).then((value) {
             LoadingOverlay.hide();
-
-            if (value['head']['code'] == 200) {
-              showCustomSnackBar(context,
-                  content: "Product Deleted Successfully", isSuccess: true);
-              Future.delayed(const Duration(seconds: 2), () {
-                productHandler = productListView();
-              });
+            if (value.isNotEmpty) {
+              if (value['head']['code'] == 200) {
+                showCustomSnackBar(context,
+                    content: "Product Deleted Successfully", isSuccess: true);
+                Future.delayed(const Duration(seconds: 2), () {
+                  productHandler =
+                      productListView(categoryId: selectedCategoryId);
+                });
+              } else {
+                showCustomSnackBar(context,
+                    content: value['head']['msg'], isSuccess: false);
+              }
             } else {
-              showCustomSnackBar(context,
-                  content: value['head']['msg'], isSuccess: false);
+              errorSnackbar(context);
             }
           });
         } else {
-          showCustomSnackBar(context, content: "Auth Failed", isSuccess: false);
+          showCustomSnackBar(
+            context,
+            content: "Auth Failed",
+            isSuccess: false,
+          );
         }
       });
     } catch (e) {
-      showCustomSnackBar(context,
-          content: "Updation Failed $e", isSuccess: false);
+      showCustomSnackBar(
+        context,
+        content: "Updation Failed $e",
+        isSuccess: false,
+      );
     }
   }
 
   openExcelPreview() async {
     await showModalBottomSheet(
-        backgroundColor: Colors.white,
-        useSafeArea: true,
-        shape: RoundedRectangleBorder(
-          side: BorderSide.none,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        isScrollControlled: true,
-        context: context,
-        builder: (builder) {
-          return const ExcelPreview();
-        });
+      backgroundColor: Colors.white,
+      useSafeArea: true,
+      shape: RoundedRectangleBorder(
+        side: BorderSide.none,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      isScrollControlled: true,
+      context: context,
+      builder: (builder) {
+        return const ExcelPreview();
+      },
+    );
   }
 
   openPdfPreview() async {
@@ -605,34 +368,45 @@ class _ProductScreenState extends State<ProductScreen> {
           .updateProductSalesPrice(formData: formData)
           .then((value) {
         LoadingOverlay.hide();
-        if (value['head']['code'] == 200) {
-          showCustomSnackBar(context,
-              content: "Price updated", isSuccess: true);
-          Future.delayed(const Duration(seconds: 2), () {
-            NotificationService().showNotification(
-                title: "Price update",
-                body: "Prduct price has updated successfully");
-          });
-          setState(() {
-            productHandler = productListView();
-          });
+
+        if (value.isNotEmpty) {
+          if (value['head']['code'] == 200) {
+            showCustomSnackBar(context,
+                content: "Price updated", isSuccess: true);
+            Future.delayed(const Duration(seconds: 2), () {
+              NotificationService().showNotification(
+                  title: "Price update",
+                  body: "Prduct price has updated successfully");
+            });
+            setState(() {
+              productHandler = productListView(categoryId: selectedCategoryId);
+            });
+          } else {
+            showCustomSnackBar(context,
+                content: value['head']['msg'], isSuccess: false);
+          }
         } else {
-          showCustomSnackBar(context,
-              content: value['head']['msg'], isSuccess: false);
+          errorSnackbar(context);
         }
       });
     } catch (e) {
-      showCustomSnackBar(context, content: "Error: $e", isSuccess: false);
+      showCustomSnackBar(
+        context,
+        content: "Error: $e",
+        isSuccess: false,
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appbar(), floatingActionButton: floatingButton(), body: body());
+      appBar: appbar(),
+      floatingActionButton: floatingButton(),
+      body: body(),
+    );
   }
 
-  GlobalKey filterGuide = GlobalKey();
   GlobalKey addProductGuide = GlobalKey();
   GlobalKey downloadProductGuide = GlobalKey();
   GlobalKey refreshGuide = GlobalKey();
@@ -657,7 +431,11 @@ class _ProductScreenState extends State<ProductScreen> {
                 setState(() {
                   productList.clear();
                   categoryList.clear();
-                  productHandler = productListView();
+                  showFilter = false;
+                  selectedCategoryId = null;
+                  selectedCategory = null;
+                  productHandler =
+                      productListView(categoryId: selectedCategoryId);
                 });
               },
               child: screenView(context),
@@ -676,7 +454,16 @@ class _ProductScreenState extends State<ProductScreen> {
         setState(() {
           productList.clear();
           categoryList.clear();
-          productHandler = productListView();
+          showFilter = false;
+          selectedCategoryId = null;
+          selectedCategory = null;
+          pageNumber = 1;
+          pageLimit = '10';
+          productHandler = productListView(
+            categoryId: selectedCategoryId,
+            sendPageLimit: pageLimit,
+            sendPagenumber: pageNumber.toString(),
+          );
         });
       },
       child: const Icon(Iconsax.refresh),
@@ -687,69 +474,7 @@ class _ProductScreenState extends State<ProductScreen> {
     return ListView(
       padding: const EdgeInsets.all(10),
       children: [
-        TextFormField(
-          controller: search,
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.search,
-          // onEditingComplete: () {
-          //   setState(() {
-          //     FocusManager.instance.primaryFocus!.unfocus();
-          //   });
-          // },
-          // onTapOutside: (event) {
-          //   setState(() {
-          //     FocusManager.instance.primaryFocus!.unfocus();
-          //   });
-          // },
-          onChanged: (value) {
-            setState(() {});
-            searchFn();
-          },
-          decoration: InputDecoration(
-            hintText: "Search by name",
-            filled: true,
-            fillColor: Colors.white,
-            prefixIcon: const Icon(Iconsax.search_normal_1),
-            suffixIcon: search.text.isNotEmpty
-                ? TextButton(
-                    onPressed: () {
-                      setState(() {
-                        search.clear();
-                        productList.addAll(tmpProductList);
-                      });
-                    },
-                    child: const Text(
-                      "Clear",
-                      style: TextStyle(
-                        color: Color(0xff2F4550),
-                      ),
-                    ),
-                  )
-                : null,
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.grey.shade300,
-              ),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.grey.shade300,
-              ),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                color: Color(0xff2F4550),
-              ),
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-        if (showFilter) filterOptions(context),
-        const SizedBox(
-          height: 10,
-        ),
+        filterOptions(context),
         ListView.builder(
           primary: false,
           shrinkWrap: true,
@@ -957,70 +682,114 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  FadeInDown filterOptions(BuildContext context) {
-    return FadeInDown(
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          DropdownButtonFormField<String>(
-            menuMaxHeight: 300,
-            decoration: InputDecoration(
-              labelText: 'Select category',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.grey.shade300,
-                ),
-                borderRadius: BorderRadius.circular(10),
+  Column filterOptions(BuildContext context) {
+    return Column(
+      children: [
+        TextFormField(
+          controller: search,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.search,
+          // onEditingComplete: () {
+          //   setState(() {
+          //     FocusManager.instance.primaryFocus!.unfocus();
+          //   });
+          // },
+          // onTapOutside: (event) {
+          //   setState(() {
+          //     FocusManager.instance.primaryFocus!.unfocus();
+          //   });
+          // },
+          onChanged: (value) {
+            setState(() {});
+            searchFn();
+          },
+          decoration: InputDecoration(
+            hintText: "Search by name",
+            filled: true,
+            fillColor: Colors.white,
+            prefixIcon: const Icon(Iconsax.search_normal_1),
+            suffixIcon: search.text.isNotEmpty
+                ? TextButton(
+                    onPressed: () {
+                      setState(() {
+                        search.clear();
+                        productList.addAll(tmpProductList);
+                      });
+                    },
+                    child: const Text(
+                      "Clear",
+                      style: TextStyle(
+                        color: Color(0xff2F4550),
+                      ),
+                    ),
+                  )
+                : null,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
               ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.grey.shade300,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Color(0xff2F4550),
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              filled: true,
-              fillColor: Colors.white,
+              borderRadius: BorderRadius.circular(10),
             ),
-            items: categoryList
-                .where((model) =>
-                    selectedCategory == null ||
-                    model.categoryName != selectedCategory)
-                .map<DropdownMenuItem<String>>((model) {
-              return DropdownMenuItem<String>(
-                value: model.categoryName,
-                child: Text(model.categoryName!),
-              );
-            }).toList(),
-            onChanged: (String? selectedItem) {
-              if (selectedItem != null) {
-                var selectedCategoryModel = categoryList.firstWhere(
-                  (element) => element.categoryName == selectedItem,
-                );
-                setState(() {
-                  selectedCategory = selectedItem;
-                  productList.clear();
-                  categoryList.clear();
-                  productHandler = productListView(
-                      categoryId: selectedCategoryModel.categoryId);
-                });
-              }
-            },
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Color(0xff2F4550),
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          if (selectedCategory == null)
-            Column(
-              children: [
-                DropdownButtonFormField<String>(
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        if (selectedCategory == null)
+          Row(
+            children: [
+              Expanded(
+                child: DropdownButtonFormField<String>(
+                  value: selectedPageNumber,
+                  decoration: InputDecoration(
+                    labelText: 'Page Number',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Color(0xff2F4550)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  items: List.generate(pageNumber!, (index) {
+                    return DropdownMenuItem<String>(
+                      value: (index + 1).toString(),
+                      child: Text((index + 1).toString()),
+                    );
+                  }),
+                  onChanged: (String? selectedItem) {
+                    productHandler =
+                        productListView(sendPagenumber: selectedItem);
+                    setState(() {
+                      selectedPageNumber = selectedItem!;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: DropdownButtonFormField<String>(
                   value: pageLimit,
                   decoration: InputDecoration(
                     labelText: 'Page Limit',
@@ -1054,169 +823,195 @@ class _ProductScreenState extends State<ProductScreen> {
                   }).toList(),
                   onChanged: (String? selectedItem) {
                     setState(() {
-                      productHandler =
-                          productListView(sendPageLimit: selectedItem);
+                      productHandler = productListView(
+                        sendPageLimit: selectedItem,
+                      );
                       pageLimit = selectedItem!;
                     });
                   },
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                DropdownButtonFormField<String>(
-                  value: selectedPageNumber,
-                  decoration: InputDecoration(
-                    labelText: 'Page Number',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Color(0xff2F4550)),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  items: List.generate(pageNumber!, (index) {
-                    return DropdownMenuItem<String>(
-                      value: (index + 1).toString(),
-                      child: Text((index + 1).toString()),
-                    );
-                  }),
-                  onChanged: (String? selectedItem) {
-                    productHandler =
-                        productListView(sendPagenumber: selectedItem);
-                    setState(() {
-                      selectedPageNumber = selectedItem!;
-                    });
-                  },
-                )
-              ],
-            )
-          else
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          if (selectedCategory != null) {
-                            openProductOrderEdit();
-                          }
-                        },
-                        child: Container(
-                          height: 48,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff2F4550),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Ordering",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          if (selectedCategory != null) {
-                            openProductPriceEdit();
-                          }
-                        },
-                        child: Container(
-                          height: 48,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff2F4550),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Price Update",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    GestureDetector(
+              ),
+            ],
+          ),
+        const SizedBox(
+          height: 10,
+        ),
+        DropdownButtonFormField<String>(
+          menuMaxHeight: 300,
+          decoration: InputDecoration(
+            labelText: 'Select category',
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Color(0xff2F4550),
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            filled: true,
+            fillColor: Colors.white,
+          ),
+          items: categoryList
+              .where((model) =>
+                  selectedCategory == null ||
+                  model.categoryName != selectedCategory)
+              .map<DropdownMenuItem<String>>((model) {
+            return DropdownMenuItem<String>(
+              value: model.categoryName,
+              child: Text(model.categoryName!),
+            );
+          }).toList(),
+          onChanged: (String? selectedItem) {
+            if (selectedItem != null) {
+              var selectedCategoryModel = categoryList.firstWhere(
+                (element) => element.categoryName == selectedItem,
+              );
+              setState(() {
+                selectedCategory = selectedItem;
+                selectedCategoryId = selectedCategoryModel.categoryId;
+                productList.clear();
+                categoryList.clear();
+                productHandler = productListView(
+                    categoryId: selectedCategoryModel.categoryId);
+              });
+            }
+          },
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        if (selectedCategory != null)
+          Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
                       onTap: () {
-                        setState(() {
-                          productList.clear();
-                          categoryList.clear();
-                          selectedCategory = null;
-                          productHandler = productListView();
-                        });
+                        if (selectedCategory != null) {
+                          openProductOrderEdit();
+                        }
                       },
                       child: Container(
-                        height: 43,
-                        width: 38,
+                        height: 48,
+                        width: double.infinity,
                         decoration: BoxDecoration(
+                          color: const Color(0xff2F4550),
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.red,
                         ),
-                        child: const Icon(
-                          Iconsax.close_circle,
-                          color: Colors.white,
+                        child: Center(
+                          child: Text(
+                            "Ordering",
+                            style:
+                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                          ),
                         ),
                       ),
-                    )
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        if (selectedCategory != null) {
+                          openProductPriceEdit();
+                        }
+                      },
+                      child: Container(
+                        height: 48,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff2F4550),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Price Update",
+                            style:
+                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        productList.clear();
+                        categoryList.clear();
+                        selectedCategoryId = null;
+                        selectedCategory = null;
+                        productHandler =
+                            productListView(categoryId: selectedCategoryId);
+                      });
+                    },
+                    child: Container(
+                      height: 43,
+                      width: 38,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.red,
+                      ),
+                      child: const Icon(
+                        Iconsax.close_circle,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              RichText(
+                text: TextSpan(
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Colors.black,
+                      ),
+                  children: [
+                    const TextSpan(text: 'Showing '),
+                    TextSpan(
+                      text: '$selectedCategory',
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const TextSpan(text: ' items'),
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                RichText(
-                  text: TextSpan(
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Colors.black,
-                        ),
-                    children: [
-                      const TextSpan(text: 'Showing '),
-                      TextSpan(
-                        text: '$selectedCategory',
-                        style:
-                            Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                      ),
-                      const TextSpan(text: ' items'),
-                    ],
-                  ),
-                ),
-              ],
-            )
-        ],
-      ),
+              ),
+            ],
+          ),
+        Text(
+          "Showing ${totalRecords.toString()} Records",
+          style: const TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+      ],
     );
   }
 
@@ -1229,15 +1024,6 @@ class _ProductScreenState extends State<ProductScreen> {
         style: TextStyle(color: Colors.white),
       ),
       actions: [
-        IconButton(
-          key: filterGuide,
-          onPressed: () {
-            setState(() {
-              showFilter = !showFilter;
-            });
-          },
-          icon: const Icon(Iconsax.filter),
-        ),
         IconButton(
           key: addProductGuide,
           onPressed: () {
@@ -1307,5 +1093,231 @@ class _ProductScreenState extends State<ProductScreen> {
         ),
       ],
     );
+  }
+
+  showTutorial() {
+    tutorialCoachMark.show(context: context);
+  }
+
+  createTutorial() async {
+    tutorialCoachMark = TutorialCoachMark(
+      targets: _createTargets(),
+      colorShadow: Colors.white38,
+      textSkip: "SKIP",
+      textStyleSkip: const TextStyle(
+        color: Colors.white,
+        backgroundColor: Colors.red,
+        fontWeight: FontWeight.bold,
+      ),
+      skipWidget: Container(
+        height: 40,
+        width: 100,
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(4.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: const Center(
+          child: Text(
+            "SKIP",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+            ),
+          ),
+        ),
+      ),
+      paddingFocus: 10,
+      opacityShadow: 0.5,
+      imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+      onFinish: () {
+        LocalDBConfig().setDemoProduct();
+      },
+      onSkip: () {
+        LocalDBConfig().setDemoProduct();
+        return true;
+      },
+    );
+  }
+
+  List<TargetFocus> _createTargets() {
+    List<TargetFocus> targets = [];
+
+    targets.add(
+      TargetFocus(
+        identify: "addProductGuide",
+        keyTarget: addProductGuide,
+        alignSkip: Alignment.topLeft,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return const Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Center(
+                    child: Text(
+                      "Click to add new product",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 20),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+
+    targets.add(
+      TargetFocus(
+        identify: "downloadProductGuide",
+        keyTarget: downloadProductGuide,
+        alignSkip: Alignment.topLeft,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return const Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Center(
+                    child: Text(
+                      "Click to download product as excel/pdf",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 20),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+
+    targets.add(
+      TargetFocus(
+        identify: "refreshGuide",
+        keyTarget: refreshGuide,
+        alignSkip: Alignment.bottomLeft,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return const Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Center(
+                    child: Text(
+                      "Click to refresh page",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 20),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+
+    targets.add(
+      TargetFocus(
+        identify: "netRateGuide",
+        keyTarget: netRateGuide,
+        alignSkip: Alignment.bottomLeft,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return const Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Center(
+                    child: Text(
+                      "Click to change net rate",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 20),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+
+    targets.add(
+      TargetFocus(
+        identify: "showFrontEndGuide",
+        keyTarget: showFrontEndGuide,
+        alignSkip: Alignment.bottomLeft,
+        contents: [
+          TargetContent(
+            align: ContentAlign.bottom,
+            builder: (context, controller) {
+              return const Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Center(
+                    child: Text(
+                      "Click to show product in frontend",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 20),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+
+    return targets;
   }
 }

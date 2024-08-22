@@ -10,6 +10,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/sales_report_model.dart';
 import '/service/auth_service/auth_service.dart';
 import '/service/http_service/sales_report_service.dart';
@@ -144,17 +145,19 @@ class _SalesReportState extends State<SalesReport> {
   GlobalKey refreshGuide = GlobalKey();
 
   initGraph() {
-    salesReportList.sort(
-        (a, b) => int.parse(b.quantity!).compareTo(int.parse(a.quantity!)));
-    List<SalesReportModel> top5Products = salesReportList.take(5).toList();
-    pieData.clear();
-    for (var data in top5Products) {
-      pieData.add(
-          SalesReportPieModel(data.productName!, int.parse(data.quantity!)));
+    if (salesReportList.isNotEmpty) {
+      salesReportList.sort(
+          (a, b) => int.parse(b.quantity!).compareTo(int.parse(a.quantity!)));
+      List<SalesReportModel> top5Products = salesReportList.take(5).toList();
+      pieData.clear();
+      for (var data in top5Products) {
+        pieData.add(
+            SalesReportPieModel(data.productName!, int.parse(data.quantity!)));
+      }
     }
   }
 
-  Future<void> salesReportListView(
+  Future salesReportListView(
       {String? fromDate, String? toDate, String? status}) async {
     try {
       setState(() {
@@ -172,29 +175,33 @@ class _SalesReportState extends State<SalesReport> {
       return await SalesReportService()
           .getSalesList(formData: formData)
           .then((resultData) async {
-        if (resultData != null && resultData["head"]["code"] == 200) {
-          for (var element in resultData["head"]["msg"]) {
-            SalesReportModel model = SalesReportModel();
+        if (resultData.isNotEmpty) {
+          if (resultData != null && resultData["head"]["code"] == 200) {
+            for (var element in resultData["head"]["msg"]) {
+              SalesReportModel model = SalesReportModel();
 
-            model.productId = element["product_id"].toString();
-            model.productName = element["product_name"].toString();
-            model.quantity = element["quantity"].toString();
+              model.productId = element["product_id"].toString();
+              model.productName = element["product_name"].toString();
+              model.quantity = element["quantity"].toString();
 
-            setState(() {
-              salesReportList.add(model);
-            });
+              setState(() {
+                salesReportList.add(model);
+              });
+            }
+          } else if (resultData["head"]["code"] == 400) {
+            showCustomSnackBar(context,
+                content: resultData["head"]["msg"].toString(),
+                isSuccess: false);
+            throw resultData["head"]["msg"].toString();
           }
-        } else if (resultData["head"]["code"] == 400) {
-          showCustomSnackBar(context,
-              content: resultData["head"]["msg"].toString(), isSuccess: false);
-          throw resultData["head"]["msg"].toString();
+        } else {
+          errorSnackbar(context);
         }
       });
     } on SocketException catch (e) {
       print(e);
       throw "Network Error";
     } catch (e) {
-      print(e);
       throw e.toString();
     }
   }
@@ -307,9 +314,10 @@ class _SalesReportState extends State<SalesReport> {
         children: [
           const Text('Product Sales List',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black)),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              )),
           const SizedBox(
             height: 10,
           ),

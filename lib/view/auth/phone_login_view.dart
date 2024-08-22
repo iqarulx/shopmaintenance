@@ -43,6 +43,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
 
   codesend(String verificationId, int? smsCode) {
     print("result Data $verificationId");
+    showCustomSnackBar(context,
+        content: "Verification Completed", isSuccess: true);
     if (verificationId.isNotEmpty) {
       // Navigator.pop(context);
       Navigator.push(
@@ -135,6 +137,9 @@ class _PhoneLoginState extends State<PhoneLogin> {
                     domain = dataResult.docs.first["domain"];
                   });
                   print(domain.toString());
+                  showCustomSnackBar(context,
+                      content: "You will receive otp when verfication complete",
+                      isSuccess: true);
                   await OTPService().sendOTP(
                     context,
                     phoneNumber: phoneNumber.text,

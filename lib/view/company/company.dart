@@ -9,6 +9,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/company_model.dart';
 import '/service/auth_service/auth_service.dart';
 import '/service/http_service/company_service.dart';
@@ -180,20 +181,25 @@ class _CompanyState extends State<Company> {
       });
 
       return await CompanyService().getCompanyList().then((resultData) async {
-        if (resultData != null && resultData["head"]["code"] == 200) {
-          for (var element in resultData["head"]["msg"]) {
-            CompanyListingModel model = CompanyListingModel();
-            model.name = element["name"];
-            model.creator = element["creator_name"];
-            model.companyId = element["company_id"];
-            setState(() {
-              companyList.add(model);
-            });
+        if (resultData.isNotEmpty) {
+          if (resultData != null && resultData["head"]["code"] == 200) {
+            for (var element in resultData["head"]["msg"]) {
+              CompanyListingModel model = CompanyListingModel();
+              model.name = element["name"];
+              model.creator = element["creator_name"];
+              model.companyId = element["company_id"];
+              setState(() {
+                companyList.add(model);
+              });
+            }
+          } else if (resultData["head"]["code"] == 400) {
+            showCustomSnackBar(context,
+                content: resultData["head"]["msg"].toString(),
+                isSuccess: false);
+            throw resultData["head"]["msg"].toString();
           }
-        } else if (resultData["head"]["code"] == 400) {
-          showCustomSnackBar(context,
-              content: resultData["head"]["msg"].toString(), isSuccess: false);
-          throw resultData["head"]["msg"].toString();
+        } else {
+          errorSnackbar(context);
         }
       });
     } on SocketException catch (e) {

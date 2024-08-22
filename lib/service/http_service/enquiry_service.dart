@@ -5,7 +5,6 @@
 */
 
 import 'dart:convert';
-import 'dart:developer';
 import '/model/enquiry_model.dart';
 import '/service/http_service/http_config.dart';
 import 'package:http/http.dart' as http;
@@ -25,12 +24,10 @@ class EnquiryService extends HttpConfig {
 
   Future getEnquiryAPI({required EnquiryInputModel enquiryInput}) async {
     try {
-      log(enquiryInput.toMap().toString());
       var url = await getDomain();
       var message =
           await http.post(url, body: jsonEncode(enquiryInput.toMap()));
       var response = json.decode(message.body);
-      log(response.toString());
       return response;
     } catch (e) {
       rethrow;
@@ -43,7 +40,6 @@ class EnquiryService extends HttpConfig {
       var url = await getDomainOrderStatus();
       var message = await http.post(url, body: jsonEncode(data));
       var response = json.decode(message.body);
-      log(response.toString());
       return response;
     } catch (e) {
       rethrow;
@@ -55,11 +51,9 @@ class EnquiryService extends HttpConfig {
       var data = {
         "new_order_id": orderID,
       };
-      // log(enquiryInput.toMap().toString());
       var url = await getDomainOrderStatus();
       var message = await http.post(url, body: jsonEncode(data));
       var response = json.decode(message.body);
-      log(response.toString());
       return response;
     } catch (e) {
       rethrow;

@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/notification_model.dart';
 import '/service/common_var.dart';
 import '/service/http_service/notification_service.dart';
@@ -42,18 +43,24 @@ class _NotificationsListState extends State<NotificationsList> {
       return await NotificationListService()
           .getNotificationList()
           .then((resultData) async {
-        if (resultData != null && resultData["head"]["code"] == 200) {
-          for (var element in resultData["head"]["msg"]["notification_data"]) {
-            NotificationListModel model = NotificationListModel();
-            model.dateTime = element["date_time"].toString();
-            setState(() {
-              notificationList.add(model);
-            });
+        if (resultData.isNotEmpty) {
+          if (resultData != null && resultData["head"]["code"] == 200) {
+            for (var element in resultData["head"]["msg"]
+                ["notification_data"]) {
+              NotificationListModel model = NotificationListModel();
+              model.dateTime = element["date_time"].toString();
+              setState(() {
+                notificationList.add(model);
+              });
+            }
+          } else if (resultData["head"]["code"] == 400) {
+            showCustomSnackBar(context,
+                content: resultData["head"]["msg"].toString(),
+                isSuccess: false);
+            throw resultData["head"]["msg"].toString();
           }
-        } else if (resultData["head"]["code"] == 400) {
-          showCustomSnackBar(context,
-              content: resultData["head"]["msg"].toString(), isSuccess: false);
-          throw resultData["head"]["msg"].toString();
+        } else {
+          errorSnackbar(context);
         }
       });
     } on SocketException catch (e) {

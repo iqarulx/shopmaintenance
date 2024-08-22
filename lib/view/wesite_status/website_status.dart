@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/websitestatus_model.dart';
 import '/provider/fingerprint_provider.dart';
 import '/service/http_service/websitestatus_service.dart';
@@ -42,22 +43,26 @@ class _WebsiteStatusState extends State<WebsiteStatus> {
 
       var resultData = await WebsitestatusService().getStatus();
 
-      if (resultData != null && resultData["head"]["code"] == 200) {
-        WebsitestatusModel model = WebsitestatusModel();
-        Map<String, dynamic> element = resultData["head"]["msg"];
-        model.disableSite = element["disable_site"].toString();
-        model.enquiryCustomerOrderLink =
-            element["enquiry_customer_order_link"].toString();
-        model.enquiryCustomerOrderCode =
-            element["enquiry_customer_order_code"].toString();
-        model.disablePageForm = element["disable_page_form"].toString();
-        websitestatusDataList.add(model);
+      if (resultData.isNotEmpty) {
+        if (resultData != null && resultData["head"]["code"] == 200) {
+          WebsitestatusModel model = WebsitestatusModel();
+          Map<String, dynamic> element = resultData["head"]["msg"];
+          model.disableSite = element["disable_site"].toString();
+          model.enquiryCustomerOrderLink =
+              element["enquiry_customer_order_link"].toString();
+          model.enquiryCustomerOrderCode =
+              element["enquiry_customer_order_code"].toString();
+          model.disablePageForm = element["disable_page_form"].toString();
+          websitestatusDataList.add(model);
 
-        return true;
-      } else if (resultData["head"]["code"] == 400) {
-        showCustomSnackBar(context,
-            content: resultData["head"]["msg"].toString(), isSuccess: false);
-        throw resultData["head"]["msg"].toString();
+          return true;
+        } else if (resultData["head"]["code"] == 400) {
+          showCustomSnackBar(context,
+              content: resultData["head"]["msg"].toString(), isSuccess: false);
+          throw resultData["head"]["msg"].toString();
+        }
+      } else {
+        errorSnackbar(context);
       }
     } on SocketException catch (e) {
       print(e);
@@ -84,7 +89,7 @@ class _WebsiteStatusState extends State<WebsiteStatus> {
               .updateStatus(formData: formData)
               .then((onValue) {
             LoadingOverlay.hide();
-            if (onValue != []) {
+            if (onValue.isNotEmpty) {
               if (onValue["head"]["code"] == 200) {
                 showCustomSnackBar(context,
                     content: "Status updated successfully", isSuccess: true);
@@ -95,6 +100,8 @@ class _WebsiteStatusState extends State<WebsiteStatus> {
                 showCustomSnackBar(context,
                     content: onValue["head"]["msg"], isSuccess: true);
               }
+            } else {
+              errorSnackbar(context);
             }
           });
         }

@@ -6,6 +6,7 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/product_model.dart';
 import '/service/http_service/product_service.dart';
 import '/service/local_storage_service/local_db_config.dart';
@@ -39,22 +40,27 @@ class _ProductOrderEditState extends State<ProductOrderEdit> {
       return await ProductService().getProductOrder(formData: {
         'get_product_list_ordering': widget.categoryId
       }).then((resultData) async {
-        if (resultData != null && resultData["head"]["code"] == 200) {
-          for (var element in resultData["head"]["msg"]) {
-            ProductOrderListingModel model = ProductOrderListingModel();
-            model.productId = element["product_id"].toString();
-            model.productName = element["name"].toString();
-            model.ordering = element["ordering"].toString();
-            setState(() {
-              productList.add(model);
-            });
+        if (resultData.isNotEmpty) {
+          if (resultData != null && resultData["head"]["code"] == 200) {
+            for (var element in resultData["head"]["msg"]) {
+              ProductOrderListingModel model = ProductOrderListingModel();
+              model.productId = element["product_id"].toString();
+              model.productName = element["name"].toString();
+              model.ordering = element["ordering"].toString();
+              setState(() {
+                productList.add(model);
+              });
+            }
+            _controllers = List.generate(
+                productList.length, (_) => TextEditingController());
+          } else if (resultData["head"]["code"] == 400) {
+            showCustomSnackBar(context,
+                content: resultData["head"]["msg"].toString(),
+                isSuccess: false);
+            throw resultData["head"]["msg"].toString();
           }
-          _controllers =
-              List.generate(productList.length, (_) => TextEditingController());
-        } else if (resultData["head"]["code"] == 400) {
-          showCustomSnackBar(context,
-              content: resultData["head"]["msg"].toString(), isSuccess: false);
-          throw resultData["head"]["msg"].toString();
+        } else {
+          errorSnackbar(context);
         }
       });
     } on SocketException catch (e) {
@@ -123,18 +129,23 @@ class _ProductOrderEditState extends State<ProductOrderEdit> {
       LoadingOverlay.show(context);
       ProductService().updateProductOrder(formData: formData).then((value) {
         LoadingOverlay.hide();
-        if (value['head']['code'] == 200) {
-          showCustomSnackBar(context,
-              content: value['head']['msg'], isSuccess: true);
-          Future.delayed(const Duration(seconds: 2), () {
-            Navigator.pop(context, true);
-          });
-          NotificationService().showNotification(
-              title: "Ordering Updated",
-              body: "Product ordering has updated successfully.");
+
+        if (value.isNotEmpty) {
+          if (value['head']['code'] == 200) {
+            showCustomSnackBar(context,
+                content: value['head']['msg'], isSuccess: true);
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pop(context, true);
+            });
+            NotificationService().showNotification(
+                title: "Ordering Updated",
+                body: "Product ordering has updated successfully.");
+          } else {
+            showCustomSnackBar(context,
+                content: value['head']['msg'], isSuccess: false);
+          }
         } else {
-          showCustomSnackBar(context,
-              content: value['head']['msg'], isSuccess: false);
+          errorSnackbar(context);
         }
       });
     } catch (e) {

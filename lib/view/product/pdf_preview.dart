@@ -7,6 +7,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/product_model.dart';
 import '/service/http_service/product_service.dart';
 import '/view/custom_ui_element/future_error.dart';
@@ -44,21 +45,26 @@ class _PdfPreviewState extends State<PdfPreview> {
       return await ProductService()
           .getPdfPreview(formData: formData)
           .then((resultData) async {
-        if (resultData != null && resultData["head"]["code"] == 200) {
-          List<dynamic> apipdfList = resultData["head"]["msg"];
+        if (resultData.isNotEmpty) {
+          if (resultData != null && resultData["head"]["code"] == 200) {
+            List<dynamic> apipdfList = resultData["head"]["msg"];
 
-          for (var element in apipdfList) {
-            PdfPreviewModel model = PdfPreviewModel();
-            model.pdfUrl = element["pdf_url"].toString();
-            print(model.pdfUrl);
-            setState(() {
-              pdfList.add(model);
-            });
+            for (var element in apipdfList) {
+              PdfPreviewModel model = PdfPreviewModel();
+              model.pdfUrl = element["pdf_url"].toString();
+              print(model.pdfUrl);
+              setState(() {
+                pdfList.add(model);
+              });
+            }
+          } else if (resultData["head"]["code"] == 400) {
+            showCustomSnackBar(context,
+                content: resultData["head"]["msg"].toString(),
+                isSuccess: false);
+            throw resultData["head"]["msg"].toString();
           }
-        } else if (resultData["head"]["code"] == 400) {
-          showCustomSnackBar(context,
-              content: resultData["head"]["msg"].toString(), isSuccess: false);
-          throw resultData["head"]["msg"].toString();
+        } else {
+          errorSnackbar(context);
         }
       });
     } on SocketException catch (e) {
@@ -76,6 +82,7 @@ class _PdfPreviewState extends State<PdfPreview> {
       var response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         Uint8List data = Uint8List.fromList(response.bodyBytes);
+        LoadingOverlay.hide();
         await helper.saveAndLaunchFile(data, 'Product.pdf');
       } else {
         throw 'Failed to download PDF';
@@ -94,10 +101,11 @@ class _PdfPreviewState extends State<PdfPreview> {
           topRight: Radius.circular(30),
         ),
         child: Scaffold(
-            backgroundColor: Colors.white,
-            appBar: appbar(context),
-            bottomNavigationBar: bottomAppbar(context),
-            body: body()));
+          backgroundColor: Colors.white,
+          appBar: appbar(context),
+          bottomNavigationBar: bottomAppbar(context),
+          body: body(),
+        ));
   }
 
   FutureBuilder<dynamic> body() {

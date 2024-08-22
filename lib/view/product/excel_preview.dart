@@ -8,6 +8,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/product_model.dart';
 import '/provider/file_download_provider.dart' as helper;
 import '/service/http_service/product_service.dart';
@@ -44,21 +45,26 @@ class _ExcelPreviewState extends State<ExcelPreview> {
       return await ProductService()
           .getExcelPreview(formData: formData)
           .then((resultData) async {
-        if (resultData != null && resultData["head"]["code"] == 200) {
-          List<dynamic> apiCategoryList = resultData["head"]["msg"];
+        if (resultData.isNotEmpty) {
+          if (resultData != null && resultData["head"]["code"] == 200) {
+            List<dynamic> apiCategoryList = resultData["head"]["msg"];
 
-          for (var element in apiCategoryList) {
-            ExcelPreviewModel model = ExcelPreviewModel();
-            model.categoryName = element["category_name"].toString();
-            model.productList = element["product_list"];
-            setState(() {
-              categoryList.add(model);
-            });
+            for (var element in apiCategoryList) {
+              ExcelPreviewModel model = ExcelPreviewModel();
+              model.categoryName = element["category_name"].toString();
+              model.productList = element["product_list"];
+              setState(() {
+                categoryList.add(model);
+              });
+            }
+          } else if (resultData["head"]["code"] == 400) {
+            showCustomSnackBar(context,
+                content: resultData["head"]["msg"].toString(),
+                isSuccess: false);
+            throw resultData["head"]["msg"].toString();
           }
-        } else if (resultData["head"]["code"] == 400) {
-          showCustomSnackBar(context,
-              content: resultData["head"]["msg"].toString(), isSuccess: false);
-          throw resultData["head"]["msg"].toString();
+        } else {
+          errorSnackbar(context);
         }
       });
     } on SocketException catch (e) {
@@ -92,6 +98,7 @@ class _ExcelPreviewState extends State<ExcelPreview> {
       }
 
       Uint8List data = Uint8List.fromList(excel.save()!);
+      LoadingOverlay.hide();
       await helper.saveAndLaunchFile(data, 'Product.xlsx');
 
       NotificationService().showNotification(

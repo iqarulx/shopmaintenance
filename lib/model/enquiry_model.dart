@@ -64,6 +64,40 @@ class EnquiryListingModel {
   String? grandTotal;
   String? roundOff;
   String? totalAmount;
+
+  Map<String, dynamic> toMap() {
+    var mapping = <String, dynamic>{};
+    mapping["creator_name"] = creatorName;
+    mapping["orderID"] = orderID;
+    mapping["ordertype"] = ordertype;
+    mapping["orderNumber"] = orderNumber;
+    mapping["orderDate"] = orderDate;
+    mapping["customerName"] = customerName;
+    mapping["customerMobileNumber"] = customerMobileNumber;
+    mapping["deliveryAddress"] = deliveryAddress;
+    mapping["newOrder"] = newOrder;
+    mapping["confirmed"] = confirmed;
+    mapping["despatched"] = despatched;
+    mapping["delivered"] = delivered;
+    mapping["productList"] = productList
+        ?.map((product) => product)
+        .toList(); // Assuming EnquiryProductModel also has a toMap method
+    mapping["deliveryNumber"] = deliveryNumber;
+    mapping["deliveryParticulars"] = deliveryParticulars;
+    mapping["subTotal"] = subTotal;
+    mapping["extraDiscount"] = extraDiscount;
+    mapping["extraDiscountValue"] = extraDiscountValue;
+    mapping["extraDiscountTotal"] = extraDiscountTotal;
+    mapping["couponDiscount"] = couponDiscount;
+    mapping["couponDiscountValue"] = couponDiscountValue;
+    mapping["couponDiscountTotal"] = couponDiscountTotal;
+    mapping["packingCharges"] = packingCharges;
+    mapping["packingChargesValue"] = packingChargesValue;
+    mapping["grandTotal"] = grandTotal;
+    mapping["roundOff"] = roundOff;
+    mapping["totalAmount"] = totalAmount;
+    return mapping; // Add this line to return the mapping
+  }
 }
 
 class EnquiryProductModel {

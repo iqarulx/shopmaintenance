@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/settings_model.dart';
 import '/provider/fingerprint_provider.dart';
 import '/service/http_service/settings_service.dart';
@@ -139,36 +140,41 @@ class _SettingsFormState extends State<SettingsForm> {
       });
 
       var resultData = await SettingsService().getSettings();
-      if (resultData != null && resultData["head"]["code"] == 200) {
-        for (var element in resultData["head"]["msg"]) {
-          SettingsEditingModel model = SettingsEditingModel();
-          List<dynamic> settingsList =
-              element["settings_list"] as List<dynamic>;
-          List<dynamic> stateNameList =
-              element["state_name_list"] as List<dynamic>;
-          List<dynamic> categoryList =
-              element["category_list"] as List<dynamic>;
-          List<dynamic> productList = element["product_list"] as List<dynamic>;
-          if (settingsList.isNotEmpty) {
-            model.settingsList = settingsList[0] as Map<String, dynamic>;
-          }
-          if (stateNameList.isNotEmpty) {
-            model.stateNameList = stateNameList[0] as Map<String, dynamic>;
-          }
-          if (categoryList.isNotEmpty) {
-            model.categoryList = categoryList;
-          }
-          if (productList.isNotEmpty) {
-            model.productList = productList;
-          }
-          model.layout = element["layout"].toString();
+      if (resultData.isNotEmpty) {
+        if (resultData != null && resultData["head"]["code"] == 200) {
+          for (var element in resultData["head"]["msg"]) {
+            SettingsEditingModel model = SettingsEditingModel();
+            List<dynamic> settingsList =
+                element["settings_list"] as List<dynamic>;
+            List<dynamic> stateNameList =
+                element["state_name_list"] as List<dynamic>;
+            List<dynamic> categoryList =
+                element["category_list"] as List<dynamic>;
+            List<dynamic> productList =
+                element["product_list"] as List<dynamic>;
+            if (settingsList.isNotEmpty) {
+              model.settingsList = settingsList[0] as Map<String, dynamic>;
+            }
+            if (stateNameList.isNotEmpty) {
+              model.stateNameList = stateNameList[0] as Map<String, dynamic>;
+            }
+            if (categoryList.isNotEmpty) {
+              model.categoryList = categoryList;
+            }
+            if (productList.isNotEmpty) {
+              model.productList = productList;
+            }
+            model.layout = element["layout"].toString();
 
-          settingsDataList.add(model);
+            settingsDataList.add(model);
+          }
+          return true;
+        } else if (resultData["head"]["code"] == 400) {
+          showCustomSnackBar(context, content: 'Failed', isSuccess: false);
+          throw resultData["head"]["msg"];
         }
-        return true;
-      } else if (resultData["head"]["code"] == 400) {
-        showCustomSnackBar(context, content: 'Failed', isSuccess: false);
-        throw resultData["head"]["msg"];
+      } else {
+        errorSnackbar(context);
       }
     } on SocketException catch (e) {
       log(e.toString());
@@ -232,18 +238,18 @@ class _SettingsFormState extends State<SettingsForm> {
             changeHexToARGB(listColor["list_product_color2"]);
         listProductTextColor = changeHexToARGB(listColor["list_text_color"]);
 
-        print({
-          "list_topbar_background_color": listTopbarBackgroundColor,
-          "list_topbar_text_color": listTopbarTextColor,
-          "list_category_background_color": listCategoryBackgroundColor,
-          "list_category_text_color": listCategoryTextColor,
-          "list_rupees_background_color": listRupeesBackgroundColor,
-          "list_rupees_text_color": listRupeesTextColor,
-          "list_table_head_color": listTableHeadColor,
-          "list_table_text_color": listTableTextColor,
-          "list_table_strike_color": listTableStrikeColor,
-          "list_table_border_color": listTableBorderColor,
-        });
+        // print({
+        //   "list_topbar_background_color": listTopbarBackgroundColor,
+        //   "list_topbar_text_color": listTopbarTextColor,
+        //   "list_category_background_color": listCategoryBackgroundColor,
+        //   "list_category_text_color": listCategoryTextColor,
+        //   "list_rupees_background_color": listRupeesBackgroundColor,
+        //   "list_rupees_text_color": listRupeesTextColor,
+        //   "list_table_head_color": listTableHeadColor,
+        //   "list_table_text_color": listTableTextColor,
+        //   "list_table_strike_color": listTableStrikeColor,
+        //   "list_table_border_color": listTableBorderColor,
+        // });
       }
 
       if (model.settingsList != null &&
@@ -280,26 +286,26 @@ class _SettingsFormState extends State<SettingsForm> {
         gridCardStrikeColor = changeHexToARGB(gridColor["grid_strike_color"]);
         gridCardBorderColor = changeHexToARGB(gridColor["grid_border_color"]);
 
-        print({
-          "grid_topbar_background_color": gridTopbarBackgroundColor,
-          "grid_topbar_text_color": gridTopbarTextColor,
-          "grid_category_background_color": gridCategoryBackgroundColor,
-          "grid_category_text_color": gridCategoryTextColor,
-          "grid_rupees_background_color": gridRupeesBackgroundColor,
-          "grid_rupees_textColor": gridRupeesTextColor,
-          "grid_table_category_background_color":
-              gridTableCategoryBackgroundColor,
-          "grid_table_text_color": gridTableTextColor,
-          "grid_product_row1_color": gridProductRow1Color,
-          "grid_product_row2_color": gridProductRow2Color,
-          "grid_product_text_color": gridProductTextColor,
-          "grid_rate_background_color": gridRateBackgroundColor,
-          "grid_rate_text_color": gridRateTextColor,
-          "grid_product_code_background_color": gridProductCodeBackgroundColor,
-          "grid_product_code_text_color": gridProductCodeTextColor,
-          "grid_strike_color": gridCardStrikeColor,
-          "grid_border_color": gridCardBorderColor,
-        });
+        // print({
+        //   "grid_topbar_background_color": gridTopbarBackgroundColor,
+        //   "grid_topbar_text_color": gridTopbarTextColor,
+        //   "grid_category_background_color": gridCategoryBackgroundColor,
+        //   "grid_category_text_color": gridCategoryTextColor,
+        //   "grid_rupees_background_color": gridRupeesBackgroundColor,
+        //   "grid_rupees_textColor": gridRupeesTextColor,
+        //   "grid_table_category_background_color":
+        //       gridTableCategoryBackgroundColor,
+        //   "grid_table_text_color": gridTableTextColor,
+        //   "grid_product_row1_color": gridProductRow1Color,
+        //   "grid_product_row2_color": gridProductRow2Color,
+        //   "grid_product_text_color": gridProductTextColor,
+        //   "grid_rate_background_color": gridRateBackgroundColor,
+        //   "grid_rate_text_color": gridRateTextColor,
+        //   "grid_product_code_background_color": gridProductCodeBackgroundColor,
+        //   "grid_product_code_text_color": gridProductCodeTextColor,
+        //   "grid_strike_color": gridCardStrikeColor,
+        //   "grid_border_color": gridCardBorderColor,
+        // });
       }
 
       if (model.settingsList != null &&
@@ -326,20 +332,20 @@ class _SettingsFormState extends State<SettingsForm> {
             changeHexToARGB(boxColor["box_product_code_text_color"]);
         boxBoxColor = changeHexToARGB(boxColor["box_strike_color"]);
 
-        print({
-          "box_topbar_background_color": boxTopbarBackgroundColor,
-          "box_topbar_text_color": boxTopbarTextColor,
-          "box_category_background_color": boxCategoryBackgroundColor,
-          "box_category_text_color": boxCategoryTextColor,
-          "box_rupees_background_color": boxRupeesBackgroundColor,
-          "box_rupees_text_color": boxRupeesTextColor,
-          "box_bottom_category_background_color":
-              boxBottomCategoryBackgroundColor,
-          "box_bottom_category_text_color": boxBottomCategoryTextColor,
-          "box_product_background_color": boxProductBackgroundColor,
-          "box_product_text_color": boxProductTextColor,
-          "box_box_color": boxBoxColor,
-        });
+        // print({
+        //   "box_topbar_background_color": boxTopbarBackgroundColor,
+        //   "box_topbar_text_color": boxTopbarTextColor,
+        //   "box_category_background_color": boxCategoryBackgroundColor,
+        //   "box_category_text_color": boxCategoryTextColor,
+        //   "box_rupees_background_color": boxRupeesBackgroundColor,
+        //   "box_rupees_text_color": boxRupeesTextColor,
+        //   "box_bottom_category_background_color":
+        //       boxBottomCategoryBackgroundColor,
+        //   "box_bottom_category_text_color": boxBottomCategoryTextColor,
+        //   "box_product_background_color": boxProductBackgroundColor,
+        //   "box_product_text_color": boxProductTextColor,
+        //   "box_box_color": boxBoxColor,
+        // });
       }
 
       if (model.settingsList != null &&
@@ -476,55 +482,55 @@ class _SettingsFormState extends State<SettingsForm> {
       terms.add(controller.text);
     }
 
-    print({
-      "list_topbar_background_color": colorToHex(listTopbarBackgroundColor),
-      "list_topbar_text_color": colorToHex(listTopbarTextColor),
-      "list_category_background_color": colorToHex(listCategoryBackgroundColor),
-      "list_category_text_color": colorToHex(listCategoryTextColor),
-      "list_rupees_background_color": colorToHex(listRupeesBackgroundColor),
-      "list_rupees_text_color": colorToHex(listRupeesTextColor),
-      "list_table_head_color": colorToHex(listTableHeadColor),
-      "list_table_text_color": colorToHex(listTableTextColor),
-      "list_table_strike_color": colorToHex(listTableStrikeColor),
-      "list_table_border_color": colorToHex(listTableBorderColor),
-    });
+    // print({
+    //   "list_topbar_background_color": colorToHex(listTopbarBackgroundColor),
+    //   "list_topbar_text_color": colorToHex(listTopbarTextColor),
+    //   "list_category_background_color": colorToHex(listCategoryBackgroundColor),
+    //   "list_category_text_color": colorToHex(listCategoryTextColor),
+    //   "list_rupees_background_color": colorToHex(listRupeesBackgroundColor),
+    //   "list_rupees_text_color": colorToHex(listRupeesTextColor),
+    //   "list_table_head_color": colorToHex(listTableHeadColor),
+    //   "list_table_text_color": colorToHex(listTableTextColor),
+    //   "list_table_strike_color": colorToHex(listTableStrikeColor),
+    //   "list_table_border_color": colorToHex(listTableBorderColor),
+    // });
 
-    print({
-      "grid_topbar_background_color": colorToHex(gridTopbarBackgroundColor),
-      "grid_topbar_text_color": colorToHex(gridTopbarTextColor),
-      "grid_category_background_color": colorToHex(gridCategoryBackgroundColor),
-      "grid_category_text_color": colorToHex(gridCategoryTextColor),
-      "grid_rupees_background_color": colorToHex(gridRupeesBackgroundColor),
-      "grid_rupees_textColor": colorToHex(gridRupeesTextColor),
-      "grid_table_category_background_color":
-          colorToHex(gridTableCategoryBackgroundColor),
-      "grid_table_text_color": colorToHex(gridTableTextColor),
-      "grid_product_row1_color": colorToHex(gridProductRow1Color),
-      "grid_product_row2_color": colorToHex(gridProductRow2Color),
-      "grid_product_text_color": colorToHex(gridProductTextColor),
-      "grid_rate_background_color": colorToHex(gridRateBackgroundColor),
-      "grid_rate_text_color": colorToHex(gridRateTextColor),
-      "grid_product_code_background_color":
-          colorToHex(gridProductCodeBackgroundColor),
-      "grid_product_code_text_color": colorToHex(gridProductCodeTextColor),
-      "grid_strike_color": colorToHex(gridCardStrikeColor),
-      "grid_border_color": colorToHex(gridCardBorderColor),
-    });
+    // print({
+    //   "grid_topbar_background_color": colorToHex(gridTopbarBackgroundColor),
+    //   "grid_topbar_text_color": colorToHex(gridTopbarTextColor),
+    //   "grid_category_background_color": colorToHex(gridCategoryBackgroundColor),
+    //   "grid_category_text_color": colorToHex(gridCategoryTextColor),
+    //   "grid_rupees_background_color": colorToHex(gridRupeesBackgroundColor),
+    //   "grid_rupees_textColor": colorToHex(gridRupeesTextColor),
+    //   "grid_table_category_background_color":
+    //       colorToHex(gridTableCategoryBackgroundColor),
+    //   "grid_table_text_color": colorToHex(gridTableTextColor),
+    //   "grid_product_row1_color": colorToHex(gridProductRow1Color),
+    //   "grid_product_row2_color": colorToHex(gridProductRow2Color),
+    //   "grid_product_text_color": colorToHex(gridProductTextColor),
+    //   "grid_rate_background_color": colorToHex(gridRateBackgroundColor),
+    //   "grid_rate_text_color": colorToHex(gridRateTextColor),
+    //   "grid_product_code_background_color":
+    //       colorToHex(gridProductCodeBackgroundColor),
+    //   "grid_product_code_text_color": colorToHex(gridProductCodeTextColor),
+    //   "grid_strike_color": colorToHex(gridCardStrikeColor),
+    //   "grid_border_color": colorToHex(gridCardBorderColor),
+    // });
 
-    print({
-      "box_topbar_background_color": colorToHex(boxTopbarBackgroundColor),
-      "box_topbar_text_color": colorToHex(boxTopbarTextColor),
-      "box_category_background_color": colorToHex(boxCategoryBackgroundColor),
-      "box_category_text_color": colorToHex(boxCategoryTextColor),
-      "box_rupees_background_color": colorToHex(boxRupeesBackgroundColor),
-      "box_rupees_text_color": colorToHex(boxRupeesTextColor),
-      "box_bottom_category_background_color":
-          colorToHex(boxBottomCategoryBackgroundColor),
-      "box_bottom_category_text_color": colorToHex(boxBottomCategoryTextColor),
-      "box_product_background_color": colorToHex(boxProductBackgroundColor),
-      "box_product_text_color": colorToHex(boxProductTextColor),
-      "box_box_color": colorToHex(boxBoxColor),
-    });
+    // print({
+    //   "box_topbar_background_color": colorToHex(boxTopbarBackgroundColor),
+    //   "box_topbar_text_color": colorToHex(boxTopbarTextColor),
+    //   "box_category_background_color": colorToHex(boxCategoryBackgroundColor),
+    //   "box_category_text_color": colorToHex(boxCategoryTextColor),
+    //   "box_rupees_background_color": colorToHex(boxRupeesBackgroundColor),
+    //   "box_rupees_text_color": colorToHex(boxRupeesTextColor),
+    //   "box_bottom_category_background_color":
+    //       colorToHex(boxBottomCategoryBackgroundColor),
+    //   "box_bottom_category_text_color": colorToHex(boxBottomCategoryTextColor),
+    //   "box_product_background_color": colorToHex(boxProductBackgroundColor),
+    //   "box_product_text_color": colorToHex(boxProductTextColor),
+    //   "box_box_color": colorToHex(boxBoxColor),
+    // });
 
     Map<String, dynamic> settingsMap = {
       "layout": {
@@ -649,14 +655,18 @@ class _SettingsFormState extends State<SettingsForm> {
           LoadingOverlay.show(context);
           await SettingsService()
               .updateSettings(formData: updateFormData)
-              .then((value) => {
-                    LoadingOverlay.hide(),
-                    showCustomSnackBar(context,
-                        content: 'Updated Successfully', isSuccess: true)
-                  });
-          NotificationService().showNotification(
-              title: "Settings Updated",
-              body: "Settings has updated successfully.");
+              .then((value) {
+            LoadingOverlay.hide();
+            if (value.isNotEmpty) {
+              showCustomSnackBar(context,
+                  content: 'Updated Successfully', isSuccess: true);
+              NotificationService().showNotification(
+                  title: "Settings Updated",
+                  body: "Settings has updated successfully.");
+            } else {
+              errorSnackbar(context);
+            }
+          });
         } else {
           showCustomSnackBar(context,
               content: 'Auth Failed. Please try again!', isSuccess: false);
@@ -722,7 +732,6 @@ class _SettingsFormState extends State<SettingsForm> {
           if (snapshot.error == 'Network Error') {
             return futureNetworkError();
           } else {
-            print(snapshot.error);
             return futureDisplayError(content: snapshot.error.toString());
           }
         } else {
@@ -4503,7 +4512,6 @@ class _SettingsFormState extends State<SettingsForm> {
                             }
                           }
                         });
-                        print(selectedCities);
                       },
 
                       onOptionRemoved: (index, option) {

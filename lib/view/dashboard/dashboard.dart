@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/dashboard_model.dart';
 import '/service/auth_service/auth_service.dart';
 import '/service/http_service/dashboard_service.dart';
@@ -45,27 +46,33 @@ class _DashboardState extends State<Dashboard> {
       return await DashboardService()
           .getDashboardList()
           .then((resultData) async {
-        if (resultData != null && resultData["head"]["code"] == 200) {
-          for (var element in resultData["head"]["msg"]) {
-            DashboardModel model = DashboardModel();
-            model.todayOrdersCount = element["today_orders_count"].toString();
-            model.todayOrdersAmount = element["today_orders_amount"].toString();
-            model.todayOnlineOrdersCount =
-                element["today_online_orders_count"].toString();
-            model.todayOnlineOrdersAmount =
-                element["today_online_orders_amount"].toString();
-            model.todayOfflineOrdersCount =
-                element["today_offline_orders_count"].toString();
-            model.todayOfflineOrdersAmount =
-                element["today_offline_orders_amount"].toString();
-            setState(() {
-              dashboardList.add(model);
-            });
+        if (resultData.isNotEmpty) {
+          if (resultData != null && resultData["head"]["code"] == 200) {
+            for (var element in resultData["head"]["msg"]) {
+              DashboardModel model = DashboardModel();
+              model.todayOrdersCount = element["today_orders_count"].toString();
+              model.todayOrdersAmount =
+                  element["today_orders_amount"].toString();
+              model.todayOnlineOrdersCount =
+                  element["today_online_orders_count"].toString();
+              model.todayOnlineOrdersAmount =
+                  element["today_online_orders_amount"].toString();
+              model.todayOfflineOrdersCount =
+                  element["today_offline_orders_count"].toString();
+              model.todayOfflineOrdersAmount =
+                  element["today_offline_orders_amount"].toString();
+              setState(() {
+                dashboardList.add(model);
+              });
+            }
+          } else if (resultData["head"]["code"] == 400) {
+            showCustomSnackBar(context,
+                content: resultData["head"]["msg"].toString(),
+                isSuccess: false);
+            throw resultData["head"]["msg"].toString();
           }
-        } else if (resultData["head"]["code"] == 400) {
-          showCustomSnackBar(context,
-              content: resultData["head"]["msg"].toString(), isSuccess: false);
-          throw resultData["head"]["msg"].toString();
+        } else {
+          errorSnackbar(context);
         }
       });
     } on SocketException catch (e) {

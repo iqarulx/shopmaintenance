@@ -6,6 +6,7 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/category_model.dart';
 import '/service/http_service/category_service.dart';
 import '/service/local_storage_service/local_db_config.dart';
@@ -117,16 +118,20 @@ class _CategoryOrderEditState extends State<CategoryOrderEdit> {
       LoadingOverlay.show(context);
       CategoryService().updateCategoryOrder(formData: formData).then((value) {
         LoadingOverlay.hide();
-        if (value['head']['code'] == 200) {
-          Navigator.pop(context, true);
-          showCustomSnackBar(context,
-              content: value['head']['msg'], isSuccess: true);
-          NotificationService().showNotification(
-              title: "Category Ordering Updated",
-              body: "Category Ordering has updated successfully.");
+        if (value.isNotEmpty) {
+          if (value['head']['code'] == 200) {
+            Navigator.pop(context, true);
+            showCustomSnackBar(context,
+                content: value['head']['msg'], isSuccess: true);
+            NotificationService().showNotification(
+                title: "Category Ordering Updated",
+                body: "Category Ordering has updated successfully.");
+          } else {
+            showCustomSnackBar(context,
+                content: value['head']['msg'], isSuccess: false);
+          }
         } else {
-          showCustomSnackBar(context,
-              content: value['head']['msg'], isSuccess: false);
+          errorSnackbar(context);
         }
       });
     } catch (e) {

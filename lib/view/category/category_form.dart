@@ -7,6 +7,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import '../custom_ui_element/error_snackbar.dart';
 import '/model/category_model.dart';
 import '/service/http_service/category_service.dart';
 import '/service/local_storage_service/local_db_config.dart';
@@ -46,19 +47,23 @@ class _CategoryFormState extends State<CategoryForm> {
       if (widget.categoryId != null && widget.categoryId!.isNotEmpty) {
         var resultData = await CategoryService()
             .editCategory(categoryId: widget.categoryId!);
-
-        if (resultData != null && resultData["head"]["code"] == 200) {
-          for (var element in resultData["head"]["msg"]) {
-            CategoryEditingModel model = CategoryEditingModel();
-            model.name = element["category_name"].toString();
-            model.companyId = element["category_id"].toString();
-            categoryDataList.add(model);
+        if (resultData.isNotEmpty) {
+          if (resultData != null && resultData["head"]["code"] == 200) {
+            for (var element in resultData["head"]["msg"]) {
+              CategoryEditingModel model = CategoryEditingModel();
+              model.name = element["category_name"].toString();
+              model.companyId = element["category_id"].toString();
+              categoryDataList.add(model);
+            }
+            return true; // Data fetched successfully
+          } else if (resultData != null && resultData["head"]["code"] == 400) {
+            showCustomSnackBar(context,
+                content: resultData["head"]["msg"].toString(),
+                isSuccess: false);
+            throw resultData["head"]["msg"].toString();
           }
-          return true; // Data fetched successfully
-        } else if (resultData != null && resultData["head"]["code"] == 400) {
-          showCustomSnackBar(context,
-              content: resultData["head"]["msg"].toString(), isSuccess: false);
-          throw resultData["head"]["msg"].toString();
+        } else {
+          errorSnackbar(context);
         }
       }
       return true;
@@ -87,16 +92,20 @@ class _CategoryFormState extends State<CategoryForm> {
           CategoryService().updateCategory(formData: formData).then((value) {
             LoadingOverlay.hide();
             Navigator.pop(context, true);
-            if (value['head']['code'] == 200) {
-              showCustomSnackBar(context,
-                  content: value['head']['msg'], isSuccess: true);
-              NotificationService().showNotification(
-                  title: "Category Updated",
-                  body: "Category has updated successfully.");
+            if (value.isNotEmpty) {
+              if (value['head']['code'] == 200) {
+                showCustomSnackBar(context,
+                    content: value['head']['msg'], isSuccess: true);
+                NotificationService().showNotification(
+                    title: "Category Updated",
+                    body: "Category has updated successfully.");
+              } else {
+                Navigator.pop(context);
+                showCustomSnackBar(context,
+                    content: value['head']['msg'], isSuccess: false);
+              }
             } else {
-              Navigator.pop(context);
-              showCustomSnackBar(context,
-                  content: value['head']['msg'], isSuccess: false);
+              errorSnackbar(context);
             }
           });
         } else {
