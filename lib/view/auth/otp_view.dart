@@ -89,82 +89,94 @@ class _OTPPageState extends State<OTPPage> {
 
   otpValid() async {
     try {
-      // futureLoading(context);
       LoadingOverlay.show(context);
-      log(widget.domain);
       if (otp.text.isNotEmpty && otp.text.length == 6) {
         await OTPService()
             .verifyOTP(verificationId: widget.verificationId, smsCode: otp.text)
             .then((result) async {
           if (result.user != null && result.user!.uid.isNotEmpty) {
             log(result.user!.uid);
-            await getDeviceInfo().then((value) async {
-              String deviceID = value["deviceid"];
-              String brandName = value["brandName"];
-              String modelName = value["modelName"];
-              await OTPService()
-                  .updateDeviceInfo(
-                      deviceID: deviceID,
-                      modelName: modelName,
-                      brandName: brandName,
-                      docID: widget.docID)
-                  .then((value) async {
-                await LocalDBConfig()
-                    .setDomain(domain: widget.domain)
-                    .then((domain) async {
-                  await InitAuthService()
-                      .getMemberID(
-                          phoneno: widget.phoneno, fcmID: await getFCM() ?? "")
-                      .then((memberID) async {
-                    if (memberID.isNotEmpty) {
-                      if (memberID["head"]["code"] != null &&
-                          memberID["head"]["code"] == 200) {
-                        await LocalDBConfig()
-                            .newUserLogin(
-                                phoneNumber: widget.phoneno,
-                                domain: widget.domain,
-                                memberID:
-                                    memberID["head"]["user_id"].toString(),
-                                expiryDate: widget.expiryDate)
-                            .then((localDBResult) {
-                          // Navigator.pop(context);
-                          LoadingOverlay.hide();
-                          // Navigator.pop(context);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Dashboard(),
-                            ),
-                          );
-                        });
-                      } else {
-                        throw memberID["head"]["msg"];
-                      }
-                    } else {
-                      errorSnackbar(context);
-                    }
-                  });
-                });
-              });
-            });
+            await getDeviceInfo().then(
+              (value) async {
+                String deviceID = value["deviceid"];
+                String brandName = value["brandName"];
+                String modelName = value["modelName"];
+                await OTPService()
+                    .updateDeviceInfo(
+                        deviceID: deviceID,
+                        modelName: modelName,
+                        brandName: brandName,
+                        docID: widget.docID)
+                    .then(
+                  (value) async {
+                    await LocalDBConfig().setDomain(domain: widget.domain).then(
+                      (domain) async {
+                        await InitAuthService()
+                            .getMemberID(
+                                phoneno: widget.phoneno,
+                                fcmID: await getFCM() ?? "")
+                            .then(
+                          (memberID) async {
+                            if (memberID.isNotEmpty) {
+                              if (memberID["head"]["code"] != null &&
+                                  memberID["head"]["code"] == 200) {
+                                await LocalDBConfig()
+                                    .newUserLogin(
+                                        phoneNumber: widget.phoneno,
+                                        domain: widget.domain,
+                                        memberID: memberID["head"]["user_id"]
+                                            .toString(),
+                                        expiryDate: widget.expiryDate)
+                                    .then((localDBResult) {
+                                  // Navigator.pop(context);
+                                  LoadingOverlay.hide();
+                                  // Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const Dashboard(),
+                                    ),
+                                  );
+                                });
+                              } else {
+                                throw memberID["head"]["msg"];
+                              }
+                            } else {
+                              errorSnackbar(context);
+                            }
+                          },
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            );
           } else {
             // Something went Wrong
-            showCustomSnackBar(context,
-                content: "Something went Wrong", isSuccess: false);
+            showCustomSnackBar(
+              context,
+              content: "Something went Wrong",
+              isSuccess: false,
+            );
           }
         });
       } else {
         // Navigator.pop(context);
         LoadingOverlay.hide();
-        showCustomSnackBar(context, content: "OTP is Must", isSuccess: false);
+        showCustomSnackBar(
+          context,
+          content: "OTP is Must",
+          isSuccess: false,
+        );
       }
     } catch (e) {
       LoadingOverlay.hide();
-
-      log(e.toString());
-
-      // Navigator.pop(context);
-      showCustomSnackBar(context, content: e.toString(), isSuccess: false);
+      showCustomSnackBar(
+        context,
+        content: e.toString(),
+        isSuccess: false,
+      );
     }
   }
 
@@ -189,8 +201,11 @@ class _OTPPageState extends State<OTPPage> {
         currentSeconds = start;
       });
       startTimer();
-      showCustomSnackBar(context,
-          content: "OTP Send SuccessFully", isSuccess: true);
+      showCustomSnackBar(
+        context,
+        content: "OTP Send SuccessFully",
+        isSuccess: true,
+      );
     }
   }
 
@@ -212,9 +227,12 @@ class _OTPPageState extends State<OTPPage> {
       });
     } catch (e) {
       log(e.toString());
-      // Navigator.pop(context);
       LoadingOverlay.hide();
-      showCustomSnackBar(context, content: e.toString(), isSuccess: false);
+      showCustomSnackBar(
+        context,
+        content: e.toString(),
+        isSuccess: false,
+      );
     }
   }
 
@@ -331,10 +349,10 @@ class _OTPPageState extends State<OTPPage> {
             const SizedBox(height: 30),
             Text(
               "Didn't Receive OTP?",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(color: Colors.white, fontWeight: FontWeight.w500),
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -348,8 +366,8 @@ class _OTPPageState extends State<OTPPage> {
                   child: Text(
                     "Resend",
                     style: TextStyle(
-                        color:
-                            currentSeconds == 0 ? Colors.white : Colors.grey),
+                      color: currentSeconds == 0 ? Colors.white : Colors.grey,
+                    ),
                   ),
                 ),
                 Text(

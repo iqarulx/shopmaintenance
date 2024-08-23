@@ -38,6 +38,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
   verificationCompleted(PhoneAuthCredential credential) {
     if (credential.smsCode != null) {
       otp.setText(credential.smsCode!);
+      print("Code send");
     }
   }
 
@@ -103,14 +104,12 @@ class _PhoneLoginState extends State<PhoneLogin> {
             docID = dataResult.docs.first.id;
           });
           if (dataResult.docs.first["block_At"] == false) {
-            print("Account Not Bloacked");
             Timestamp timestamp = dataResult.docs.first["expiry_date"];
             setState(() {
               expiryDate = timestamp.toString();
             });
             DateTime dateTime = timestamp.toDate();
             if (DateTime.now().isBefore(dateTime)) {
-              print("Account Not Expiry");
               await getDeviceInfo().then((value) async {
                 if (dataResult.docs.first["device"]["device_id"] == null &&
                     dataResult.docs.first["device"]["brand_name"] == null &&
@@ -118,7 +117,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
                   setState(() {
                     domain = dataResult.docs.first["domain"].toString();
                   });
-                  print(domain.toString());
                   await OTPService().sendOTP(
                     context,
                     phoneNumber: phoneNumber.text,
@@ -126,20 +124,25 @@ class _PhoneLoginState extends State<PhoneLogin> {
                     verificationCompleted: verificationCompleted,
                     forceResendingToken: null,
                   );
+                  showCustomSnackBar(
+                    context,
+                    content: "You will receive otp when verfication complete",
+                    isSuccess: true,
+                  );
                 } else if (value["deviceid"] ==
                         dataResult.docs.first["device"]["device_id"] &&
                     value["brandName"] ==
                         dataResult.docs.first["device"]["brand_name"] &&
                     value["modelName"] ==
                         dataResult.docs.first["device"]["model_no"]) {
-                  print("This account same Device Login");
                   setState(() {
                     domain = dataResult.docs.first["domain"];
                   });
-                  print(domain.toString());
-                  showCustomSnackBar(context,
-                      content: "You will receive otp when verfication complete",
-                      isSuccess: true);
+                  showCustomSnackBar(
+                    context,
+                    content: "You will receive otp when verfication complete",
+                    isSuccess: true,
+                  );
                   await OTPService().sendOTP(
                     context,
                     phoneNumber: phoneNumber.text,
@@ -149,35 +152,43 @@ class _PhoneLoginState extends State<PhoneLogin> {
                   );
                 } else {
                   print("Account Not Login");
-                  // Navigator.pop(context);
-
-                  showCustomSnackBar(context,
-                      content: "Your account was Login Another Device",
-                      isSuccess: false);
+                  showCustomSnackBar(
+                    context,
+                    content: "Your account was Login Another Device",
+                    isSuccess: false,
+                  );
                 }
               });
             } else {
-              // Navigator.pop(context);
-
-              showCustomSnackBar(context,
-                  content: "Account was expired", isSuccess: false);
+              showCustomSnackBar(
+                context,
+                content: "Account was expired",
+                isSuccess: false,
+              );
             }
           } else {
             // Navigator.pop(context);
-            showCustomSnackBar(context,
-                content: "Unable to Login this Account", isSuccess: false);
+            showCustomSnackBar(
+              context,
+              content: "Unable to Login this Account",
+              isSuccess: false,
+            );
           }
         } else {
-          // Navigator.pop(context);
-          showCustomSnackBar(context,
-              content: "User Details Not Found", isSuccess: false);
+          showCustomSnackBar(
+            context,
+            content: "User Details Not Found",
+            isSuccess: false,
+          );
         }
       });
     } catch (e) {
-      print(e.toString());
-      // Navigator.pop(context);
       LoadingOverlay.hide();
-      showCustomSnackBar(context, content: e.toString(), isSuccess: false);
+      showCustomSnackBar(
+        context,
+        content: e.toString(),
+        isSuccess: false,
+      );
     }
   }
 
@@ -251,19 +262,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // const Text(
-                      //   "Email Address",
-                      //   style: TextStyle(
-                      //     color: Color(0xff686868),
-                      //     fontSize: 16,
-                      //     fontWeight: FontWeight.w500,
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 10,
-                      // ),
                       TextFormField(
-                        // autofocus: true,
                         controller: phoneNumber,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
@@ -378,31 +377,34 @@ class _PhoneLoginState extends State<PhoneLogin> {
               ),
               const SizedBox(height: 30),
               Center(
-                  child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Login(),
-                    ),
-                  );
-                },
-                child: const Text.rich(
-                  TextSpan(
-                    text: 'Login with ',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                    children: <TextSpan>[
-                      TextSpan(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Login(),
+                      ),
+                    );
+                  },
+                  child: const Text.rich(
+                    TextSpan(
+                      text: 'Login with ',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      children: <TextSpan>[
+                        TextSpan(
                           text: 'password',
                           style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                              decoration: TextDecoration.underline,
-                              decorationColor: Colors.white)),
-                    ],
+                            fontSize: 18,
+                            color: Colors.white,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              )),
+              ),
             ],
           ),
         ),

@@ -193,13 +193,11 @@ class _LoginState extends State<Login> {
             }
           } else {
             LoadingOverlay.hide();
-
             showCustomSnackBar(context,
                 content: "Unable to Login this Account", isSuccess: false);
           }
         } else {
           LoadingOverlay.hide();
-
           showCustomSnackBar(context,
               content: "User Details Not Found", isSuccess: false);
         }
@@ -411,12 +409,14 @@ class _LoginState extends State<Login> {
                       style: TextStyle(fontSize: 18, color: Colors.white),
                       children: <TextSpan>[
                         TextSpan(
-                            text: 'otp',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.white)),
+                          text: 'OTP',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.white,
+                          ),
+                        ),
                       ],
                     ),
                   ),

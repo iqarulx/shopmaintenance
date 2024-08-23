@@ -4,11 +4,7 @@
   found in the LICENSE file.
 */
 
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-
 import '../../view/custom_ui_element/show_custom_snackbar.dart';
 import 'config.dart';
 
@@ -24,8 +20,7 @@ class OTPService {
         phoneNumber: '+91$phoneNumber',
         verificationCompleted: verificationCompleted,
         verificationFailed: (FirebaseAuthException e) {
-          log("Failed to logon: ${e.message}");
-          Navigator.pop(context);
+          print("Failed to logon: ${e.message}");
           showCustomSnackBar(context,
               content: e.message.toString(), isSuccess: false);
         },
