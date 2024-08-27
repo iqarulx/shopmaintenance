@@ -112,15 +112,17 @@ class _ExcelPreviewState extends State<ExcelPreview> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-        child: Scaffold(
-            backgroundColor: Colors.white,
-            appBar: appbar(context),
-            bottomNavigationBar: bottomAppbar(context),
-            body: body()));
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(30),
+        topRight: Radius.circular(30),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: appbar(context),
+        bottomNavigationBar: bottomAppbar(context),
+        body: body(),
+      ),
+    );
   }
 
   FutureBuilder<dynamic> body() {

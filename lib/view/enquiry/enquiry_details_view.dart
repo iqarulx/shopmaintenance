@@ -68,7 +68,11 @@ class _EnquiryDetailsState extends State<EnquiryDetails> {
               return result["head"]["printout_file"].toString();
             }
           } else {
-            throw result["head"]["msg"];
+            showCustomSnackBar(
+              context,
+              content: result["head"]["msg"],
+              isSuccess: false,
+            );
           }
         } else {
           errorSnackbar(context);

@@ -85,19 +85,25 @@ class _LoginState extends State<Login> {
                   });
                   await OTPService()
                       .updateDeviceInfo(
-                          deviceID: value["deviceid"],
-                          modelName: value["modelName"],
-                          brandName: value["brandName"],
-                          docID: docID!)
+                    deviceID: value["deviceid"],
+                    modelName: value["modelName"],
+                    brandName: value["brandName"],
+                    docID: docID!,
+                  )
                       .then((value) async {
                     await LocalDBConfig()
-                        .setDomain(domain: dataResult.docs.first["domain"])
+                        .setDomain(
+                      domain: dataResult.docs.first["domain"],
+                      adminPath: dataResult.docs.first["admin_path"],
+                      serverIP: dataResult.docs.first["server_ip"],
+                    )
                         .then((domain) async {
                       await InitAuthService()
                           .checkLogin(
-                              password: password.text,
-                              phoneno: phoneNumber.text,
-                              fcmID: await getFCM() ?? "")
+                        password: password.text,
+                        phoneno: phoneNumber.text,
+                        fcmID: await getFCM() ?? "",
+                      )
                           .then((memberID) async {
                         if (memberID.isNotEmpty) {
                           if (memberID["head"]["code"] != null &&
@@ -145,7 +151,11 @@ class _LoginState extends State<Login> {
                   });
 
                   await LocalDBConfig()
-                      .setDomain(domain: dataResult.docs.first["domain"])
+                      .setDomain(
+                    domain: dataResult.docs.first["domain"],
+                    adminPath: dataResult.docs.first["admin_path"],
+                    serverIP: dataResult.docs.first["server_ip"],
+                  )
                       .then((domain) async {
                     await InitAuthService()
                         .checkLogin(

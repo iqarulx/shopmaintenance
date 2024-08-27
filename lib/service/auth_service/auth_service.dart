@@ -59,9 +59,11 @@ class AuthService {
             builder: (context) => const Login(),
           ),
         );
-        showCustomSnackBar(context,
-            content: "Security reasons for your account logout",
-            isSuccess: false);
+        showCustomSnackBar(
+          context,
+          content: "Security reasons for your account logout",
+          isSuccess: false,
+        );
       });
     } catch (e) {
       rethrow;

@@ -5,7 +5,8 @@
 */
 
 import 'dart:convert';
-import 'dart:developer';
+import 'package:shopmaintenance/service/local_storage_service/local_db_config.dart';
+
 import '/service/http_service/http_config.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,7 +19,6 @@ class InitAuthService extends HttpConfig {
 
   getDomain() async {
     var data = await super.getdomain();
-    log(data.toString());
     _authURL = Uri.parse("$data/auth.php");
   }
 
@@ -26,8 +26,13 @@ class InitAuthService extends HttpConfig {
       {required String phoneno,
       required String password,
       required String fcmID}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+
     try {
       var data = {
+        "domain_name": domain,
+        "admin_folder_name": adminPath,
         "mobile_number": phoneno,
         "password": password,
         "fcm_id": fcmID,
@@ -45,8 +50,12 @@ class InitAuthService extends HttpConfig {
   }
 
   Future getMemberID({required String phoneno, required String fcmID}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
     try {
       var data = {
+        "domain_name": domain,
+        "admin_folder_name": adminPath,
         "user_mobile_number": phoneno,
         "fcm_id": fcmID,
       };

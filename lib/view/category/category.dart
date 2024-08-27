@@ -97,7 +97,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   submitFrontend(String categoryId, bool value) async {
     var userId = await LocalDBConfig().getUserID();
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+
     Map<String, String> formData = {
+      'domain_name': domain!,
+      'admin_folder_name': adminPath!,
       'creator_id': userId.toString(),
       'edit_category_id_frontend': categoryId,
       'value': value ? 0.toString() : 1.toString(),

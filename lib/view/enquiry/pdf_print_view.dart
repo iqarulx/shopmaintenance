@@ -44,7 +44,7 @@ class _PDFPrintViewState extends State<PDFPrintView> {
           ),
         ],
       ),
-      body: SfPdfViewer.network(widget.url),
+      body: SfPdfViewer.network("https://${widget.url}"),
     );
   }
 }

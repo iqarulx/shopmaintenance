@@ -448,8 +448,12 @@ class _DiscountScreenState extends State<DiscountScreen> {
 
   submitFrontend(String discountId, bool value) async {
     var userId = await LocalDBConfig().getUserID();
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
 
     Map<String, String> formData = {
+      'domain_name': domain!,
+      'admin_folder_name': adminPath!,
       'creator_id': userId.toString(),
       'show_hide_discount_id': discountId,
       'show_frontend': value ? 0.toString() : 1.toString(),
@@ -485,9 +489,13 @@ class _DiscountScreenState extends State<DiscountScreen> {
 
   deleteDiscount(String discountId) async {
     var userId = await LocalDBConfig().getUserID();
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
 
     Map<String, String> formData = {
       'creator_id': userId.toString(),
+      'domain_name': domain!,
+      'admin_folder_name': adminPath!,
       'delete_discount_id': discountId,
     };
 

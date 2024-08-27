@@ -30,7 +30,7 @@ class PhoneLogin extends StatefulWidget {
 
 class _PhoneLoginState extends State<PhoneLogin> {
   TextEditingController phoneNumber = TextEditingController();
-  String? domain;
+  String? domain, adminPath, serverIP;
   String? docID;
   String? expiryDate;
   var formKeyState = GlobalKey<FormState>();
@@ -43,7 +43,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
   }
 
   codesend(String verificationId, int? smsCode) {
-    print("result Data $verificationId");
     showCustomSnackBar(context,
         content: "Verification Completed", isSuccess: true);
     if (verificationId.isNotEmpty) {
@@ -58,6 +57,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
             docID: docID!,
             smsCode: smsCode,
             expiryDate: expiryDate!,
+            adminPath: adminPath!,
+            serverIP: serverIP!,
           ),
         ),
       );
@@ -116,6 +117,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
                     dataResult.docs.first["device"]["model_no"] == null) {
                   setState(() {
                     domain = dataResult.docs.first["domain"].toString();
+                    adminPath = dataResult.docs.first["admin_path"].toString();
+                    serverIP = dataResult.docs.first["server_ip"].toString();
                   });
                   await OTPService().sendOTP(
                     context,

@@ -8,8 +8,9 @@ import '/service/local_storage_service/local_db_config.dart';
 
 class HttpConfig {
   Future<String?> getdomain() async {
-    var domain = await LocalDBConfig().getdomain();
-    String result = "https://$domain/API";
+    var serverIP = await LocalDBConfig().getServerIP();
+
+    String result = "http://$serverIP/API";
     return result;
   }
 }

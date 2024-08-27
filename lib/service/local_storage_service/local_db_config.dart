@@ -21,11 +21,12 @@ class LocalDBConfig {
     }
   }
 
-  Future newUserLogin(
-      {required String phoneNumber,
-      required String domain,
-      required String memberID,
-      required String expiryDate}) async {
+  Future newUserLogin({
+    required String phoneNumber,
+    required String domain,
+    required String memberID,
+    required String expiryDate,
+  }) async {
     var connection = await connectLocalDb();
     connection.setString('phone', phoneNumber);
     connection.setString('member_id', memberID);
@@ -42,9 +43,15 @@ class LocalDBConfig {
     connection.setBool('view_demo_screen_auth', false);
   }
 
-  Future setDomain({required String domain}) async {
+  Future setDomain({
+    required String domain,
+    required String adminPath,
+    required String serverIP,
+  }) async {
     var connection = await connectLocalDb();
     connection.setString('domain', domain);
+    connection.setString('admin_path', adminPath);
+    connection.setString('server_ip', serverIP);
   }
 
   Future<String?> getExpiry() async {
@@ -85,6 +92,16 @@ class LocalDBConfig {
   Future<String?> getdomain() async {
     var connection = await connectLocalDb();
     return connection.getString('domain');
+  }
+
+  Future<String?> getAdminPath() async {
+    var connection = await connectLocalDb();
+    return connection.getString('admin_path');
+  }
+
+  Future<String?> getServerIP() async {
+    var connection = await connectLocalDb();
+    return connection.getString('server_ip');
   }
 
   Future<String?> getUserID() async {

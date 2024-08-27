@@ -107,8 +107,12 @@ class _DiscountFormState extends State<DiscountForm> {
 
   submitForm() async {
     var userId = await LocalDBConfig().getUserID();
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
 
     Map<String, String> formData = {
+      'domain_name': domain ?? '',
+      'admin_folder_name': adminPath ?? '',
       'creator_id': userId.toString(),
       'edit_discount_id': widget.discountId ?? '',
       'discount': discountController.text,
@@ -266,8 +270,10 @@ class _DiscountFormState extends State<DiscountForm> {
                   setState(() {
                     if (value) {
                       categoryIds.add(categoryList[index].categoryId);
+                      print(categoryIds);
                     } else {
                       categoryIds.remove(categoryList[index].categoryId);
+                      print(categoryIds);
                     }
                   });
                 },

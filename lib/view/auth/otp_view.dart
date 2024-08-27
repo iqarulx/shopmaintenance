@@ -31,15 +31,20 @@ class OTPPage extends StatefulWidget {
   final String docID;
   final int? smsCode;
   final String expiryDate;
+  final String adminPath;
+  final String serverIP;
 
-  const OTPPage(
-      {super.key,
-      required this.verificationId,
-      required this.phoneno,
-      required this.domain,
-      required this.docID,
-      required this.smsCode,
-      required this.expiryDate});
+  const OTPPage({
+    super.key,
+    required this.verificationId,
+    required this.phoneno,
+    required this.domain,
+    required this.docID,
+    required this.smsCode,
+    required this.expiryDate,
+    required this.adminPath,
+    required this.serverIP,
+  });
 
   @override
   State<OTPPage> createState() => _OTPPageState();
@@ -109,7 +114,13 @@ class _OTPPageState extends State<OTPPage> {
                         docID: widget.docID)
                     .then(
                   (value) async {
-                    await LocalDBConfig().setDomain(domain: widget.domain).then(
+                    await LocalDBConfig()
+                        .setDomain(
+                      domain: widget.domain,
+                      adminPath: widget.adminPath,
+                      serverIP: widget.serverIP,
+                    )
+                        .then(
                       (domain) async {
                         await InitAuthService()
                             .getMemberID(

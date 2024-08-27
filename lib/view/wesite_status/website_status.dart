@@ -122,307 +122,305 @@ class _WebsiteStatusState extends State<WebsiteStatus> {
       child: DefaultTabController(
         length: 5,
         child: Scaffold(
-            backgroundColor: Colors.grey.shade200,
-            appBar: appbar(context),
-            body: body()),
+          backgroundColor: Colors.grey.shade200,
+          appBar: appbar(context),
+          body: body(),
+        ),
       ),
     );
   }
 
   FutureBuilder<dynamic> body() {
     return FutureBuilder(
-        future: websitestatusEditHandler,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return futureWaitingLoading();
-          } else if (snapshot.hasError) {
-            if (snapshot.error == 'Network Error') {
-              return futureNetworkError();
-            } else {
-              return futureDisplayError(content: snapshot.error.toString());
-            }
+      future: websitestatusEditHandler,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return futureWaitingLoading();
+        } else if (snapshot.hasError) {
+          if (snapshot.error == 'Network Error') {
+            return futureNetworkError();
           } else {
-            if (snapshot.data) {
-              return RefreshIndicator(
-                  onRefresh: () async {
-                    setState(() {
-                      websitestatusEditHandler = websitestatusEditView();
-                    });
-                  },
-                  child: ListView.builder(
-                      itemCount: websitestatusDataList.length,
-                      itemBuilder: (context, index) {
-                        disableForm =
-                            websitestatusDataList[index].disablePageForm;
-                        disableSite = websitestatusDataList[index].disableSite;
-                        return Column(children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                                width: double.infinity,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
-                                  ),
+            return futureDisplayError(content: snapshot.error.toString());
+          }
+        } else {
+          if (snapshot.data) {
+            return RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {
+                    websitestatusEditHandler = websitestatusEditView();
+                  });
+                },
+                child: ListView.builder(
+                    itemCount: websitestatusDataList.length,
+                    itemBuilder: (context, index) {
+                      disableForm =
+                          websitestatusDataList[index].disablePageForm;
+                      disableSite = websitestatusDataList[index].disableSite;
+                      return Column(children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8.0),
                                 ),
-                                child: Column(children: [
-                                  const SizedBox(
-                                    height: 10,
+                              ),
+                              child: Column(children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Website Status",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                          color: Colors.black54,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    const SizedBox(
+                                      width: 50,
+                                    ),
+                                    Expanded(
+                                      child: RadioListTile<String>(
+                                        title: const Text('OFF'),
+                                        value: 'Disable Site Yes',
+                                        groupValue: disableSite,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            disableSite = value;
+                                            updateStatus(
+                                                disableSite!, disableForm!);
+                                          });
+                                        },
+                                        contentPadding: EdgeInsets.zero,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: RadioListTile<String>(
+                                        title: const Text('ON'),
+                                        value: 'Disable Site No',
+                                        groupValue: disableSite,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            disableSite = value;
+                                            updateStatus(
+                                                disableSite!, disableForm!);
+                                          });
+                                        },
+                                        contentPadding: EdgeInsets.zero,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ])),
+                        ),
+                        if (websitestatusDataList[index].disableSite ==
+                            "Disable Site Yes")
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
                                   ),
-                                  Text(
-                                    "Website Status",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(
-                                            color: Colors.black54,
-                                            fontWeight: FontWeight.bold),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
+                                  child: Column(children: [
+                                    Column(children: [
                                       const SizedBox(
-                                        width: 50,
+                                        height: 10,
                                       ),
-                                      Expanded(
-                                        child: RadioListTile<String>(
-                                          title: const Text('OFF'),
-                                          value: 'Disable Site Yes',
-                                          groupValue: disableSite,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              disableSite = value;
-                                              updateStatus(
-                                                  disableSite!, disableForm!);
-                                            });
-                                          },
-                                          contentPadding: EdgeInsets.zero,
-                                        ),
+                                      Text(
+                                        "Enquiry Order Link",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                                color: Colors.black54,
+                                                fontWeight: FontWeight.bold),
                                       ),
-                                      Expanded(
-                                        child: RadioListTile<String>(
-                                          title: const Text('ON'),
-                                          value: 'Disable Site No',
-                                          groupValue: disableSite,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              disableSite = value;
-                                              updateStatus(
-                                                  disableSite!, disableForm!);
-                                            });
-                                          },
-                                          contentPadding: EdgeInsets.zero,
-                                        ),
+                                      const SizedBox(
+                                        height: 10,
                                       ),
-                                    ],
-                                  ),
-                                ])),
-                          ),
-                          if (websitestatusDataList[index].disableSite ==
-                              "Disable Site Yes")
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    width: double.infinity,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(8.0),
-                                      ),
-                                    ),
-                                    child: Column(children: [
-                                      Column(children: [
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          "Enquiry Order Link",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(
-                                                  color: Colors.black54,
-                                                  fontWeight: FontWeight.bold),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                websitestatusDataList[index]
-                                                    .enquiryCustomerOrderLink!,
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                            IconButton(
-                                                onPressed: () {
-                                                  Clipboard.setData(
-                                                    ClipboardData(
-                                                      text: websitestatusDataList[
-                                                              index]
-                                                          .enquiryCustomerOrderLink!,
-                                                    ),
-                                                  );
-                                                },
-                                                icon: const Icon(Iconsax.copy))
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                      ])
-                                    ]),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    width: double.infinity,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(8.0),
-                                      ),
-                                    ),
-                                    child: Column(children: [
-                                      Column(children: [
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          "Code",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(
-                                                  color: Colors.black54,
-                                                  fontWeight: FontWeight.bold),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
                                               websitestatusDataList[index]
-                                                  .enquiryCustomerOrderCode!,
+                                                  .enquiryCustomerOrderLink!,
+                                              textAlign: TextAlign.center,
                                               style: const TextStyle(
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            IconButton(
-                                                onPressed: () {
-                                                  Clipboard.setData(
-                                                    ClipboardData(
-                                                      text: websitestatusDataList[
-                                                              index]
-                                                          .enquiryCustomerOrderCode!,
-                                                    ),
-                                                  );
+                                          ),
+                                          IconButton(
+                                              onPressed: () {
+                                                Clipboard.setData(
+                                                  ClipboardData(
+                                                    text: websitestatusDataList[
+                                                            index]
+                                                        .enquiryCustomerOrderLink!,
+                                                  ),
+                                                );
+                                              },
+                                              icon: const Icon(Iconsax.copy))
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                    ])
+                                  ]),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
+                                  ),
+                                  child: Column(children: [
+                                    Column(children: [
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        "Code",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
+                                                color: Colors.black54,
+                                                fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            websitestatusDataList[index]
+                                                .enquiryCustomerOrderCode!,
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          IconButton(
+                                              onPressed: () {
+                                                Clipboard.setData(
+                                                  ClipboardData(
+                                                    text: websitestatusDataList[
+                                                            index]
+                                                        .enquiryCustomerOrderCode!,
+                                                  ),
+                                                );
+                                              },
+                                              icon: const Icon(Iconsax.copy))
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                    ])
+                                  ]),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                    width: double.infinity,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(8.0),
+                                        bottomRight: Radius.circular(8.0),
+                                      ),
+                                    ),
+                                    child: Column(children: [
+                                      Column(children: [
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          "Form",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .copyWith(
+                                                  color: Colors.black54,
+                                                  fontWeight: FontWeight.bold),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            const SizedBox(
+                                              width: 50,
+                                            ),
+                                            Expanded(
+                                              child: RadioListTile<String>(
+                                                title: const Text('ON'),
+                                                value: "1",
+                                                groupValue: disableForm,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    disableForm = value;
+                                                    updateStatus(disableSite!,
+                                                        disableForm!);
+                                                  });
                                                 },
-                                                icon: const Icon(Iconsax.copy))
+                                                contentPadding: EdgeInsets.zero,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: RadioListTile<String>(
+                                                title: const Text('OFF'),
+                                                value: '2',
+                                                groupValue: disableForm,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    disableForm = value;
+                                                    updateStatus(disableSite!,
+                                                        disableForm!);
+                                                  });
+                                                },
+                                                contentPadding: EdgeInsets.zero,
+                                              ),
+                                            ),
                                           ],
                                         ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
                                       ])
-                                    ]),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                      width: double.infinity,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(8.0),
-                                          bottomRight: Radius.circular(8.0),
-                                        ),
-                                      ),
-                                      child: Column(children: [
-                                        Column(children: [
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text(
-                                            "Form",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge!
-                                                .copyWith(
-                                                    color: Colors.black54,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              const SizedBox(
-                                                width: 50,
-                                              ),
-                                              Expanded(
-                                                child: RadioListTile<String>(
-                                                  title: const Text('ON'),
-                                                  value: "1",
-                                                  groupValue: disableForm,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      disableForm = value;
-                                                      updateStatus(disableSite!,
-                                                          disableForm!);
-                                                    });
-                                                  },
-                                                  contentPadding:
-                                                      EdgeInsets.zero,
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: RadioListTile<String>(
-                                                  title: const Text('OFF'),
-                                                  value: '2',
-                                                  groupValue: disableForm,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      disableForm = value;
-                                                      updateStatus(disableSite!,
-                                                          disableForm!);
-                                                    });
-                                                  },
-                                                  contentPadding:
-                                                      EdgeInsets.zero,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ])
-                                      ])),
-                                ),
-                              ],
-                            ),
-                        ]);
-                      }));
-            } else {
-              return const Text("Failed to fetch data");
-            }
+                                    ])),
+                              ),
+                            ],
+                          ),
+                      ]);
+                    }));
+          } else {
+            return const Text("Failed to fetch data");
           }
-        });
+        }
+      },
+    );
   }
 
   AppBar appbar(BuildContext context) {

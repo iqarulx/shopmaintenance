@@ -5,6 +5,7 @@
 */
 
 import 'dart:convert';
+import '../local_storage_service/local_db_config.dart';
 import 'http_config.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,10 +17,21 @@ class DashboardService extends HttpConfig {
   }
 
   Future getDashboardList() async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+
     try {
       var url = await getDomain();
-      var message =
-          await http.post(url, body: jsonEncode({"get_dashboard_list": 1}));
+      var message = await http.post(
+        url,
+        body: jsonEncode(
+          {
+            "get_dashboard_list": 1,
+            "domain_name": domain,
+            "admin_folder_name": adminPath,
+          },
+        ),
+      );
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;

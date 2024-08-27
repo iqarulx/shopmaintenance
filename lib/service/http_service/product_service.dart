@@ -5,6 +5,7 @@
 */
 
 import 'dart:convert';
+import '../local_storage_service/local_db_config.dart';
 import 'http_config.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,9 +17,16 @@ class ProductService extends HttpConfig {
   }
 
   Future getProductList({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+
+    var inputMap = formData;
+    inputMap["domain_name"] = domain;
+    inputMap["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -30,10 +38,17 @@ class ProductService extends HttpConfig {
   }
 
   Future editProduct({required productId}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+
     try {
       var url = await getDomain();
       var message = await http.post(url,
-          body: jsonEncode({"show_product_id": productId}));
+          body: jsonEncode({
+            "show_product_id": productId,
+            "domain_name": domain,
+            "admin_folder_name": adminPath,
+          }));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -45,9 +60,16 @@ class ProductService extends HttpConfig {
   }
 
   Future updateProduct({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+
+    var inputMap = formData;
+    inputMap["domain_name"] = domain;
+    inputMap["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -59,9 +81,15 @@ class ProductService extends HttpConfig {
   }
 
   Future updateFrontEnd({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var inputMap = formData;
+    inputMap["domain_name"] = domain;
+    inputMap["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -73,9 +101,15 @@ class ProductService extends HttpConfig {
   }
 
   Future getProductOrder({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var inputMap = formData;
+    inputMap["domain_name"] = domain;
+    inputMap["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -87,9 +121,15 @@ class ProductService extends HttpConfig {
   }
 
   Future updateProductOrder({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var inputMap = formData;
+    inputMap["domain_name"] = domain;
+    inputMap["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -101,9 +141,15 @@ class ProductService extends HttpConfig {
   }
 
   Future updateProductPrice({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var inputMap = formData;
+    inputMap["domain_name"] = domain;
+    inputMap["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -115,9 +161,15 @@ class ProductService extends HttpConfig {
   }
 
   Future updateProductSalesPrice({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var inputMap = formData;
+    inputMap["domain_name"] = domain;
+    inputMap["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -129,9 +181,15 @@ class ProductService extends HttpConfig {
   }
 
   Future deleteProduct({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var inputMap = formData;
+    inputMap["domain_name"] = domain;
+    inputMap["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -143,9 +201,15 @@ class ProductService extends HttpConfig {
   }
 
   Future getExcelPreview({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var inputMap = formData;
+    inputMap["domain_name"] = domain;
+    inputMap["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -157,9 +221,15 @@ class ProductService extends HttpConfig {
   }
 
   Future getPdfPreview({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var inputMap = formData;
+    inputMap["domain_name"] = domain;
+    inputMap["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;

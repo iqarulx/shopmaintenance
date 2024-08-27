@@ -4,7 +4,6 @@
   found in the LICENSE file.
 */
 
-import 'dart:developer';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart' show PlatformException;
@@ -33,7 +32,6 @@ class GetUpdateFromDB {
         return null;
       }
     } catch (e) {
-      log("Error: $e");
       return null;
     }
   }
@@ -61,7 +59,7 @@ class UpdateService {
         return false;
       }
     } on PlatformException catch (e) {
-      log("Error: ${e.message}");
+      print(e);
       return false;
     }
   }

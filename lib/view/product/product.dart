@@ -868,7 +868,9 @@ class _ProductScreenState extends State<ProductScreen> {
               .map<DropdownMenuItem<String>>((model) {
             return DropdownMenuItem<String>(
               value: model.categoryName,
-              child: Text(model.categoryName!),
+              child: Text(model.categoryName!.length > 30
+                  ? '${model.categoryName!.substring(0, 30)}...'
+                  : model.categoryName!),
             );
           }).toList(),
           onChanged: (String? selectedItem) {
@@ -876,14 +878,16 @@ class _ProductScreenState extends State<ProductScreen> {
               var selectedCategoryModel = categoryList.firstWhere(
                 (element) => element.categoryName == selectedItem,
               );
-              setState(() {
-                selectedCategory = selectedItem;
-                selectedCategoryId = selectedCategoryModel.categoryId;
-                productList.clear();
-                categoryList.clear();
-                productHandler = productListView(
-                    categoryId: selectedCategoryModel.categoryId);
-              });
+              setState(
+                () {
+                  selectedCategory = selectedItem;
+                  selectedCategoryId = selectedCategoryModel.categoryId;
+                  productList.clear();
+                  categoryList.clear();
+                  productHandler = productListView(
+                      categoryId: selectedCategoryModel.categoryId);
+                },
+              );
             }
           },
         ),

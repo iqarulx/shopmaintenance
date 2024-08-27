@@ -5,6 +5,7 @@
 */
 
 import 'dart:convert';
+import '../local_storage_service/local_db_config.dart';
 import '/model/enquiry_model.dart';
 import '/service/http_service/http_config.dart';
 import 'package:http/http.dart' as http;
@@ -23,10 +24,16 @@ class EnquiryService extends HttpConfig {
   }
 
   Future getEnquiryAPI({required EnquiryInputModel enquiryInput}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+
+    var inputMap = enquiryInput.toMap();
+    inputMap["domain_name"] = domain;
+    inputMap["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message =
-          await http.post(url, body: jsonEncode(enquiryInput.toMap()));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       var response = json.decode(message.body);
       return response;
     } catch (e) {
@@ -35,10 +42,16 @@ class EnquiryService extends HttpConfig {
   }
 
   Future setDeliveryStatusAPI({required Map<String, dynamic> data}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+
     try {
-      // log(enquiryInput.toMap().toString());
+      var inputMap = data;
+      inputMap["domain_name"] = domain;
+      inputMap["admin_folder_name"] = adminPath;
+
       var url = await getDomainOrderStatus();
-      var message = await http.post(url, body: jsonEncode(data));
+      var message = await http.post(url, body: jsonEncode(inputMap));
       var response = json.decode(message.body);
       return response;
     } catch (e) {
@@ -47,9 +60,14 @@ class EnquiryService extends HttpConfig {
   }
 
   Future updateOrderViewStatus({required String orderID}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+
     try {
       var data = {
         "new_order_id": orderID,
+        "domain_name": domain,
+        "admin_folder_name": adminPath,
       };
       var url = await getDomainOrderStatus();
       var message = await http.post(url, body: jsonEncode(data));

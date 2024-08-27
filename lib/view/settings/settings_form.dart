@@ -91,6 +91,7 @@ class _SettingsFormState extends State<SettingsForm> {
   bool isPageListFeaturesExpanded = false;
   bool isPriceFormatExpanded = false;
   bool isPdfFormatExpanded = false;
+  bool printoutFormatExists = false;
 
   int? desktopBoxCount;
 
@@ -237,19 +238,6 @@ class _SettingsFormState extends State<SettingsForm> {
         listProductRow2Color =
             changeHexToARGB(listColor["list_product_color2"]);
         listProductTextColor = changeHexToARGB(listColor["list_text_color"]);
-
-        // print({
-        //   "list_topbar_background_color": listTopbarBackgroundColor,
-        //   "list_topbar_text_color": listTopbarTextColor,
-        //   "list_category_background_color": listCategoryBackgroundColor,
-        //   "list_category_text_color": listCategoryTextColor,
-        //   "list_rupees_background_color": listRupeesBackgroundColor,
-        //   "list_rupees_text_color": listRupeesTextColor,
-        //   "list_table_head_color": listTableHeadColor,
-        //   "list_table_text_color": listTableTextColor,
-        //   "list_table_strike_color": listTableStrikeColor,
-        //   "list_table_border_color": listTableBorderColor,
-        // });
       }
 
       if (model.settingsList != null &&
@@ -285,27 +273,6 @@ class _SettingsFormState extends State<SettingsForm> {
             changeHexToARGB(gridColor["grid_product_code_text_color"]);
         gridCardStrikeColor = changeHexToARGB(gridColor["grid_strike_color"]);
         gridCardBorderColor = changeHexToARGB(gridColor["grid_border_color"]);
-
-        // print({
-        //   "grid_topbar_background_color": gridTopbarBackgroundColor,
-        //   "grid_topbar_text_color": gridTopbarTextColor,
-        //   "grid_category_background_color": gridCategoryBackgroundColor,
-        //   "grid_category_text_color": gridCategoryTextColor,
-        //   "grid_rupees_background_color": gridRupeesBackgroundColor,
-        //   "grid_rupees_textColor": gridRupeesTextColor,
-        //   "grid_table_category_background_color":
-        //       gridTableCategoryBackgroundColor,
-        //   "grid_table_text_color": gridTableTextColor,
-        //   "grid_product_row1_color": gridProductRow1Color,
-        //   "grid_product_row2_color": gridProductRow2Color,
-        //   "grid_product_text_color": gridProductTextColor,
-        //   "grid_rate_background_color": gridRateBackgroundColor,
-        //   "grid_rate_text_color": gridRateTextColor,
-        //   "grid_product_code_background_color": gridProductCodeBackgroundColor,
-        //   "grid_product_code_text_color": gridProductCodeTextColor,
-        //   "grid_strike_color": gridCardStrikeColor,
-        //   "grid_border_color": gridCardBorderColor,
-        // });
       }
 
       if (model.settingsList != null &&
@@ -331,21 +298,6 @@ class _SettingsFormState extends State<SettingsForm> {
         boxProductTextColor =
             changeHexToARGB(boxColor["box_product_code_text_color"]);
         boxBoxColor = changeHexToARGB(boxColor["box_strike_color"]);
-
-        // print({
-        //   "box_topbar_background_color": boxTopbarBackgroundColor,
-        //   "box_topbar_text_color": boxTopbarTextColor,
-        //   "box_category_background_color": boxCategoryBackgroundColor,
-        //   "box_category_text_color": boxCategoryTextColor,
-        //   "box_rupees_background_color": boxRupeesBackgroundColor,
-        //   "box_rupees_text_color": boxRupeesTextColor,
-        //   "box_bottom_category_background_color":
-        //       boxBottomCategoryBackgroundColor,
-        //   "box_bottom_category_text_color": boxBottomCategoryTextColor,
-        //   "box_product_background_color": boxProductBackgroundColor,
-        //   "box_product_text_color": boxProductTextColor,
-        //   "box_box_color": boxBoxColor,
-        // });
       }
 
       if (model.settingsList != null &&
@@ -452,6 +404,7 @@ class _SettingsFormState extends State<SettingsForm> {
           model.settingsList!.containsKey("printout_format")) {
         var dbPrintoutFormat = model.settingsList!["printout_format"];
         printoutFormat = dbPrintoutFormat['printout_format'].toString();
+        printoutFormatExists = dbPrintoutFormat['printout_format_exists'];
       }
       if (model.settingsList != null &&
           model.settingsList!.containsKey("terms_conditions")) {
@@ -481,56 +434,6 @@ class _SettingsFormState extends State<SettingsForm> {
     for (var controller in termsController) {
       terms.add(controller.text);
     }
-
-    // print({
-    //   "list_topbar_background_color": colorToHex(listTopbarBackgroundColor),
-    //   "list_topbar_text_color": colorToHex(listTopbarTextColor),
-    //   "list_category_background_color": colorToHex(listCategoryBackgroundColor),
-    //   "list_category_text_color": colorToHex(listCategoryTextColor),
-    //   "list_rupees_background_color": colorToHex(listRupeesBackgroundColor),
-    //   "list_rupees_text_color": colorToHex(listRupeesTextColor),
-    //   "list_table_head_color": colorToHex(listTableHeadColor),
-    //   "list_table_text_color": colorToHex(listTableTextColor),
-    //   "list_table_strike_color": colorToHex(listTableStrikeColor),
-    //   "list_table_border_color": colorToHex(listTableBorderColor),
-    // });
-
-    // print({
-    //   "grid_topbar_background_color": colorToHex(gridTopbarBackgroundColor),
-    //   "grid_topbar_text_color": colorToHex(gridTopbarTextColor),
-    //   "grid_category_background_color": colorToHex(gridCategoryBackgroundColor),
-    //   "grid_category_text_color": colorToHex(gridCategoryTextColor),
-    //   "grid_rupees_background_color": colorToHex(gridRupeesBackgroundColor),
-    //   "grid_rupees_textColor": colorToHex(gridRupeesTextColor),
-    //   "grid_table_category_background_color":
-    //       colorToHex(gridTableCategoryBackgroundColor),
-    //   "grid_table_text_color": colorToHex(gridTableTextColor),
-    //   "grid_product_row1_color": colorToHex(gridProductRow1Color),
-    //   "grid_product_row2_color": colorToHex(gridProductRow2Color),
-    //   "grid_product_text_color": colorToHex(gridProductTextColor),
-    //   "grid_rate_background_color": colorToHex(gridRateBackgroundColor),
-    //   "grid_rate_text_color": colorToHex(gridRateTextColor),
-    //   "grid_product_code_background_color":
-    //       colorToHex(gridProductCodeBackgroundColor),
-    //   "grid_product_code_text_color": colorToHex(gridProductCodeTextColor),
-    //   "grid_strike_color": colorToHex(gridCardStrikeColor),
-    //   "grid_border_color": colorToHex(gridCardBorderColor),
-    // });
-
-    // print({
-    //   "box_topbar_background_color": colorToHex(boxTopbarBackgroundColor),
-    //   "box_topbar_text_color": colorToHex(boxTopbarTextColor),
-    //   "box_category_background_color": colorToHex(boxCategoryBackgroundColor),
-    //   "box_category_text_color": colorToHex(boxCategoryTextColor),
-    //   "box_rupees_background_color": colorToHex(boxRupeesBackgroundColor),
-    //   "box_rupees_text_color": colorToHex(boxRupeesTextColor),
-    //   "box_bottom_category_background_color":
-    //       colorToHex(boxBottomCategoryBackgroundColor),
-    //   "box_bottom_category_text_color": colorToHex(boxBottomCategoryTextColor),
-    //   "box_product_background_color": colorToHex(boxProductBackgroundColor),
-    //   "box_product_text_color": colorToHex(boxProductTextColor),
-    //   "box_box_color": colorToHex(boxBoxColor),
-    // });
 
     Map<String, dynamic> settingsMap = {
       "layout": {
@@ -630,6 +533,7 @@ class _SettingsFormState extends State<SettingsForm> {
       },
       "printout_format": {
         "printout_format": printoutFormat.toString(),
+        "printout_format_exists": printoutFormatExists
       },
       "terms_conditions": terms
     };
@@ -996,3049 +900,3029 @@ class _SettingsFormState extends State<SettingsForm> {
           ),
           if (isLayoutColorExpanded)
             Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                  ),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0),
                 ),
-                child: Column(
-                  children: [
-                    Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "List Layout Colors",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  color: Colors.black54,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Top Bar",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  listTopbarBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listTopbarBackgroundColor =
-                                                        newColor;
-                                                  });
+              ),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "List Layout Colors",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Top Bar",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                listTopbarBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listTopbarBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listTopbarBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listTopbarBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: listTopbarTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listTopbarTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: listTopbarTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listTopbarTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listTopbarTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listTopbarTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Category
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Category",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  listCategoryBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listCategoryBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Category
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Category",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                listCategoryBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listCategoryBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listCategoryBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listCategoryBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  listCategoryTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listCategoryTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: listCategoryTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listCategoryTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listCategoryTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listCategoryTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Rupees
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Rupees",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  listRupeesBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listRupeesBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Rupees
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Rupees",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                listRupeesBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listRupeesBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listRupeesBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listRupeesBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: listRupeesTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listRupeesTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: listRupeesTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listRupeesTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listRupeesTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listRupeesTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Table
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Table",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Head",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: listTableHeadColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listTableHeadColor =
-                                                        newColor;
-                                                  });
+                      //Table
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Table",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Head",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: listTableHeadColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listTableHeadColor = newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listTableHeadColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listTableHeadColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: listTableTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listTableTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: listTableTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listTableTextColor = newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listTableTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listTableTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Strike",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: listTableStrikeColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listTableStrikeColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Strike",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: listTableStrikeColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listTableStrikeColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listTableStrikeColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listTableStrikeColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Border",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: listTableBorderColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listTableBorderColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Border",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: listTableBorderColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listTableBorderColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listTableBorderColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listTableBorderColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Category
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Category",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  listTableCategoryBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listTableCategoryBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Category
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Category",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                listTableCategoryBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listTableCategoryBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listTableCategoryBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listTableCategoryBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  listTableCategoryTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listTableCategoryTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                listTableCategoryTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listTableCategoryTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listTableCategoryTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listTableCategoryTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Product
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Product",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Row",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: listProductRow1Color,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listProductRow1Color =
-                                                        newColor;
-                                                  });
+                      //Product
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Product",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Row",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: listProductRow1Color,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listProductRow1Color =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listProductRow1Color,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listProductRow1Color,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Row 2",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: listProductRow2Color,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listProductRow2Color =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Row 2",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: listProductRow2Color,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listProductRow2Color =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listProductRow2Color,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listProductRow2Color,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: listProductTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    listProductTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: listProductTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  listProductTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: listProductTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: listProductTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Grid View
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Divider(),
-                        Text(
-                          "Grid Layout Colors",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  color: Colors.black54,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Top Bar",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  gridTopbarBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridTopbarBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Grid View
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Divider(),
+                      Text(
+                        "Grid Layout Colors",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Top Bar",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                gridTopbarBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridTopbarBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridTopbarBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridTopbarBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: gridTopbarTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridTopbarTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: gridTopbarTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridTopbarTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridTopbarTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridTopbarTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Category
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Category",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  gridCategoryBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridCategoryBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Category
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Category",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                gridCategoryBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridCategoryBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridCategoryBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridCategoryBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  gridCategoryTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridCategoryTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: gridCategoryTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridCategoryTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridCategoryTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridCategoryTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Rupees
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Rupees",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  gridRupeesBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridRupeesBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Rupees
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Rupees",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                gridRupeesBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridRupeesBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridRupeesBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridRupeesBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: gridRupeesTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridRupeesTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: gridRupeesTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridRupeesTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridRupeesTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridRupeesTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Category
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Category",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  gridTableCategoryBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridTableCategoryBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Category
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Category",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                gridTableCategoryBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridTableCategoryBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridTableCategoryBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridTableCategoryBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: gridTableTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridTableTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: gridTableTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridTableTextColor = newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridTableTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridTableTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Product
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Product",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Row",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: gridProductRow1Color,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridProductRow1Color =
-                                                        newColor;
-                                                  });
+                      //Product
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Product",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Row",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: gridProductRow1Color,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridProductRow1Color =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridProductRow1Color,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridProductRow1Color,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Row 2",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: gridProductRow2Color,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridProductRow2Color =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Row 2",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: gridProductRow2Color,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridProductRow2Color =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridProductRow2Color,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridProductRow2Color,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: gridProductTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridProductTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: gridProductTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridProductTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridProductTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridProductTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Rate
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Rate",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  gridRateBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridRateBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Rate
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Rate",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                gridRateBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridRateBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridRateBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridRateBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: gridRateTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridRateTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: gridRateTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridRateTextColor = newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridRateTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridRateTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Product Code
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Product Code",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  gridProductCodeBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridProductCodeBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Product Code
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Product Code",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                gridProductCodeBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridProductCodeBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridProductCodeBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridProductCodeBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  gridProductCodeTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridProductCodeTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                gridProductCodeTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridProductCodeTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridProductCodeTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridProductCodeTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Card
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Card",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Strike",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: gridCardStrikeColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridCardStrikeColor =
-                                                        newColor;
-                                                  });
+                      //Card
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Card",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Strike",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: gridCardStrikeColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridCardStrikeColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridCardStrikeColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridCardStrikeColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Border",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: gridCardBorderColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    gridCardBorderColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Border",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: gridCardBorderColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  gridCardBorderColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: gridCardBorderColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: gridCardBorderColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Box Layout View
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Divider(),
-                        Text(
-                          "Box Layout Colors",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
-                                  color: Colors.black54,
-                                  fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Top Bar",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  boxTopbarBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    boxTopbarBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Box Layout View
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Divider(),
+                      Text(
+                        "Box Layout Colors",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Top Bar",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                boxTopbarBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  boxTopbarBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: boxTopbarBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: boxTopbarBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: boxTopbarTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    boxTopbarTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: boxTopbarTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  boxTopbarTextColor = newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: boxTopbarTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: boxTopbarTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Category
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Category",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  boxCategoryBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    boxCategoryBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Category
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Category",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                boxCategoryBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  boxCategoryBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: boxCategoryBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: boxCategoryBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: boxCategoryTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    boxCategoryTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: boxCategoryTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  boxCategoryTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: boxCategoryTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: boxCategoryTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Rupees
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Rupees",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  boxRupeesBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    boxRupeesBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Rupees
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Rupees",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                boxRupeesBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  boxRupeesBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: boxRupeesBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: boxRupeesBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: boxRupeesTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    boxRupeesTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: boxRupeesTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  boxRupeesTextColor = newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: boxRupeesTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: boxRupeesTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Category
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Category",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  boxBottomCategoryBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    boxBottomCategoryBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Category
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Category",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                boxBottomCategoryBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  boxBottomCategoryBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: boxBottomCategoryBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: boxBottomCategoryBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  boxBottomCategoryTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    boxBottomCategoryTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                boxBottomCategoryTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  boxBottomCategoryTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: boxBottomCategoryTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: boxBottomCategoryTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Product Code
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Product Code",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Background",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor:
-                                                  boxProductBackgroundColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    boxProductBackgroundColor =
-                                                        newColor;
-                                                  });
+                      //Product Code
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Product Code",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                boxProductBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  boxProductBackgroundColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: boxProductBackgroundColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: boxProductBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  "Text",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: boxProductTextColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    boxProductTextColor =
-                                                        newColor;
-                                                  });
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: boxProductTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  boxProductTextColor =
+                                                      newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: boxProductTextColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: boxProductTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
 
-                        //Box
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Box",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black54),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              children: [
-                                Text(
-                                  "Strike",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Pick a color'),
-                                          content: SingleChildScrollView(
-                                            child: ColorPicker(
-                                              pickerColor: boxBoxColor,
-                                              onColorChanged: (color) {
-                                                changeColor(color, (newColor) {
-                                                  setState(() {
-                                                    boxBoxColor = newColor;
-                                                  });
+                      //Box
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Box",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: Colors.black54),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Strike",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: boxBoxColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  boxBoxColor = newColor;
                                                 });
-                                              },
-                                              showLabel: true,
-                                              pickerAreaHeightPercent: 0.8,
-                                            ),
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 100,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: boxBoxColor,
-                                      border: Border.all(
-                                        color: Colors.black,
-                                        width: 1.0,
-                                      ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: boxBoxColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(
-                          height: 20,
-                        )
-                      ],
-                    ),
-                  ],
-                )),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
         ],
       ),
     );
@@ -4046,48 +3930,49 @@ class _SettingsFormState extends State<SettingsForm> {
 
   ListView productView() {
     return ListView.builder(
-        itemCount: settingsDataList.length,
-        itemBuilder: (context, index) {
-          SettingsEditingModel model = settingsDataList[index];
+      itemCount: settingsDataList.length,
+      itemBuilder: (context, index) {
+        SettingsEditingModel model = settingsDataList[index];
 
-          if (model.productList != null && model.productList is List<dynamic>) {
-            productsForNewArrivals =
-                (model.productList as List<dynamic>).map((product) {
-              return {
-                'product_name': product['product_name'].toString(),
-                'product_id': product['product_id'].toString(),
-              };
-            }).toList();
-          }
+        if (model.productList != null && model.productList is List<dynamic>) {
+          productsForNewArrivals =
+              (model.productList as List<dynamic>).map((product) {
+            return {
+              'product_name': product['product_name'].toString(),
+              'product_id': product['product_id'].toString(),
+            };
+          }).toList();
+        }
 
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.white,
+              border: Border.all(
                 color: Colors.white,
-                border: Border.all(
-                  color: Colors.white,
-                  width: 1.0,
-                ),
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  productDisplay(context),
-                  newArrivals(context, productsForNewArrivals),
-                  // webisteStatus(context),
-                  pageListFeatures(context),
-                  priceFormat(context),
-                  pdfFormat(context),
-                ],
+                width: 1.0,
               ),
             ),
-          );
-        });
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                productDisplay(context),
+                newArrivals(context, productsForNewArrivals),
+                // webisteStatus(context),
+                pageListFeatures(context),
+                priceFormat(context),
+                if (printoutFormatExists) pdfFormat(context),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   ListView statusView() {
@@ -4706,8 +4591,9 @@ class _SettingsFormState extends State<SettingsForm> {
 
   Padding pdfFormat(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(children: [
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
           GestureDetector(
             onTap: () {
               setState(() {
@@ -4747,15 +4633,16 @@ class _SettingsFormState extends State<SettingsForm> {
           ),
           if (isPdfFormatExpanded)
             Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                  ),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0),
                 ),
-                child: Column(children: [
+              ),
+              child: Column(
+                children: [
                   Column(children: [
                     const SizedBox(
                       height: 10,
@@ -4800,14 +4687,19 @@ class _SettingsFormState extends State<SettingsForm> {
                       ],
                     ),
                   ])
-                ]))
-        ]));
+                ],
+              ),
+            )
+        ],
+      ),
+    );
   }
 
   Padding priceFormat(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(children: [
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
           GestureDetector(
             onTap: () {
               setState(() {
@@ -4847,67 +4739,75 @@ class _SettingsFormState extends State<SettingsForm> {
           ),
           if (isPriceFormatExpanded)
             Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                  ),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0),
                 ),
-                child: Column(children: [
-                  Column(children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Product Price Display",
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Colors.black54, fontWeight: FontWeight.bold),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const SizedBox(
-                          width: 30,
-                        ),
-                        Expanded(
-                          child: RadioListTile<String>(
-                            title: const Text('Discount'),
-                            value: '1',
-                            groupValue: pricelistFormat,
-                            onChanged: (value) {
-                              setState(() {
-                                pricelistFormat = value;
-                              });
-                            },
-                            contentPadding: EdgeInsets.zero,
+              ),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Product Price Display",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const SizedBox(
+                            width: 30,
                           ),
-                        ),
-                        Expanded(
-                          child: RadioListTile<String>(
-                            title: const Text('Net Rate'),
-                            value: '2',
-                            groupValue: pricelistFormat,
-                            onChanged: (value) {
-                              setState(() {
-                                pricelistFormat = value;
-                              });
-                            },
-                            contentPadding: EdgeInsets.zero,
+                          Expanded(
+                            child: RadioListTile<String>(
+                              title: const Text('Discount'),
+                              value: '1',
+                              groupValue: pricelistFormat,
+                              onChanged: (value) {
+                                setState(() {
+                                  pricelistFormat = value;
+                                });
+                              },
+                              contentPadding: EdgeInsets.zero,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ])
-                ]))
-        ]));
+                          Expanded(
+                            child: RadioListTile<String>(
+                              title: const Text('Net Rate'),
+                              value: '2',
+                              groupValue: pricelistFormat,
+                              onChanged: (value) {
+                                setState(() {
+                                  pricelistFormat = value;
+                                });
+                              },
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+        ],
+      ),
+    );
   }
 
   Padding pageListFeatures(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(children: [
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
           GestureDetector(
             onTap: () {
               setState(() {
@@ -4947,15 +4847,16 @@ class _SettingsFormState extends State<SettingsForm> {
           ),
           if (isPageListFeaturesExpanded)
             Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                  ),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0),
                 ),
-                child: Column(children: [
+              ),
+              child: Column(
+                children: [
                   Column(children: [
                     const SizedBox(
                       height: 10,
@@ -5044,14 +4945,19 @@ class _SettingsFormState extends State<SettingsForm> {
                       ],
                     ),
                   ])
-                ]))
-        ]));
+                ],
+              ),
+            )
+        ],
+      ),
+    );
   }
 
   Padding webisteStatus(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(children: [
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
           GestureDetector(
             onTap: () {
               setState(() {
@@ -5091,15 +4997,16 @@ class _SettingsFormState extends State<SettingsForm> {
           ),
           if (isWebsiteStatusExpanded)
             Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                  ),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0),
                 ),
-                child: Column(children: [
+              ),
+              child: Column(
+                children: [
                   Column(children: [
                     const SizedBox(
                       height: 10,
@@ -5144,8 +5051,12 @@ class _SettingsFormState extends State<SettingsForm> {
                       ],
                     ),
                   ])
-                ]))
-        ]));
+                ],
+              ),
+            )
+        ],
+      ),
+    );
   }
 
   Padding newArrivals(
@@ -5158,8 +5069,9 @@ class _SettingsFormState extends State<SettingsForm> {
     }).toList();
 
     return Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(children: [
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
           GestureDetector(
             onTap: () {
               setState(() {
@@ -5199,407 +5111,98 @@ class _SettingsFormState extends State<SettingsForm> {
           ),
           if (isnewArrivalsExpanded)
             Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                  ),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0),
                 ),
-                child: Column(children: [
-                  Column(children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "New Arrivals",
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Colors.black54, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              "Background",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge!
-                                  .copyWith(color: Colors.black54),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Pick a color'),
-                                      content: SingleChildScrollView(
-                                        child: ColorPicker(
-                                          pickerColor:
-                                              newArrivalsBackgroundColor,
-                                          onColorChanged: (color) {
-                                            changeColor(color, (newColor) {
-                                              setState(() {
-                                                newArrivalsBackgroundColor =
-                                                    newColor;
-                                              });
-                                            });
-                                          },
-                                          showLabel: true,
-                                          pickerAreaHeightPercent: 0.8,
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Container(
-                                width: 100,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: newArrivalsBackgroundColor,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              "Text",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge!
-                                  .copyWith(color: Colors.black54),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Pick a color'),
-                                      content: SingleChildScrollView(
-                                        child: ColorPicker(
-                                          pickerColor: newArrivalsTextColor,
-                                          onColorChanged: (color) {
-                                            changeColor(color, (newColor) {
-                                              setState(() {
-                                                newArrivalsTextColor = newColor;
-                                              });
-                                            });
-                                          },
-                                          showLabel: true,
-                                          pickerAreaHeightPercent: 0.8,
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Container(
-                                width: 100,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: newArrivalsTextColor,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              "Strike",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge!
-                                  .copyWith(color: Colors.black54),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Pick a color'),
-                                      content: SingleChildScrollView(
-                                        child: ColorPicker(
-                                          pickerColor: newArrivalsStrikeColor,
-                                          onColorChanged: (color) {
-                                            changeColor(color, (newColor) {
-                                              setState(() {
-                                                newArrivalsStrikeColor =
-                                                    newColor;
-                                              });
-                                            });
-                                          },
-                                          showLabel: true,
-                                          pickerAreaHeightPercent: 0.8,
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Container(
-                                width: 100,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: newArrivalsStrikeColor,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Enquiry Button",
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Colors.black54, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              "Background",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge!
-                                  .copyWith(color: Colors.black54),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Pick a color'),
-                                      content: SingleChildScrollView(
-                                        child: ColorPicker(
-                                          pickerColor:
-                                              newArrivalsButtonBackgroundColor,
-                                          onColorChanged: (color) {
-                                            changeColor(color, (newColor) {
-                                              setState(() {
-                                                newArrivalsButtonBackgroundColor =
-                                                    newColor;
-                                              });
-                                            });
-                                          },
-                                          showLabel: true,
-                                          pickerAreaHeightPercent: 0.8,
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Container(
-                                width: 100,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: newArrivalsButtonBackgroundColor,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              "Text",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge!
-                                  .copyWith(color: Colors.black54),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Pick a color'),
-                                      content: SingleChildScrollView(
-                                        child: ColorPicker(
-                                          pickerColor:
-                                              newArrivalsButtonTextColor,
-                                          onColorChanged: (color) {
-                                            changeColor(color, (newColor) {
-                                              setState(() {
-                                                newArrivalsButtonTextColor =
-                                                    newColor;
-                                              });
-                                            });
-                                          },
-                                          showLabel: true,
-                                          pickerAreaHeightPercent: 0.8,
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Container(
-                                width: 100,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: newArrivalsButtonTextColor,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (selectedNewArrivalsRows.length < 3) {
-                              addNewArrival();
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(
-                                color: Colors.grey.shade300,
-                              ),
-                            ),
-                            backgroundColor: const Color(0xff2F4550),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "New Arrivals",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
                             children: [
-                              Icon(
-                                Icons.add,
-                                color: Colors.white,
-                              ),
                               Text(
-                                "Add New",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                newArrivalsBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  newArrivalsBackgroundColor =
+                                                      newColor;
+                                                });
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: newArrivalsBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                ),
                               )
                             ],
                           ),
-                        ),
-                      ),
-                    ),
-                    for (var i = 0; i < selectedNewArrivalsRows.length; i++)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Form(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Column(
                             children: [
-                              const SizedBox(width: 10),
                               Text(
-                                "New Arrivals Name",
+                                "Text",
                                 style: Theme.of(context)
                                     .textTheme
                                     .labelLarge!
@@ -5608,140 +5211,460 @@ class _SettingsFormState extends State<SettingsForm> {
                               const SizedBox(
                                 height: 8,
                               ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: TextFormField(
-                                      controller: newArrivalsNameController[i],
-                                      // onEditingComplete: () {
-                                      //   setState(() {
-                                      //     FocusManager.instance.primaryFocus!
-                                      //         .unfocus();
-                                      //   });
-                                      // },
-                                      // onTapOutside: (event) {
-                                      //   setState(() {
-                                      //     FocusManager.instance.primaryFocus!
-                                      //         .unfocus();
-                                      //   });
-                                      // },
-                                      decoration: InputDecoration(
-                                        hintText: "New Arrivals Name",
-                                        filled: true,
-                                        fillColor: Colors.grey.shade200,
-                                        prefixIcon: const Icon(Iconsax.note),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.grey.shade300,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.grey.shade300,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(
-                                            color: Color(0xff2F4550),
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  SizedBox(
-                                    width: 50,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        removeNewArrival(i);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        padding: EdgeInsets.zero,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          side: BorderSide(
-                                            color: Colors.grey.shade300,
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: newArrivalsTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  newArrivalsTextColor =
+                                                      newColor;
+                                                });
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
                                           ),
                                         ),
-                                        backgroundColor: Colors.red.shade300,
-                                      ),
-                                      child: const Icon(
-                                        Icons.close,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 14,
-                              ),
-                              Text(
-                                "New Arrivals Type",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelLarge!
-                                    .copyWith(color: Colors.black54),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              MultiSelectDropDown(
-                                onOptionSelected: (options) {
-                                  List<String> selectedOptions = [];
-                                  for (var option in options) {
-                                    String selectedId = option.value.toString();
-                                    selectedOptions.add(selectedId);
-                                  }
-
-                                  setState(() {
-                                    selectedProductsForNewArrivals[i] =
-                                        selectedOptions;
-                                  });
-                                  print(selectedProductsForNewArrivals);
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 },
-                                onOptionRemoved: (index, option) {},
-                                options: valueItems,
-                                selectedOptions:
-                                    i < previousProductsForNewArrivals.length
-                                        ? previousProductsForNewArrivals[i]
-                                            .map((product) {
-                                            return ValueItem<Object?>(
-                                              label: product['product_name'],
-                                              value: product['product_id'],
-                                            );
-                                          }).toList()
-                                        : [],
-                                selectionType: SelectionType.multi,
-                                fieldBackgroundColor: Colors.grey[200],
-                                chipConfig:
-                                    const ChipConfig(wrapType: WrapType.wrap),
-                                dropdownHeight: 300,
-                                optionTextStyle: const TextStyle(fontSize: 16),
-                                selectedOptionIcon:
-                                    const Icon(Icons.check_circle),
-                                hint: 'Select Category',
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: newArrivalsTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Strike",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
                               ),
                               const SizedBox(
-                                height: 14,
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor: newArrivalsStrikeColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  newArrivalsStrikeColor =
+                                                      newColor;
+                                                });
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: newArrivalsStrikeColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Enquiry Button",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.black54, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "Background",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                newArrivalsButtonBackgroundColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  newArrivalsButtonBackgroundColor =
+                                                      newColor;
+                                                });
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: newArrivalsButtonBackgroundColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "Text",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge!
+                                    .copyWith(color: Colors.black54),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Pick a color'),
+                                        content: SingleChildScrollView(
+                                          child: ColorPicker(
+                                            pickerColor:
+                                                newArrivalsButtonTextColor,
+                                            onColorChanged: (color) {
+                                              changeColor(color, (newColor) {
+                                                setState(() {
+                                                  newArrivalsButtonTextColor =
+                                                      newColor;
+                                                });
+                                              });
+                                            },
+                                            showLabel: true,
+                                            pickerAreaHeightPercent: 0.8,
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: newArrivalsButtonTextColor,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (selectedNewArrivalsRows.length < 3) {
+                                addNewArrival();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(
+                                  color: Colors.grey.shade300,
+                                ),
+                              ),
+                              backgroundColor: const Color(0xff2F4550),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  "Add New",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                      )
-                  ])
-                ]))
-        ]));
+                      ),
+                      for (var i = 0; i < selectedNewArrivalsRows.length; i++)
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Form(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(width: 10),
+                                Text(
+                                  "New Arrivals Name",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(color: Colors.black54),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextFormField(
+                                        controller:
+                                            newArrivalsNameController[i],
+                                        // onEditingComplete: () {
+                                        //   setState(() {
+                                        //     FocusManager.instance.primaryFocus!
+                                        //         .unfocus();
+                                        //   });
+                                        // },
+                                        // onTapOutside: (event) {
+                                        //   setState(() {
+                                        //     FocusManager.instance.primaryFocus!
+                                        //         .unfocus();
+                                        //   });
+                                        // },
+                                        decoration: InputDecoration(
+                                          hintText: "New Arrivals Name",
+                                          filled: true,
+                                          fillColor: Colors.grey.shade200,
+                                          prefixIcon: const Icon(Iconsax.note),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.grey.shade300,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.grey.shade300,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Color(0xff2F4550),
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          removeNewArrival(i);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            side: BorderSide(
+                                              color: Colors.grey.shade300,
+                                            ),
+                                          ),
+                                          backgroundColor: Colors.red.shade300,
+                                        ),
+                                        child: const Icon(
+                                          Icons.close,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 14,
+                                ),
+                                Text(
+                                  "New Arrivals Type",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge!
+                                      .copyWith(color: Colors.black54),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                MultiSelectDropDown(
+                                  onOptionSelected: (options) {
+                                    List<String> selectedOptions = [];
+                                    for (var option in options) {
+                                      String selectedId =
+                                          option.value.toString();
+                                      selectedOptions.add(selectedId);
+                                    }
+
+                                    setState(() {
+                                      selectedProductsForNewArrivals[i] =
+                                          selectedOptions;
+                                    });
+                                    print(selectedProductsForNewArrivals);
+                                  },
+                                  onOptionRemoved: (index, option) {},
+                                  options: valueItems,
+                                  selectedOptions:
+                                      i < previousProductsForNewArrivals.length
+                                          ? previousProductsForNewArrivals[i]
+                                              .map((product) {
+                                              return ValueItem<Object?>(
+                                                label: product['product_name'],
+                                                value: product['product_id'],
+                                              );
+                                            }).toList()
+                                          : [],
+                                  selectionType: SelectionType.multi,
+                                  fieldBackgroundColor: Colors.grey[200],
+                                  chipConfig:
+                                      const ChipConfig(wrapType: WrapType.wrap),
+                                  dropdownHeight: 300,
+                                  optionTextStyle:
+                                      const TextStyle(fontSize: 16),
+                                  selectedOptionIcon:
+                                      const Icon(Icons.check_circle),
+                                  hint: 'Select Category',
+                                ),
+                                const SizedBox(
+                                  height: 14,
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                    ],
+                  )
+                ],
+              ),
+            )
+        ],
+      ),
+    );
   }
 
   Padding productDisplay(BuildContext context) {

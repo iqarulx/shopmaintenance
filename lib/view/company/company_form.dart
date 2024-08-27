@@ -169,7 +169,11 @@ class _CompanyFormState extends State<CompanyForm> {
         _emailController.text.isNotEmpty &&
         _runningTextController.text.isNotEmpty) {
       var userId = await LocalDBConfig().getUserID();
+      var domain = await LocalDBConfig().getdomain();
+      var adminPath = await LocalDBConfig().getAdminPath();
       Map<String, String> formData = {
+        'domain_name': domain.toString(),
+        'admin_folder_name': adminPath.toString(),
         'creator_id': userId.toString(),
         'edit_company_id': widget.companyId,
         'company_name': _companyNameController.text,

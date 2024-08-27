@@ -78,7 +78,12 @@ class _CategoryFormState extends State<CategoryForm> {
 
   submitForm() async {
     var userId = await LocalDBConfig().getUserID();
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+
     Map<String, String> formData = {
+      'domain_name': domain!,
+      'admin_folder_name': adminPath!,
       'creator_id': userId.toString(),
       'edit_category_id': widget.categoryId.toString(),
       'category_name': _categoryNameController.text
