@@ -386,21 +386,17 @@ class _EnquiryDetailsState extends State<EnquiryDetails> {
                     onPressed: () async {
                       await getPDF(format: 'A4', type: "1", isPrint: false)
                           .then((url) async {
-                        // futureLoading(context);
                         LoadingOverlay.show(context);
                         log(url.toString());
                         if (url != null && url.toString().isNotEmpty) {
                           await http
-                              .get(Uri.parse(url))
+                              .get(Uri.parse("https://$url"))
                               .then((http.Response response) async {
-                            // ignore: unused_local_variable
                             var pdfData = response.bodyBytes;
-                            // Navigator.pop(context);
                             LoadingOverlay.hide();
                             await Printing.sharePdf(bytes: pdfData);
                           });
                         } else {
-                          // Navigator.pop(context);
                           LoadingOverlay.hide();
                         }
                       });
@@ -433,9 +429,10 @@ class _EnquiryDetailsState extends State<EnquiryDetails> {
                       ).then((result) {
                         if (result != null) {
                           getPDF(
-                              format: "A4",
-                              type: result.toString(),
-                              isPrint: true);
+                            format: "A4",
+                            type: result.toString(),
+                            isPrint: true,
+                          );
                         }
                       });
                     },
@@ -875,7 +872,7 @@ class _EnquiryDetailsState extends State<EnquiryDetails> {
               log(url.toString());
               if (url != null && url.toString().isNotEmpty) {
                 await http
-                    .get(Uri.parse(url))
+                    .get(Uri.parse("https://$url"))
                     .then((http.Response response) async {
                   // ignore: unused_local_variable
                   var pdfData = response.bodyBytes;

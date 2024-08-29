@@ -31,7 +31,7 @@ class _PDFPrintViewState extends State<PDFPrintView> {
               // futureLoading(context);
               LoadingOverlay.show(context);
               await http
-                  .get(Uri.parse(widget.url))
+                  .get(Uri.parse("https://${widget.url}"))
                   .then((http.Response response) async {
                 // ignore: unused_local_variable
                 var pdfData = response.bodyBytes;

@@ -4,7 +4,7 @@ description: A new Flutter project.
 publish_to: 'none'
 
 #Previous Test Version : 1.0.3
-version: 1.1.4
+version: 1.1.5
 
 environment:
   sdk: '>=3.0.3 <4.0.0'
