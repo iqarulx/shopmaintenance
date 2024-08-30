@@ -95,8 +95,10 @@ class _DiscountFormState extends State<DiscountForm> {
   List<dynamic> categoryIds = [];
 
   initSettings() async {
-    categoryIds = discountDataList[0].categoryIds!;
-    discountController.text = discountDataList[0].discount!;
+    setState(() {
+      categoryIds = discountDataList[0].categoryIds!;
+      discountController.text = discountDataList[0].discount!;
+    });
   }
 
   @override
@@ -267,6 +269,7 @@ class _DiscountFormState extends State<DiscountForm> {
               CupertinoSwitch(
                 value: switchValue,
                 onChanged: (value) {
+                  print(discountController.text);
                   setState(() {
                     if (value) {
                       categoryIds.add(categoryList[index].categoryId);
@@ -357,9 +360,9 @@ class _DiscountFormState extends State<DiscountForm> {
       color: Colors.white,
       child: GestureDetector(
         onTap: () {
-          if (_formKey.currentState!.validate()) {
-            submitForm();
-          }
+          // if (_formKey.currentState!.validate()) {
+          submitForm();
+          // }
         },
         child: Container(
           height: 48,

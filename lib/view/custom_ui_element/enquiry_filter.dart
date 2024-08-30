@@ -424,6 +424,7 @@ class _EnquiryFilterState extends State<EnquiryFilter> {
                       height: 8,
                     ),
                     DropdownButtonFormField(
+                      menuMaxHeight: 300,
                       value: customerID,
                       isExpanded: true,
                       items: customerList,
@@ -471,6 +472,7 @@ class _EnquiryFilterState extends State<EnquiryFilter> {
                       height: 8,
                     ),
                     DropdownButtonFormField(
+                      menuMaxHeight: 300,
                       value: staffID,
                       isExpanded: true,
                       items: staffList,
@@ -562,6 +564,7 @@ class _EnquiryFilterState extends State<EnquiryFilter> {
                       height: 8,
                     ),
                     DropdownButtonFormField(
+                      menuMaxHeight: 300,
                       value: filterPromotionCodeID,
                       isExpanded: true,
                       items: promotionCodeList,
@@ -609,6 +612,7 @@ class _EnquiryFilterState extends State<EnquiryFilter> {
                       height: 8,
                     ),
                     DropdownButtonFormField(
+                      menuMaxHeight: 300,
                       value: statusID,
                       isExpanded: true,
                       items: statusList,

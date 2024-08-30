@@ -9,6 +9,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import '../custom_ui_element/error_snackbar.dart';
 import '/model/product_model.dart';
 import '/provider/fingerprint_provider.dart';
@@ -26,7 +27,6 @@ import '/view/product/pdf_preview.dart';
 import '/view/product/product_form.dart';
 import '/view/product/product_order.dart';
 import '/view/product/product_price.dart';
-import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -833,9 +833,10 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
             ],
           ),
-        const SizedBox(
-          height: 10,
-        ),
+        if (selectedCategory == null)
+          const SizedBox(
+            height: 10,
+          ),
         DropdownButtonFormField<String>(
           menuMaxHeight: 300,
           decoration: InputDecoration(
@@ -878,21 +879,19 @@ class _ProductScreenState extends State<ProductScreen> {
               var selectedCategoryModel = categoryList.firstWhere(
                 (element) => element.categoryName == selectedItem,
               );
-              setState(
-                () {
-                  selectedCategory = selectedItem;
-                  selectedCategoryId = selectedCategoryModel.categoryId;
-                  productList.clear();
-                  categoryList.clear();
-                  productHandler = productListView(
-                      categoryId: selectedCategoryModel.categoryId);
-                },
-              );
+              setState(() {
+                selectedCategory = selectedItem;
+                selectedCategoryId = selectedCategoryModel.categoryId;
+                productList.clear();
+                categoryList.clear();
+                productHandler = productListView(
+                    categoryId: selectedCategoryModel.categoryId);
+              });
             }
           },
         ),
         const SizedBox(
-          height: 5,
+          height: 10,
         ),
         if (selectedCategory != null)
           Column(

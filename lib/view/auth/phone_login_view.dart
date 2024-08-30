@@ -38,7 +38,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
   verificationCompleted(PhoneAuthCredential credential) {
     if (credential.smsCode != null) {
       otp.setText(credential.smsCode!);
-      print("Code send");
     }
   }
 
@@ -154,7 +153,6 @@ class _PhoneLoginState extends State<PhoneLogin> {
                     forceResendingToken: null,
                   );
                 } else {
-                  print("Account Not Login");
                   showCustomSnackBar(
                     context,
                     content: "Your account was Login Another Device",

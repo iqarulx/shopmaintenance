@@ -67,9 +67,15 @@ class CategoryService extends HttpConfig {
   }
 
   Future updateCategory({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var input = formData;
+    input["domain_name"] = domain;
+    input["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(input));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -81,9 +87,15 @@ class CategoryService extends HttpConfig {
   }
 
   Future updateFrontEnd({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var input = formData;
+    input["domain_name"] = domain;
+    input["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(input));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -95,9 +107,15 @@ class CategoryService extends HttpConfig {
   }
 
   Future deleteCategory({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var input = formData;
+    input["domain_name"] = domain;
+    input["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(input));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -109,9 +127,15 @@ class CategoryService extends HttpConfig {
   }
 
   Future updateCategoryOrder({required formData}) async {
+    var domain = await LocalDBConfig().getdomain();
+    var adminPath = await LocalDBConfig().getAdminPath();
+    var input = formData;
+    input["domain_name"] = domain;
+    input["admin_folder_name"] = adminPath;
+
     try {
       var url = await getDomain();
-      var message = await http.post(url, body: jsonEncode(formData));
+      var message = await http.post(url, body: jsonEncode(input));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;

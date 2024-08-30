@@ -243,29 +243,30 @@ class _SalesReportState extends State<SalesReport> {
 
   FutureBuilder<dynamic> body() {
     return FutureBuilder(
-        future: salesReportHandler,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return futureWaitingLoading();
-          } else if (snapshot.hasError) {
-            if (snapshot.error == 'Network Error') {
-              return futureNetworkError();
-            } else {
-              return futureDisplayError(content: snapshot.error.toString());
-            }
+      future: salesReportHandler,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return futureWaitingLoading();
+        } else if (snapshot.hasError) {
+          if (snapshot.error == 'Network Error') {
+            return futureNetworkError();
           } else {
-            return RefreshIndicator(
-                onRefresh: () async {
-                  setState(() {
-                    salesReportList.clear();
-                    salesReportHandler = salesReportListView();
-                  });
-                },
-                child: salesReportList.isNotEmpty
-                    ? screenView()
-                    : futureNoDataError());
+            return futureDisplayError(content: snapshot.error.toString());
           }
-        });
+        } else {
+          return RefreshIndicator(
+            onRefresh: () async {
+              setState(() {
+                salesReportList.clear();
+                salesReportHandler = salesReportListView();
+              });
+            },
+            child:
+                salesReportList.isNotEmpty ? screenView() : futureNoDataError(),
+          );
+        }
+      },
+    );
   }
 
   FloatingActionButton filterOption() {

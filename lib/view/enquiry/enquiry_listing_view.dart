@@ -5,7 +5,6 @@
 */
 
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:excel/excel.dart';
@@ -84,7 +83,6 @@ class _EnquiryListingState extends State<EnquiryListing>
 
       await EnquiryService().getEnquiryAPI(enquiryInput: model).then((result) {
         if (result["head"]["code"] == 200) {
-          print(result["body"]["orders"].length);
           for (var element in result["body"]["orders"]) {
             EnquiryListingModel dataModel = EnquiryListingModel();
             dataModel.orderID = element["order_id"].toString();
@@ -167,7 +165,6 @@ class _EnquiryListingState extends State<EnquiryListing>
         }
       });
     } catch (e) {
-      log(e.toString());
       showCustomSnackBar(context, content: e.toString(), isSuccess: false);
       setState(() {
         loading = false;
@@ -272,7 +269,6 @@ class _EnquiryListingState extends State<EnquiryListing>
         }
       });
     } catch (e) {
-      log(e.toString());
       showCustomSnackBar(context, content: e.toString(), isSuccess: false);
       setState(() {
         loading = false;
@@ -449,22 +445,19 @@ class _EnquiryListingState extends State<EnquiryListing>
         _handleMessage(value != null ? value.data : <String, dynamic>{}));
   }
 
-  void _handleMessage(Map<String, dynamic> data) {
-    log("its Worked");
+  _handleMessage(Map<String, dynamic> data) {
     setState(() {
-      enquiryHandler = getEnquiry();
+      // enquiryHandler = getEnquiry();
     });
     if (data['redirect'] == "notification") {
-      setState(() {
-        log("its 11");
-      });
+      setState(() {});
     }
   }
 
   notificationListen() {
     if (mounted) {
       setState(() {
-        enquiryHandler = getEnquiry();
+        // enquiryHandler = getEnquiry();
       });
     }
   }
@@ -511,9 +504,8 @@ class _EnquiryListingState extends State<EnquiryListing>
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) async {
+      // ignore: unused_local_variable
       RemoteNotification? notification = message?.notification!;
-
-      log(notification != null ? notification.title! : '');
     });
 
     FirebaseMessaging.onMessage.listen((message) async {
@@ -548,7 +540,6 @@ class _EnquiryListingState extends State<EnquiryListing>
           );
         }
       }
-      log('A new event was published!');
     });
 
     FirebaseMessaging.onMessageOpenedApp
@@ -857,12 +848,24 @@ class _EnquiryListingState extends State<EnquiryListing>
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.data != null) {
+            var list = [];
+            switch (tabController!.index) {
+              case 0:
+                list = enquiryList;
+              case 1:
+                list = frontEnquiryList;
+              case 2:
+                list = backEnquiryList;
+              default:
+                list = [];
+            }
+
             return RefreshIndicator(
               color: const Color(0xff2F4550),
               onRefresh: () async {
                 setState(() {
                   dataComplete = false;
-                  pageno = 2;
+                  pageno = 1;
                   fromDate.clear();
                   toDate.clear();
                   customerID = null;
@@ -938,225 +941,7 @@ class _EnquiryListingState extends State<EnquiryListing>
                       ],
                     ),
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: tabController!.index == 0
-                        ? enquiryList.length
-                        : tabController!.index == 1
-                            ? frontEnquiryList.length
-                            : backEnquiryList.length,
-                    itemBuilder: (context, index) {
-                      EnquiryListingModel enquiryElement =
-                          tabController!.index == 0
-                              ? enquiryList[index]
-                              : tabController!.index == 1
-                                  ? frontEnquiryList[index]
-                                  : backEnquiryList[index];
-                      return GestureDetector(
-                        onTap: () async {
-                          try {
-                            // futureLoading(context);
-                            LoadingOverlay.show(context);
-                            if (enquiryElement.newOrder == 1) {
-                              await EnquiryService()
-                                  .updateOrderViewStatus(
-                                      orderID: enquiryElement.orderID ?? "")
-                                  .then((value) {
-                                if (value != null &&
-                                    value["head"]["code"] == 200) {
-                                  LoadingOverlay.hide();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EnquiryDetails(
-                                        enquiryModel: enquiryElement,
-                                      ),
-                                    ),
-                                  ).then((value) {
-                                    setState(() {
-                                      enquiryElement.newOrder = 0;
-                                    });
-                                  });
-                                } else {
-                                  throw value["head"]["msg"].toString();
-                                }
-                              });
-                            } else {
-                              LoadingOverlay.hide();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EnquiryDetails(
-                                    enquiryModel: enquiryElement,
-                                  ),
-                                ),
-                              ).then((value) {
-                                setState(() {
-                                  enquiryElement.newOrder = 0;
-                                });
-                              });
-                            }
-                          } catch (e) {
-                            Navigator.pop(context);
-                            showCustomSnackBar(context,
-                                content: e.toString(), isSuccess: false);
-                          }
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(bottom: 10),
-                          decoration: BoxDecoration(
-                            color: enquiryElement.newOrder == 1
-                                ? const Color(0xffB8DBD9)
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  enquiryElement.newOrder == 1
-                                      ? Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 6, vertical: 3),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: Colors.black,
-                                          ),
-                                          child: const Text(
-                                            "New",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        )
-                                      : const SizedBox(),
-                                  SizedBox(
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          height: 15,
-                                          width: 15,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: enquiryElement.confirmed == 1
-                                                ? const Color(0xff588157)
-                                                : const Color(0xfffb5607),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 5),
-                                        Container(
-                                          height: 15,
-                                          width: 15,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color:
-                                                enquiryElement.despatched == 1
-                                                    ? const Color(0xff588157)
-                                                    : const Color(0xfffb5607),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 5),
-                                        Container(
-                                          height: 15,
-                                          width: 15,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: enquiryElement.delivered == 1
-                                                ? const Color(0xff588157)
-                                                : const Color(0xfffb5607),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    enquiryElement.orderNumber ?? "",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    enquiryElement.orderDate ?? "",
-                                    style: const TextStyle(
-                                      color: Color(0xff313131),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Text(
-                                "${enquiryElement.customerName ?? ""} - ${enquiryElement.customerMobileNumber ?? ""}",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        enquiryElement.ordertype ?? "",
-                                        style: const TextStyle(
-                                          color: Color(0xff686868),
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Visibility(
-                                        visible: enquiryElement
-                                            .creatorName!.isNotEmpty,
-                                        child: Text(
-                                          "Created by ${enquiryElement.creatorName}",
-                                          style: const TextStyle(
-                                            color: Color(0xff686868),
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    "₹${enquiryElement.totalAmount ?? ""}",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  list.isNotEmpty ? screenView(list) : futureNoDataError(),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     IconButton(
                         icon: const Icon(Iconsax.arrow_square_left),
@@ -1192,6 +977,211 @@ class _EnquiryListingState extends State<EnquiryListing>
           }
         },
       ),
+    );
+  }
+
+  ListView screenView(List<dynamic> list) {
+    return ListView.builder(
+      shrinkWrap: true,
+      primary: false,
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        EnquiryListingModel enquiryElement = list[index];
+        return GestureDetector(
+          onTap: () async {
+            try {
+              // futureLoading(context);
+              LoadingOverlay.show(context);
+              if (enquiryElement.newOrder == 1) {
+                await EnquiryService()
+                    .updateOrderViewStatus(
+                        orderID: enquiryElement.orderID ?? "")
+                    .then((value) {
+                  if (value != null && value["head"]["code"] == 200) {
+                    LoadingOverlay.hide();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EnquiryDetails(
+                          enquiryModel: enquiryElement,
+                        ),
+                      ),
+                    ).then((value) {
+                      setState(() {
+                        enquiryElement.newOrder = 0;
+                      });
+                    });
+                  } else {
+                    throw value["head"]["msg"].toString();
+                  }
+                });
+              } else {
+                LoadingOverlay.hide();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EnquiryDetails(
+                      enquiryModel: enquiryElement,
+                    ),
+                  ),
+                ).then((value) {
+                  setState(() {
+                    enquiryElement.newOrder = 0;
+                  });
+                });
+              }
+            } catch (e) {
+              Navigator.pop(context);
+              showCustomSnackBar(context,
+                  content: e.toString(), isSuccess: false);
+            }
+          },
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+              color: enquiryElement.newOrder == 1
+                  ? const Color(0xffB8DBD9)
+                  : Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    enquiryElement.newOrder == 1
+                        ? Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 3),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.black,
+                            ),
+                            child: const Text(
+                              "New",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          )
+                        : const SizedBox(),
+                    SizedBox(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            height: 15,
+                            width: 15,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: enquiryElement.confirmed == 1
+                                  ? const Color(0xff588157)
+                                  : const Color(0xfffb5607),
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          Container(
+                            height: 15,
+                            width: 15,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: enquiryElement.despatched == 1
+                                  ? const Color(0xff588157)
+                                  : const Color(0xfffb5607),
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          Container(
+                            height: 15,
+                            width: 15,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: enquiryElement.delivered == 1
+                                  ? const Color(0xff588157)
+                                  : const Color(0xfffb5607),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      enquiryElement.orderNumber ?? "",
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      enquiryElement.orderDate ?? "",
+                      style: const TextStyle(
+                        color: Color(0xff313131),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ],
+                ),
+                Text(
+                  "${enquiryElement.customerName ?? ""} - ${enquiryElement.customerMobileNumber ?? ""}",
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          enquiryElement.ordertype ?? "",
+                          style: const TextStyle(
+                            color: Color(0xff686868),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Visibility(
+                          visible: enquiryElement.creatorName!.isNotEmpty,
+                          child: Text(
+                            "Created by ${enquiryElement.creatorName}",
+                            style: const TextStyle(
+                              color: Color(0xff686868),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      "₹${enquiryElement.totalAmount ?? ""}",
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

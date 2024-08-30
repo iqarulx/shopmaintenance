@@ -32,6 +32,14 @@ class WebsitestatusService extends HttpConfig {
           },
         ),
       );
+      print(url);
+      print(jsonEncode(
+        {
+          "get_website_status": 1,
+          "domain_name": domain,
+          "admin_folder_name": adminPath,
+        },
+      ));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
@@ -51,11 +59,14 @@ class WebsitestatusService extends HttpConfig {
 
     try {
       var url = await getDomain();
+      print(url);
+      print(jsonEncode(inputMap));
       var message = await http.post(url, body: jsonEncode(inputMap));
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
       }
+
       return [];
     } catch (e) {
       rethrow;

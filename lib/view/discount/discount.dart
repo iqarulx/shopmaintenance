@@ -31,14 +31,6 @@ class DiscountScreen extends StatefulWidget {
 }
 
 class _DiscountScreenState extends State<DiscountScreen> {
-  List<DiscountListingModel> discountList = [];
-  List<DiscountListingModel> tmpDiscountList = [];
-  TextEditingController search = TextEditingController();
-  Future? discountHandler;
-  String? selectedCategory;
-  bool showSearch = false;
-  late TutorialCoachMark tutorialCoachMark;
-
   @override
   void initState() {
     AuthService().accountValid(context);
@@ -52,14 +44,11 @@ class _DiscountScreenState extends State<DiscountScreen> {
     super.initState();
   }
 
-  GlobalKey refreshGuide = GlobalKey();
-  GlobalKey showFrontEndGuide = GlobalKey();
-  GlobalKey editGuide = GlobalKey();
-
   Future discountListView() async {
     try {
       setState(() {
         discountList.clear();
+        tmpDiscountList.clear();
       });
 
       return await DiscountService().getDiscountList().then((resultData) async {
@@ -692,4 +681,16 @@ class _DiscountScreenState extends State<DiscountScreen> {
 
     return targets;
   }
+
+  GlobalKey refreshGuide = GlobalKey();
+  GlobalKey showFrontEndGuide = GlobalKey();
+  GlobalKey editGuide = GlobalKey();
+
+  List<DiscountListingModel> discountList = [];
+  List<DiscountListingModel> tmpDiscountList = [];
+  TextEditingController search = TextEditingController();
+  Future? discountHandler;
+  String? selectedCategory;
+  bool showSearch = false;
+  late TutorialCoachMark tutorialCoachMark;
 }

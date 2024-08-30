@@ -44,6 +44,7 @@ class _WebsiteStatusState extends State<WebsiteStatus> {
       var resultData = await WebsitestatusService().getStatus();
 
       if (resultData.isNotEmpty) {
+        print(resultData);
         if (resultData != null && resultData["head"]["code"] == 200) {
           WebsitestatusModel model = WebsitestatusModel();
           Map<String, dynamic> element = resultData["head"]["msg"];
@@ -75,11 +76,14 @@ class _WebsiteStatusState extends State<WebsiteStatus> {
   }
 
   updateStatus(String disableSite, String disableForm) async {
+    print(disableSite);
+    print(disableForm);
     try {
       Map formData = {
         "update_status": disableSite,
-        "disable_form": int.parse(disableForm)
+        "disable_form": int.parse(disableForm == '' ? "1" : disableForm),
       };
+      print(formData);
       await LocalAuthConfig()
           .checkBiometrics(context, 'Website Status')
           .then((value) async {
@@ -97,8 +101,7 @@ class _WebsiteStatusState extends State<WebsiteStatus> {
                   websitestatusEditHandler = websitestatusEditView();
                 });
               } else {
-                showCustomSnackBar(context,
-                    content: onValue["head"]["msg"], isSuccess: true);
+                showCustomSnackBar(context, content: "", isSuccess: true);
               }
             } else {
               errorSnackbar(context);

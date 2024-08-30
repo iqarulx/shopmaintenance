@@ -4,7 +4,6 @@
   found in the LICENSE file.
 */
 
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
@@ -110,7 +109,6 @@ class _EnquiryDetailsState extends State<EnquiryDetails> {
         data = model.toEnquiryDispatchMap();
       } else if (status == 3) {
         data = model.toEnquiryDeliveryMap();
-        log(data.toString());
       }
 
       await EnquiryService().setDeliveryStatusAPI(data: data).then((result) {
@@ -126,10 +124,9 @@ class _EnquiryDetailsState extends State<EnquiryDetails> {
           }
         });
         showCustomSnackBar(context,
-            content: "Successfully Update the Status", isSuccess: true);
+            content: "Successfully status updated", isSuccess: true);
       });
     } catch (e) {
-      log(e.toString());
       // Navigator.pop(context);
       LoadingOverlay.hide();
       showCustomSnackBar(context, content: e.toString(), isSuccess: false);
@@ -387,7 +384,6 @@ class _EnquiryDetailsState extends State<EnquiryDetails> {
                       await getPDF(format: 'A4', type: "1", isPrint: false)
                           .then((url) async {
                         LoadingOverlay.show(context);
-                        log(url.toString());
                         if (url != null && url.toString().isNotEmpty) {
                           await http
                               .get(Uri.parse("https://$url"))
@@ -869,7 +865,6 @@ class _EnquiryDetailsState extends State<EnquiryDetails> {
                 .then((url) async {
               // futureLoading(context);
               LoadingOverlay.show(context);
-              log(url.toString());
               if (url != null && url.toString().isNotEmpty) {
                 await http
                     .get(Uri.parse("https://$url"))

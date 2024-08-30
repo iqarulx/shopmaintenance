@@ -109,12 +109,8 @@ class _CategoryOrderEditState extends State<CategoryOrderEdit> {
     }
 
     var userId = await LocalDBConfig().getUserID();
-    var domain = await LocalDBConfig().getdomain();
-    var adminPath = await LocalDBConfig().getAdminPath();
 
     var formData = {
-      'domain_name': domain!,
-      'admin_folder_name': adminPath!,
       'creator_id': userId.toString(),
       'edit_category_id_ordering': orderingText,
     };
