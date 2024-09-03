@@ -10,7 +10,7 @@ class HttpConfig {
   Future<String?> getdomain() async {
     var serverIP = await LocalDBConfig().getServerIP();
 
-    String result = "http://$serverIP/API";
+    String result = "https://$serverIP/API";
     return result;
   }
 }

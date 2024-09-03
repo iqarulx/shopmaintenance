@@ -62,50 +62,111 @@ class _LoginState extends State<Login> {
   }
 
   phoneNumberValid() async {
-    LoadingOverlay.show(context);
-    try {
-      FocusManager.instance.primaryFocus!.unfocus();
-      await CustomerService()
-          .findPhoneNumber(phoneNumber: phoneNumber.text)
-          .then((dataResult) async {
-        if (dataResult.docs.isNotEmpty) {
-          setState(() {
-            docID = dataResult.docs.first.id;
-          });
-          if (dataResult.docs.first["block_At"] == false) {
-            Timestamp timestamp = dataResult.docs.first["expiry_date"];
-            DateTime dateTime = timestamp.toDate();
-            if (DateTime.now().isBefore(dateTime)) {
-              await getDeviceInfo().then((value) async {
-                if (dataResult.docs.first["device"]["device_id"] == null &&
-                    dataResult.docs.first["device"]["brand_name"] == null &&
-                    dataResult.docs.first["device"]["model_no"] == null) {
-                  setState(() {
-                    domain = dataResult.docs.first["domain"].toString();
-                  });
-                  await OTPService()
-                      .updateDeviceInfo(
-                    deviceID: value["deviceid"],
-                    modelName: value["modelName"],
-                    brandName: value["brandName"],
-                    docID: docID!,
-                  )
-                      .then((value) async {
-                    await LocalDBConfig()
-                        .setDomain(
-                      domain: dataResult.docs.first["domain"],
-                      adminPath: dataResult.docs.first["admin_path"],
-                      serverIP: dataResult.docs.first["server_ip"],
-                    )
-                        .then((domain) async {
-                      await InitAuthService()
-                          .checkLogin(
-                        password: password.text,
-                        phoneno: phoneNumber.text,
-                        fcmID: await getFCM() ?? "",
+    await LocalDBConfig().checkLoginAttempts().then((value) async {
+      if (value < 5) {
+        LoadingOverlay.show(context);
+        try {
+          FocusManager.instance.primaryFocus!.unfocus();
+          await CustomerService()
+              .findPhoneNumber(phoneNumber: phoneNumber.text)
+              .then((dataResult) async {
+            if (dataResult.docs.isNotEmpty) {
+              setState(() {
+                docID = dataResult.docs.first.id;
+              });
+              if (dataResult.docs.first["block_At"] == false) {
+                Timestamp timestamp = dataResult.docs.first["expiry_date"];
+                DateTime dateTime = timestamp.toDate();
+                if (DateTime.now().isBefore(dateTime)) {
+                  await getDeviceInfo().then((value) async {
+                    if (dataResult.docs.first["device"]["device_id"] == null &&
+                        dataResult.docs.first["device"]["brand_name"] == null &&
+                        dataResult.docs.first["device"]["model_no"] == null) {
+                      setState(() {
+                        domain = dataResult.docs.first["domain"].toString();
+                      });
+                      await OTPService()
+                          .updateDeviceInfo(
+                        deviceID: value["deviceid"],
+                        modelName: value["modelName"],
+                        brandName: value["brandName"],
+                        docID: docID!,
                       )
-                          .then((memberID) async {
-                        if (memberID.isNotEmpty) {
+                          .then((value) async {
+                        await LocalDBConfig()
+                            .setDomain(
+                          domain: dataResult.docs.first["domain"],
+                          adminPath: dataResult.docs.first["admin_path"],
+                          serverIP: dataResult.docs.first["server_ip"],
+                        )
+                            .then((domain) async {
+                          await InitAuthService()
+                              .checkLogin(
+                            password: password.text,
+                            phoneno: phoneNumber.text,
+                            fcmID: await getFCM() ?? "",
+                          )
+                              .then((memberID) async {
+                            if (memberID.isNotEmpty) {
+                              if (memberID["head"]["code"] != null &&
+                                  memberID["head"]["code"] == 200) {
+                                await LocalDBConfig()
+                                    .newUserLogin(
+                                        phoneNumber: phoneNumber.text,
+                                        domain: dataResult.docs.first["domain"],
+                                        memberID: memberID["head"]["user_id"]
+                                            .toString(),
+                                        expiryDate: dataResult
+                                            .docs.first["expiry_date"]
+                                            .toString())
+                                    .then((localDBResult) {
+                                  LoadingOverlay.hide();
+
+                                  showCustomSnackBar(context,
+                                      content: "Login Successfully",
+                                      isSuccess: true);
+
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const Dashboard(),
+                                    ),
+                                  );
+                                });
+                              } else {
+                                await LocalDBConfig().addLoginAttempt();
+                                throw memberID["head"]["msg"];
+                              }
+                            } else {
+                              await LocalDBConfig().addLoginAttempt();
+                              errorSnackbar(context);
+                            }
+                          });
+                        });
+                      });
+                    } else if (value["deviceid"] ==
+                            dataResult.docs.first["device"]["device_id"] &&
+                        value["brandName"] ==
+                            dataResult.docs.first["device"]["brand_name"] &&
+                        value["modelName"] ==
+                            dataResult.docs.first["device"]["model_no"]) {
+                      setState(() {
+                        domain = dataResult.docs.first["domain"];
+                      });
+
+                      await LocalDBConfig()
+                          .setDomain(
+                        domain: dataResult.docs.first["domain"],
+                        adminPath: dataResult.docs.first["admin_path"],
+                        serverIP: dataResult.docs.first["server_ip"],
+                      )
+                          .then((domain) async {
+                        await InitAuthService()
+                            .checkLogin(
+                                password: password.text,
+                                phoneno: phoneNumber.text,
+                                fcmID: await getFCM() ?? "")
+                            .then((memberID) async {
                           if (memberID["head"]["code"] != null &&
                               memberID["head"]["code"] == 200) {
                             await LocalDBConfig()
@@ -119,11 +180,9 @@ class _LoginState extends State<Login> {
                                         .toString())
                                 .then((localDBResult) {
                               LoadingOverlay.hide();
-
                               showCustomSnackBar(context,
                                   content: "Login Successfully",
                                   isSuccess: true);
-
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -132,90 +191,64 @@ class _LoginState extends State<Login> {
                               );
                             });
                           } else {
+                            await LocalDBConfig().addLoginAttempt();
                             throw memberID["head"]["msg"];
                           }
-                        } else {
-                          errorSnackbar(context);
-                        }
-                      });
-                    });
-                  });
-                } else if (value["deviceid"] ==
-                        dataResult.docs.first["device"]["device_id"] &&
-                    value["brandName"] ==
-                        dataResult.docs.first["device"]["brand_name"] &&
-                    value["modelName"] ==
-                        dataResult.docs.first["device"]["model_no"]) {
-                  setState(() {
-                    domain = dataResult.docs.first["domain"];
-                  });
-
-                  await LocalDBConfig()
-                      .setDomain(
-                    domain: dataResult.docs.first["domain"],
-                    adminPath: dataResult.docs.first["admin_path"],
-                    serverIP: dataResult.docs.first["server_ip"],
-                  )
-                      .then((domain) async {
-                    await InitAuthService()
-                        .checkLogin(
-                            password: password.text,
-                            phoneno: phoneNumber.text,
-                            fcmID: await getFCM() ?? "")
-                        .then((memberID) async {
-                      if (memberID["head"]["code"] != null &&
-                          memberID["head"]["code"] == 200) {
-                        await LocalDBConfig()
-                            .newUserLogin(
-                                phoneNumber: phoneNumber.text,
-                                domain: dataResult.docs.first["domain"],
-                                memberID:
-                                    memberID["head"]["user_id"].toString(),
-                                expiryDate: dataResult.docs.first["expiry_date"]
-                                    .toString())
-                            .then((localDBResult) {
-                          LoadingOverlay.hide();
-                          showCustomSnackBar(context,
-                              content: "Login Successfully", isSuccess: true);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Dashboard(),
-                            ),
-                          );
                         });
-                      } else {
-                        throw memberID["head"]["msg"];
-                      }
-                    });
+                      });
+                    } else {
+                      LoadingOverlay.hide();
+                      showCustomSnackBar(
+                        context,
+                        content: "You are already logged with another device",
+                        isSuccess: false,
+                      );
+                      await LocalDBConfig().addLoginAttempt();
+                    }
                   });
                 } else {
                   LoadingOverlay.hide();
-                  showCustomSnackBar(context,
-                      content: "You are already logged with another device",
-                      isSuccess: false);
+                  showCustomSnackBar(
+                    context,
+                    content: "Account was expired",
+                    isSuccess: false,
+                  );
+                  await LocalDBConfig().addLoginAttempt();
                 }
-              });
+              } else {
+                LoadingOverlay.hide();
+                showCustomSnackBar(
+                  context,
+                  content: "Unable to Login this Account",
+                  isSuccess: false,
+                );
+                await LocalDBConfig().addLoginAttempt();
+              }
             } else {
               LoadingOverlay.hide();
-              showCustomSnackBar(context,
-                  content: "Account was expired", isSuccess: false);
+              showCustomSnackBar(
+                context,
+                content: "User Details Not Found",
+                isSuccess: false,
+              );
+              await LocalDBConfig().addLoginAttempt();
             }
-          } else {
-            LoadingOverlay.hide();
-            showCustomSnackBar(context,
-                content: "Unable to Login this Account", isSuccess: false);
-          }
-        } else {
+          });
+        } catch (e) {
           LoadingOverlay.hide();
-          showCustomSnackBar(context,
-              content: "User Details Not Found", isSuccess: false);
+          showCustomSnackBar(context, content: e.toString(), isSuccess: false);
+          await LocalDBConfig().addLoginAttempt();
         }
-      });
-    } catch (e) {
-      LoadingOverlay.hide();
-      showCustomSnackBar(context, content: e.toString(), isSuccess: false);
-    }
+      } else {
+        showCustomSnackBar(
+          context,
+          content:
+              "Your device has been blocked for multiple login attempts. Please login after 24 hours.",
+          isSuccess: false,
+        );
+        await LocalDBConfig().addLoginAttempt();
+      }
+    });
   }
 
   @override

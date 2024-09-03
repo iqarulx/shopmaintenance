@@ -5,9 +5,7 @@
 */
 
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +55,14 @@ class _OTPPageState extends State<OTPPage> {
 
   @override
   void initState() {
-    log(widget.domain);
+    print("Admin path : ${widget.adminPath}");
+    print("Doc id : ${widget.docID}");
+    print("Domain : ${widget.domain}");
+    print("Expiry date : ${widget.expiryDate}");
+    print("Phone no: ${widget.phoneno}");
+    print("Server ip: ${widget.serverIP}");
+    print("sms code ${widget.smsCode}");
+    print("id : ${widget.verificationId}");
     startTimer();
     super.initState();
   }
@@ -100,7 +105,6 @@ class _OTPPageState extends State<OTPPage> {
             .verifyOTP(verificationId: widget.verificationId, smsCode: otp.text)
             .then((result) async {
           if (result.user != null && result.user!.uid.isNotEmpty) {
-            log(result.user!.uid);
             await getDeviceInfo().then(
               (value) async {
                 String deviceID = value["deviceid"];
@@ -205,7 +209,6 @@ class _OTPPageState extends State<OTPPage> {
   }
 
   void codesend(String verificationId, int? smsCode) {
-    log("result Data $verificationId");
     if (verificationId.isNotEmpty) {
       Navigator.pop(context);
       setState(() {
@@ -237,7 +240,6 @@ class _OTPPageState extends State<OTPPage> {
         LoadingOverlay.hide();
       });
     } catch (e) {
-      log(e.toString());
       LoadingOverlay.hide();
       showCustomSnackBar(
         context,

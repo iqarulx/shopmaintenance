@@ -14,11 +14,59 @@ class LocalDBConfig {
   Future<bool> checkLogin() async {
     var connection = await connectLocalDb();
     bool? result = connection.getBool('login');
-    if (result == null) {
-      return false;
+    return result ?? false;
+  }
+
+  Future<int> checkLoginAttempts() async {
+    // Assume connectLocalDb() returns an object with methods to get data
+    var connection = await connectLocalDb();
+
+    // Fetch the timestamp when the device was blocked
+    String? deviceBlocked = connection.getString('device_block_at');
+
+    if (deviceBlocked == null) {
+      // Device is not blocked, so return the number of login attempts
+      int? result = connection.getInt('login_attempts');
+      return result ?? 0;
     } else {
-      return result;
+      // Device is blocked, check if the block period has expired
+      var deviceBlockedTime = DateTime.parse(deviceBlocked);
+      var now = DateTime.now();
+      var blockEndTime = deviceBlockedTime.add(const Duration(hours: 24));
+
+      if (now.isBefore(blockEndTime)) {
+        // Reset value to zero
+        await connection.setInt('login_attempts', 0);
+        // Device is still within the block period, return a blocked status
+        return 5; // Or any value that represents a blocked status
+      } else {
+        // Block period is over, clear the block and return the login attempts
+        await connection.remove('device_block_at');
+        int? result = connection.getInt('login_attempts');
+        return result ?? 0;
+      }
     }
+  }
+
+  Future addLoginAttempt() async {
+    // Get previous attempt count
+    var previousAttempts = await LocalDBConfig().checkLoginAttempts();
+    var connection = await connectLocalDb();
+    if (previousAttempts == 5) {
+      await LocalDBConfig().blockDevice(); // Block the device
+    } else {
+      return connection.setInt('login_attempts', previousAttempts + 1);
+    }
+  }
+
+  Future blockDevice() async {
+    var connection = await connectLocalDb();
+    return connection.setString('device_block_at', DateTime.now().toString());
+  }
+
+  Future getblockDevice() async {
+    var connection = await connectLocalDb();
+    return connection.getString('device_block_at');
   }
 
   Future newUserLogin({

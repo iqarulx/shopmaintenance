@@ -42,6 +42,13 @@ class _PhoneLoginState extends State<PhoneLogin> {
   }
 
   codesend(String verificationId, int? smsCode) {
+    print("Code $verificationId");
+    print("Sms $smsCode");
+    print("Domain $domain");
+    print("Doc $docID");
+    print("expiryDate : $expiryDate");
+    print("adminPath : $adminPath");
+    print("serverIP : $serverIP");
     showCustomSnackBar(context,
         content: "Verification Completed", isSuccess: true);
     if (verificationId.isNotEmpty) {
@@ -54,7 +61,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
             phoneno: phoneNumber.text,
             domain: domain!,
             docID: docID!,
-            smsCode: smsCode,
+            smsCode: smsCode ?? 123456,
             expiryDate: expiryDate!,
             adminPath: adminPath!,
             serverIP: serverIP!,
@@ -119,6 +126,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                     adminPath = dataResult.docs.first["admin_path"].toString();
                     serverIP = dataResult.docs.first["server_ip"].toString();
                   });
+
                   await OTPService().sendOTP(
                     context,
                     phoneNumber: phoneNumber.text,
@@ -139,6 +147,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
                         dataResult.docs.first["device"]["model_no"]) {
                   setState(() {
                     domain = dataResult.docs.first["domain"];
+                    adminPath = dataResult.docs.first["admin_path"].toString();
+                    serverIP = dataResult.docs.first["server_ip"].toString();
                   });
                   showCustomSnackBar(
                     context,
