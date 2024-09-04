@@ -95,11 +95,13 @@ class LocalDBConfig {
     required String domain,
     required String adminPath,
     required String serverIP,
+    required String server,
   }) async {
     var connection = await connectLocalDb();
     connection.setString('domain', domain);
     connection.setString('admin_path', adminPath);
     connection.setString('server_ip', serverIP);
+    connection.setString('server', server);
   }
 
   Future<String?> getExpiry() async {
@@ -150,6 +152,11 @@ class LocalDBConfig {
   Future<String?> getServerIP() async {
     var connection = await connectLocalDb();
     return connection.getString('server_ip');
+  }
+
+  Future<String?> getServer() async {
+    var connection = await connectLocalDb();
+    return connection.getString('server');
   }
 
   Future<String?> getUserID() async {

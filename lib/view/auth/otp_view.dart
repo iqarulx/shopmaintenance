@@ -31,6 +31,7 @@ class OTPPage extends StatefulWidget {
   final String expiryDate;
   final String adminPath;
   final String serverIP;
+  final String server;
 
   const OTPPage({
     super.key,
@@ -42,6 +43,7 @@ class OTPPage extends StatefulWidget {
     required this.expiryDate,
     required this.adminPath,
     required this.serverIP,
+    required this.server,
   });
 
   @override
@@ -55,14 +57,6 @@ class _OTPPageState extends State<OTPPage> {
 
   @override
   void initState() {
-    print("Admin path : ${widget.adminPath}");
-    print("Doc id : ${widget.docID}");
-    print("Domain : ${widget.domain}");
-    print("Expiry date : ${widget.expiryDate}");
-    print("Phone no: ${widget.phoneno}");
-    print("Server ip: ${widget.serverIP}");
-    print("sms code ${widget.smsCode}");
-    print("id : ${widget.verificationId}");
     startTimer();
     super.initState();
   }
@@ -123,6 +117,7 @@ class _OTPPageState extends State<OTPPage> {
                       domain: widget.domain,
                       adminPath: widget.adminPath,
                       serverIP: widget.serverIP,
+                      server: widget.server,
                     )
                         .then(
                       (domain) async {

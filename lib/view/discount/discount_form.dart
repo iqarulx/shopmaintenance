@@ -269,14 +269,11 @@ class _DiscountFormState extends State<DiscountForm> {
               CupertinoSwitch(
                 value: switchValue,
                 onChanged: (value) {
-                  print(discountController.text);
                   setState(() {
                     if (value) {
                       categoryIds.add(categoryList[index].categoryId);
-                      print(categoryIds);
                     } else {
                       categoryIds.remove(categoryList[index].categoryId);
-                      print(categoryIds);
                     }
                   });
                 },

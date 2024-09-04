@@ -91,10 +91,6 @@ class _ProductPriceUpdateState extends State<ProductPriceUpdate> {
       var productId = productList[i].productId ?? '';
       var productPrice = productList[i].price ?? '';
 
-      print(selectedOption);
-
-      print(productPrice);
-
       if (selectedOption != null) {
         double modifiedPrice = 0.0;
         if (selectedOption == '+') {
@@ -110,8 +106,6 @@ class _ProductPriceUpdateState extends State<ProductPriceUpdate> {
           modifiedPrice = double.parse(productPrice) -
               (double.parse(productPrice) * int.parse(enteredValue) / 100);
         }
-
-        print(modifiedPrice);
 
         var entry = {
           'product_id': productId.toString(),
@@ -135,8 +129,6 @@ class _ProductPriceUpdateState extends State<ProductPriceUpdate> {
         'creator_id': userId.toString(),
         'update_product_list_price': priceModified,
       };
-
-      print(formData);
 
       if (hasNegativePrice) {
         showCustomSnackBar(context,

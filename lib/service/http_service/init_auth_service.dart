@@ -39,6 +39,7 @@ class InitAuthService extends HttpConfig {
       };
 
       var message = await http.post(_authURL!, body: jsonEncode(data));
+
       if (message.statusCode == 200) {
         var response = json.decode(message.body);
         return response;
