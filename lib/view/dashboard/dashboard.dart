@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import '/view/dashboard/otp_list.dart';
 import '../custom_ui_element/error_snackbar.dart';
 import '/model/dashboard_model.dart';
 import '/service/auth_service/auth_service.dart';
@@ -112,6 +113,22 @@ class _DashboardState extends State<Dashboard> {
       context: context,
       builder: (builder) {
         return const NotificationsList();
+      },
+    );
+  }
+
+  showOTP() {
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      useSafeArea: true,
+      shape: RoundedRectangleBorder(
+        side: BorderSide.none,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      isScrollControlled: true,
+      context: context,
+      builder: (builder) {
+        return const OtpList();
       },
     );
   }
@@ -460,20 +477,28 @@ class _DashboardState extends State<Dashboard> {
 
   AppBar appbar() {
     return AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-        // backgroundColor: Colors.white,
-        backgroundColor: const Color(0xff586F7C),
-        automaticallyImplyLeading: false,
-        title: const Text(
-          "Dashboard",
-          style: TextStyle(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
+      // backgroundColor: Colors.white,
+      backgroundColor: const Color(0xff586F7C),
+      automaticallyImplyLeading: false,
+      title: const Text(
+        "Dashboard",
+        style: TextStyle(color: Colors.white),
+      ),
+      actions: [
+        IconButton(
+          icon: const Icon(Iconsax.password_check),
+          onPressed: () {
+            showOTP();
+          },
         ),
-        actions: [
-          IconButton(
-              icon: const Icon(Iconsax.notification),
-              onPressed: () {
-                showNotificationSheet();
-              })
-        ]);
+        IconButton(
+          icon: const Icon(Iconsax.notification),
+          onPressed: () {
+            showNotificationSheet();
+          },
+        )
+      ],
+    );
   }
 }

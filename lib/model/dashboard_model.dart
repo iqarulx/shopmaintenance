@@ -23,3 +23,9 @@ class DashboardModel {
     return mapping;
   }
 }
+
+class OtpModel {
+  String? otp;
+  String? createdAt;
+  String? phoneNumber;
+}

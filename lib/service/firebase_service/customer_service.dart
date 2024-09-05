@@ -38,4 +38,20 @@ class CustomerService {
       rethrow;
     }
   }
+
+  Future saveOTP(
+      {required String domain,
+      required String phoneNumber,
+      required String sms}) async {
+    try {
+      return await firebase.customerOTP.add({
+        "domain": domain,
+        "mobile": phoneNumber,
+        "otp": sms,
+        "created_at": DateTime.now()
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

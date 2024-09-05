@@ -41,4 +41,32 @@ class DashboardService extends HttpConfig {
       rethrow;
     }
   }
+
+  Future getOTP() async {
+    try {
+      var domain = await LocalDBConfig().getdomain();
+      var adminPath = await LocalDBConfig().getAdminPath();
+      var data = await super.getdomain();
+      var url = Uri.parse("$data/otp.php");
+
+      var message = await http.post(
+        url,
+        body: jsonEncode(
+          {
+            "get_otp": 1,
+            "domain_name": domain,
+            "admin_folder_name": adminPath,
+          },
+        ),
+      );
+
+      if (message.statusCode == 200) {
+        var response = json.decode(message.body);
+        return response;
+      }
+      return [];
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

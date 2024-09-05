@@ -9,6 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FireBaseService {
   final CollectionReference<Map<String, dynamic>> customer =
       FirebaseFirestore.instance.collection('customer');
+  final CollectionReference<Map<String, dynamic>> customerOTP =
+      FirebaseFirestore.instance.collection('customer_otp');
   final CollectionReference<Map<String, dynamic>> domainList =
       FirebaseFirestore.instance.collection('domain_list');
   final CollectionReference<Map<String, dynamic>> appVersion =

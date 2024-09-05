@@ -44,6 +44,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
   codesend(String verificationId, int? smsCode) {
     showCustomSnackBar(context,
         content: "Verification Completed", isSuccess: true);
+
     if (verificationId.isNotEmpty) {
       // Navigator.pop(context);
       Navigator.push(
@@ -52,13 +53,13 @@ class _PhoneLoginState extends State<PhoneLogin> {
           builder: (context) => OTPPage(
             verificationId: verificationId,
             phoneno: phoneNumber.text,
-            domain: domain!,
-            docID: docID!,
+            domain: domain ?? '',
+            docID: docID ?? '',
             smsCode: smsCode ?? 123456,
             expiryDate: expiryDate!,
-            adminPath: adminPath!,
-            serverIP: serverIP!,
-            server: server!,
+            adminPath: adminPath ?? '',
+            serverIP: serverIP ?? '',
+            server: server ?? '',
           ),
         ),
       );
