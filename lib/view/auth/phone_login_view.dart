@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:package_info/package_info.dart';
 import 'package:pinput/pinput.dart';
 import '/service/firebase_service/otp_serivce.dart';
 import '/view/auth/login.dart';
@@ -199,9 +200,9 @@ class _PhoneLoginState extends State<PhoneLogin> {
     }
   }
 
-  @override
-  initState() {
-    super.initState();
+  Future<String> getAppInfo() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
   }
 
   @override
@@ -412,6 +413,24 @@ class _PhoneLoginState extends State<PhoneLogin> {
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
+              FutureBuilder(
+                future: getAppInfo(),
+                builder: (builder, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return const Text("App Version : ----");
+                  } else {
+                    return Center(
+                      child: Text(
+                        "App Version : ${snapshot.data}",
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }
+                },
+              )
             ],
           ),
         ),

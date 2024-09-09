@@ -49,7 +49,7 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 22
         targetSdkVersion 34
-        versionCode 13
+        versionCode 14
         versionName flutterVersionName
     }
 
@@ -61,16 +61,34 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now,
-            // so `flutter run --release` works.
             signingConfig signingConfigs.release
+        }
+    }
+
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include "x86", "x86_64"
+            universalApk false
         }
     }
 }
 
 flutter {
     source = "../.."
+}
+
+//for firebase auth must include recaptcha and play integrity api
+dependencies {
+    implementation 'com.google.android.recaptcha:recaptcha:18.4.0'
+    implementation 'com.google.android.play:integrity:1.4.0'
+}
+
+configurations.all { 
+    exclude group: 'com.google.android.gms', module: 'play-services-safetynet'
 }
