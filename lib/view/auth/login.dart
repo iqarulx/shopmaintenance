@@ -70,6 +70,7 @@ class _LoginState extends State<Login> {
       await CustomerService()
           .findPhoneNumber(phoneNumber: phoneNumber.text)
           .then((dataResult) async {
+        print(dataResult.docs.first.data());
         if (dataResult.docs.isNotEmpty) {
           setState(() {
             docID = dataResult.docs.first.id;
@@ -477,7 +478,7 @@ class _LoginState extends State<Login> {
                   future: getAppInfo(),
                   builder: (builder, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                      return Container();
                     } else if (snapshot.hasError) {
                       return const Text("App Version : ----");
                     } else {

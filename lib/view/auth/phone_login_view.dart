@@ -418,7 +418,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                 future: getAppInfo(),
                 builder: (builder, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return Container();
                   } else if (snapshot.hasError) {
                     return const Text("App Version : ----");
                   } else {

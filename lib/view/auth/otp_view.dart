@@ -92,18 +92,42 @@ class _OTPPageState extends State<OTPPage> {
   }
 
   otpValid() async {
+    print("***************************");
+    print("Verification Id : ${widget.verificationId}");
+    print("Phone no : ${widget.phoneno}");
+    print("Domain : ${widget.domain}");
+    print("Docid : ${widget.docID}");
+    print("SMS Code : ${widget.smsCode}");
+    print("Expiry Date : ${widget.expiryDate}");
+    print("Admin Path : ${widget.adminPath}");
+    print("Server IP : ${widget.serverIP}");
+    print("Server : ${widget.server}");
+    print("OTP : {otp.text}");
+    print("***************************");
+
     try {
       LoadingOverlay.show(context);
       if (otp.text.isNotEmpty && otp.text.length == 6) {
         await OTPService()
             .verifyOTP(verificationId: widget.verificationId, smsCode: otp.text)
             .then((result) async {
+          print("***************************");
+          print("User id : ${result.user!.uid}");
+          print("***************************");
+
           if (result.user != null && result.user!.uid.isNotEmpty) {
             await getDeviceInfo().then(
               (value) async {
                 String deviceID = value["deviceid"];
                 String brandName = value["brandName"];
                 String modelName = value["modelName"];
+
+                print("***************************");
+                print("deviceID : $deviceID");
+                print("brandName : $brandName");
+                print("modelName : $modelName");
+                print("***************************");
+
                 await OTPService()
                     .updateDeviceInfo(
                         deviceID: deviceID,
@@ -112,6 +136,13 @@ class _OTPPageState extends State<OTPPage> {
                         docID: widget.docID)
                     .then(
                   (value) async {
+                    print("***************************");
+                    print("Domain : ${widget.domain}");
+                    print("Domain : ${widget.adminPath}");
+                    print("Domain : ${widget.serverIP}");
+                    print("Domain : ${widget.server}");
+                    print("***************************");
+
                     await LocalDBConfig()
                         .setDomain(
                       domain: widget.domain,
@@ -121,6 +152,10 @@ class _OTPPageState extends State<OTPPage> {
                     )
                         .then(
                       (domain) async {
+                        print("***************************");
+                        print("Phoneno : ${widget.phoneno}");
+                        print("***************************");
+
                         await InitAuthService()
                             .getMemberID(
                                 phoneno: widget.phoneno,
@@ -138,6 +173,10 @@ class _OTPPageState extends State<OTPPage> {
                                             .toString(),
                                         expiryDate: widget.expiryDate)
                                     .then((localDBResult) {
+                                  print("***************************");
+                                  print("UID: ${memberID["head"]["user_id"]}");
+                                  print("***************************");
+
                                   // Navigator.pop(context);
                                   LoadingOverlay.hide();
                                   // Navigator.pop(context);
@@ -163,12 +202,7 @@ class _OTPPageState extends State<OTPPage> {
               },
             );
           } else {
-            // Something went Wrong
-            showCustomSnackBar(
-              context,
-              content: "Something went Wrong",
-              isSuccess: false,
-            );
+            errorSnackbar(context);
           }
         });
       } else {
@@ -184,7 +218,7 @@ class _OTPPageState extends State<OTPPage> {
       LoadingOverlay.hide();
       showCustomSnackBar(
         context,
-        content: e.toString(),
+        content: "Error: ${e.toString()}",
         isSuccess: false,
       );
     }
@@ -248,6 +282,7 @@ class _OTPPageState extends State<OTPPage> {
     if (credential.smsCode != null) {
       // otp.setText(credential.smsCode!);
     }
+    print("Original OTP: ${credential.smsCode}");
   }
 
   @override
@@ -309,8 +344,8 @@ class _OTPPageState extends State<OTPPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Pinput(
-                    androidSmsAutofillMethod:
-                        AndroidSmsAutofillMethod.smsRetrieverApi,
+                    // androidSmsAutofillMethod:
+                    //     AndroidSmsAutofillMethod.smsRetrieverApi,
                     autofocus: true,
                     controller: otp,
                     length: 6,
