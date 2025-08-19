@@ -1,0 +1,30 @@
+// Copyright 2024 Srisoftwarez. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.evaluationDependsOn(":app")
+}
+
+// ✅ Enable buildConfig after all subprojects are evaluated
+gradle.projectsEvaluated {
+    subprojects { subproject ->
+        if (subproject.plugins.hasPlugin("com.android.library") || subproject.plugins.hasPlugin("com.android.application")) {
+            subproject.extensions.findByType(com.android.build.gradle.BaseExtension)?.buildFeatures?.buildConfig = true
+        }
+    }
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

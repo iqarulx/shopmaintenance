@@ -1,0 +1,98 @@
+
+
+
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
+if (flutterVersionCode == null) {
+    flutterVersionCode = "1"
+}
+
+def flutterVersionName = localProperties.getProperty("flutter.versionName")
+if (flutterVersionName == null) {
+    flutterVersionName = "1.0"
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    namespace = "com.srisoftwarez.shopmaintenance"
+    compileSdk = 35
+    ndkVersion "26.1.10909125"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+        coreLibraryDesugaringEnabled true
+    }
+
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    defaultConfig {
+        applicationId = "com.srisoftwarez.shopmaintenance"
+        minSdkVersion 22
+        targetSdkVersion 35
+        versionCode 19
+        versionName flutterVersionName
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false // <== disable shrinking for now
+            shrinkResources false
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+//for firebase auth must include recaptcha and play integrity api
+dependencies {
+    implementation 'com.google.android.recaptcha:recaptcha:18.4.0'
+    implementation 'com.google.android.play:integrity:1.4.0'
+}
+
+configurations.all { 
+    exclude group: 'com.google.android.gms', module: 'play-services-safetynet'
+}
+
+dependencies {
+    implementation "androidx.multidex:multidex:2.0.1"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+}

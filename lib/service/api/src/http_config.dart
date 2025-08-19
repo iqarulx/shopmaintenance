@@ -1,0 +1,17 @@
+/*
+  Copyright 2024 Srisoftwarez. All rights reserved.
+  Use of this source code is governed by a BSD-style license that can be
+  found in the LICENSE file.
+*/
+
+import '/service/service.dart';
+
+class HttpConfig {
+  Future<String?> getdomain() async {
+    var serverIP = await LocalDBConfig().getServerIP();
+    var server = await LocalDBConfig().getServer();
+
+    String result = "$server://$serverIP/API";
+    return result;
+  }
+}

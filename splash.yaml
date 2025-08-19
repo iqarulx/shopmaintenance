@@ -1,0 +1,17 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  background_image: "assets/splash.png"
+  image: "assets/applogo-2.jpg"
+  branding: "assets/sribrand.png"
+
+  background_image_dark: "assets/splash.png"
+  image_dark: "assets/applogo-2.jpg"
+  branding_dark: "assets/sribrand.png"
+
+  android_12:
+    color: "#FFFFFF"
+    image: "assets/applogo-2.jpg"
+    branding: "assets/sribrand.png"
