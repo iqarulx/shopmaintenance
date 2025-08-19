@@ -8,4 +8,3 @@ export 'enquiry/enquiry.dart';
 export 'product/product.dart';
 export 'sales_report/sales_report.dart';
 export 'settings/settings.dart';
-export 'terms/terms.dart';

@@ -656,62 +656,63 @@ class _EnquiryListingState extends State<EnquiryListing>
             Sheet sheet = excel['Sheet1'];
             sheet
                 .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0))
-                .value = 'S.No';
+                .value = TextCellValue('S.No');
             sheet
                 .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: 0))
-                .value = 'Order Type';
+                .value = TextCellValue('Order Type');
             sheet
                 .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: 0))
-                .value = 'Order Number';
+                .value = TextCellValue('Order Number');
             sheet
                 .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: 0))
-                .value = 'Order Date';
+                .value = TextCellValue('Order Date');
             sheet
                 .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: 0))
-                .value = 'Customer Name';
+                .value = TextCellValue('Customer Name');
             sheet
                 .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: 0))
-                .value = 'Address';
+                .value = TextCellValue('Address');
             sheet
                 .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: 0))
-                .value = 'Mobile Number';
+                .value = TextCellValue('Mobile Number');
             sheet
                 .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: 0))
-                .value = 'Amount';
+                .value = TextCellValue('Amount');
 
             for (var i = 0; i < dataList.length; i++) {
               sheet
                   .cell(CellIndex.indexByColumnRow(
                       columnIndex: 0, rowIndex: (i + 1)))
-                  .value = (i + 1);
+                  .value = TextCellValue((i + 1).toString());
               sheet
                   .cell(CellIndex.indexByColumnRow(
                       columnIndex: 1, rowIndex: (i + 1)))
-                  .value = dataList[i].ordertype ?? "";
+                  .value = TextCellValue(dataList[i].ordertype ?? "");
               sheet
                   .cell(CellIndex.indexByColumnRow(
                       columnIndex: 2, rowIndex: (i + 1)))
-                  .value = dataList[i].orderNumber ?? "";
+                  .value = TextCellValue(dataList[i].orderNumber ?? "");
               sheet
                   .cell(CellIndex.indexByColumnRow(
                       columnIndex: 3, rowIndex: (i + 1)))
-                  .value = dataList[i].orderDate ?? "";
+                  .value = TextCellValue(dataList[i].orderDate ?? "");
               sheet
                   .cell(CellIndex.indexByColumnRow(
                       columnIndex: 4, rowIndex: (i + 1)))
-                  .value = dataList[i].customerName ?? "";
+                  .value = TextCellValue(dataList[i].customerName ?? "");
               sheet
                   .cell(CellIndex.indexByColumnRow(
                       columnIndex: 5, rowIndex: (i + 1)))
-                  .value = dataList[i].deliveryAddress ?? "";
+                  .value = TextCellValue(dataList[i].deliveryAddress ?? "");
               sheet
-                  .cell(CellIndex.indexByColumnRow(
-                      columnIndex: 6, rowIndex: (i + 1)))
-                  .value = dataList[i].customerMobileNumber ?? "";
+                      .cell(CellIndex.indexByColumnRow(
+                          columnIndex: 6, rowIndex: (i + 1)))
+                      .value =
+                  TextCellValue(dataList[i].customerMobileNumber ?? "");
               sheet
                   .cell(CellIndex.indexByColumnRow(
                       columnIndex: 7, rowIndex: (i + 1)))
-                  .value = dataList[i].totalAmount ?? "";
+                  .value = TextCellValue(dataList[i].totalAmount ?? "");
             }
             Uint8List data = Uint8List.fromList(excel.save()!);
             LoadingOverlay.hide();

@@ -76,15 +76,19 @@ class _ExcelPreviewState extends State<ExcelPreview> {
       LoadingOverlay.show(context);
       var excel = Excel.createExcel();
       var sheet = excel['Sheet1'];
-      sheet.appendRow(['S.No', 'Product Name', 'Price']);
+      sheet.appendRow([
+        TextCellValue('S.No'),
+        TextCellValue('Product Name'),
+        TextCellValue('Price')
+      ]);
       for (var category in categoryList) {
-        sheet.appendRow([category.categoryName]);
+        sheet.appendRow([TextCellValue(category.categoryName ?? '')]);
         for (int i = 0; i < category.productList!.length; i++) {
           var product = category.productList![i];
           sheet.appendRow([
-            i + 1,
-            product['product_name'],
-            product['price'],
+            TextCellValue((i + 1).toString()),
+            TextCellValue(product['product_name']),
+            TextCellValue(product['price']),
           ]);
         }
 

@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:multi_dropdown/multi_dropdown.dart';
 import '/provider/provider.dart';
 import '/service/service.dart';
 import '/view/view.dart';
@@ -4125,37 +4125,24 @@ class _SettingsFormState extends State<SettingsForm> {
                       const SizedBox(
                         height: 8,
                       ),
-                      MultiSelectDropDown(
-                        onOptionSelected: (options) {
+                      MultiDropdown<String>(
+                        onSelectionChange: (options) {
                           setState(() {
                             for (var option in options) {
-                              var selectedValue = option.value.toString();
+                              var selectedValue = option.toString();
                               if (!selectedStates.contains(selectedValue)) {
                                 selectedStates.add(selectedValue);
                               }
                             }
                           });
                         },
-                        onOptionRemoved: (index, option) {
-                          setState(() {
-                            selectedStates.removeAt(index);
-                            selectedCities.removeAt(index);
-                          });
-                        },
-                        options: stateList != null
+                        items: stateList != null
                             ? stateList
-                                .map((state) => ValueItem(
+                                .map((state) => DropdownItem(
                                     label: state.toString(),
                                     value: state.toString()))
                                 .toList()
                             : [],
-                        selectionType: SelectionType.multi,
-                        fieldBackgroundColor: Colors.grey[200],
-                        chipConfig: const ChipConfig(wrapType: WrapType.wrap),
-                        dropdownHeight: 300,
-                        optionTextStyle: const TextStyle(fontSize: 16),
-                        selectedOptionIcon: const Icon(Icons.check_circle),
-                        hint: 'Select State',
                       )
                     ],
                   ),
@@ -4373,11 +4360,11 @@ class _SettingsFormState extends State<SettingsForm> {
                     const SizedBox(
                       height: 8,
                     ),
-                    MultiSelectDropDown(
-                      onOptionSelected: (options) {
+                    MultiDropdown<String>(
+                      onSelectionChange: (options) {
                         setState(() {
                           for (var option in options) {
-                            var selectedValue = option.value.toString();
+                            var selectedValue = option.toString();
                             bool alreadyExists = false;
                             for (var city in selectedCities) {
                               if (city[0] == state &&
@@ -4393,24 +4380,14 @@ class _SettingsFormState extends State<SettingsForm> {
                         });
                       },
 
-                      onOptionRemoved: (index, option) {
-                        setState(() {});
-                      },
                       // selectedOptions: selectedCities,
-                      options: citiesList != null
+                      items: citiesList != null
                           ? citiesList
-                              .map((city) => ValueItem(
+                              .map((city) => DropdownItem(
                                   label: city.toString(),
                                   value: city.toString()))
                               .toList()
                           : [],
-                      selectionType: SelectionType.multi,
-                      fieldBackgroundColor: Colors.grey[200],
-                      chipConfig: const ChipConfig(wrapType: WrapType.wrap),
-                      dropdownHeight: 300,
-                      optionTextStyle: const TextStyle(fontSize: 16),
-                      selectedOptionIcon: const Icon(Icons.check_circle),
-                      hint: 'Select City',
                     ),
                   ],
                 ),
@@ -5055,12 +5032,12 @@ class _SettingsFormState extends State<SettingsForm> {
 
   Padding newArrivals(
       BuildContext context, List<Map<String, String>> productList) {
-    List<ValueItem<Object?>> valueItems = productList.map((product) {
-      return ValueItem<Object?>(
-        label: product['product_name']!,
-        value: product['product_id'],
-      );
-    }).toList();
+    // List<DropdownItem<Object?>> valueItems = productList.map((product) {
+    //   return DropdownItem<Object?>(
+    //     label: product['product_name']!,
+    //     value: product['product_id'],
+    //   );
+    // }).toList();
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -5596,56 +5573,54 @@ class _SettingsFormState extends State<SettingsForm> {
                                 const SizedBox(
                                   height: 14,
                                 ),
-                                Text(
-                                  "New Arrivals Type",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelLarge!
-                                      .copyWith(color: Colors.black54),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                MultiSelectDropDown(
-                                  onOptionSelected: (options) {
-                                    List<String> selectedOptions = [];
-                                    for (var option in options) {
-                                      String selectedId =
-                                          option.value.toString();
-                                      selectedOptions.add(selectedId);
-                                    }
+                                // Text(
+                                //   "New Arrivals Type",
+                                //   style: Theme.of(context)
+                                //       .textTheme
+                                //       .labelLarge!
+                                //       .copyWith(color: Colors.black54),
+                                // ),
+                                // const SizedBox(
+                                //   height: 8,
+                                // ),
+                                // MultiDropdown<String>(
+                                //   onSelectionChange: (options) {
+                                //     List<String> selectedOptions = [];
+                                //     for (var option in options) {
+                                //       String selectedId = option.toString();
+                                //       selectedOptions.add(selectedId);
+                                //     }
 
-                                    setState(() {
-                                      selectedProductsForNewArrivals[i] =
-                                          selectedOptions;
-                                    });
-                                  },
-                                  onOptionRemoved: (index, option) {},
-                                  options: valueItems,
-                                  selectedOptions:
-                                      i < previousProductsForNewArrivals.length
-                                          ? previousProductsForNewArrivals[i]
-                                              .map((product) {
-                                              return ValueItem<Object?>(
-                                                label: product['product_name'],
-                                                value: product['product_id'],
-                                              );
-                                            }).toList()
-                                          : [],
-                                  selectionType: SelectionType.multi,
-                                  fieldBackgroundColor: Colors.grey[200],
-                                  chipConfig:
-                                      const ChipConfig(wrapType: WrapType.wrap),
-                                  dropdownHeight: 300,
-                                  optionTextStyle:
-                                      const TextStyle(fontSize: 16),
-                                  selectedOptionIcon:
-                                      const Icon(Icons.check_circle),
-                                  hint: 'Select Category',
-                                ),
-                                const SizedBox(
-                                  height: 14,
-                                ),
+                                //     setState(() {
+                                //       selectedProductsForNewArrivals[i] =
+                                //           selectedOptions;
+                                //     });
+                                //   },
+                                //   options: valueItems,
+                                //   selectedOptions:
+                                //       i < previousProductsForNewArrivals.length
+                                //           ? previousProductsForNewArrivals[i]
+                                //               .map((product) {
+                                //               return ValueItem<Object?>(
+                                //                 label: product['product_name'],
+                                //                 value: product['product_id'],
+                                //               );
+                                //             }).toList()
+                                //           : [],
+                                //   selectionType: SelectionType.multi,
+                                //   fieldBackgroundColor: Colors.grey[200],
+                                //   chipConfig:
+                                //       const ChipConfig(wrapType: WrapType.wrap),
+                                //   dropdownHeight: 300,
+                                //   optionTextStyle:
+                                //       const TextStyle(fontSize: 16),
+                                //   selectedOptionIcon:
+                                //       const Icon(Icons.check_circle),
+                                //   hint: 'Select Category',
+                                // ),
+                                // const SizedBox(
+                                //   height: 14,
+                                // ),
                               ],
                             ),
                           ),

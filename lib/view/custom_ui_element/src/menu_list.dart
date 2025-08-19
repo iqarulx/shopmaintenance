@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '/service/service.dart';
 import '/view/view.dart';
@@ -278,26 +279,30 @@ class _MenuListState extends State<MenuList> {
                     context,
                     title: 'Terms and Conditions',
                     icon: Iconsax.shield,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TermsAndConditions(),
-                        ),
-                      );
+                    onTap: () async {
+                      var url = "https://srisoftwarez.com/termscondition.php";
+                      if (await canLaunchUrl(Uri.parse(url))) {
+                        await launchUrl(Uri.parse(url));
+                      } else {
+                        showCustomSnackBar(context,
+                            content: "Unable to open Terms and Conditions",
+                            isSuccess: false);
+                      }
                     },
                   ),
                   _buildListTile(
                     context,
                     title: 'Privacy Policy',
                     icon: Iconsax.shield_tick,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PrivacyPolicy(),
-                        ),
-                      );
+                    onTap: () async {
+                      var url = "https://srisoftwarez.com/privacypolicy.php";
+                      if (await canLaunchUrl(Uri.parse(url))) {
+                        await launchUrl(Uri.parse(url));
+                      } else {
+                        showCustomSnackBar(context,
+                            content: "Unable to open Terms and Conditions",
+                            isSuccess: false);
+                      }
                     },
                   ),
                   _buildListTile(
